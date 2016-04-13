@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-//从后往前，每次把最小的放到未排序部分的前面
+//O(n^2), 升序
 void bubble_sort(int a[], int len){
     int i,j;
     for(i=0; i<len; i++)
