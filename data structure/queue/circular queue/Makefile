@@ -1,5 +1,5 @@
-doubly_queue : main.o queue.o
-	cc -o doubly_queue main.o queue.o
+circular_queue : main.o queue.o
+	cc -ocirculary_queue main.o queue.o
 
 main.o : main.c queue.h
 	cc -c main.c
@@ -9,4 +9,4 @@ queue.o : main.c queue.h
 clean :
 	rm main.o queue.o
 
-.PHONY: doubly_queue clean
+.PHONY:circulary_queue clean
