@@ -40,7 +40,7 @@ void get_back(QueueType *queue){
     DATA data;
 
     printf("\nGet Back!!!\n");
-    data = Get_Back_Queue(queue);
+    data = Check_Back_Queue(queue);
     printf("(%s, %s, %d)\n", data.id, data.name, data.age);
 }
 
@@ -48,7 +48,7 @@ void get_front(QueueType *queue){
     DATA data;
 
     printf("\nGet Front!!!\n");
-    data = Get_Front_Queue(queue);
+    data = Check_Front_Queue(queue);
     printf("(%s, %s, %d)\n", data.id, data.name, data.age);
 }
 

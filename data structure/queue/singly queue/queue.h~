@@ -21,9 +21,9 @@ QueueType *Push_Queue(QueueType *queue, DATA data);
 
 DATA Pop_Queue(QueueType *queue);
 
-DATA Get_Front_Queue(QueueType *queue);
+DATA Check_Front_Queue(QueueType *queue);
 
-DATA Get_Back_Queue(QueueType *queue);
+DATA Check_Back_Queue(QueueType *queue);
 
 int Get_Length_Queue(QueueType *queue);
 
