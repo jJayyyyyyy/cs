@@ -1,3 +1,6 @@
+/* Designed to test a singly queue.
+ * Max size is 5.
+*/
 #include <stdio.h>
 #include "queue.h"
 
@@ -49,7 +52,6 @@ void get_front(QueueType *queue){
     printf("(%s, %s, %d)\n", data.id, data.name, data.age);
 }
 
-//main() for test
 int main()
 {
     DATA data;
