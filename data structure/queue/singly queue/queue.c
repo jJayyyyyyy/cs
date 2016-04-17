@@ -48,10 +48,10 @@ QueueType *Push_Queue(QueueType *queue, DATA data)
 {
     if(Is_Full_Queue(queue)){
         printf("\nFailed! Queue is full!\n");
-        return 0;
+    }else{
+        queue->data[queue->rear++] = data;
     }
 
-    queue->data[queue->rear++] = data;
     return queue;
 }
 
