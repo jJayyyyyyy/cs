@@ -5,10 +5,10 @@
 
 /*----------------------------------------------*/
 //
-ListType *Init_List(ListType *head)
+ListType *Init_List()
 {
     DATA data;
-    head = NULL;
+    ListType *head = NULL;
 
     printf("Please input List Data with format (id  name  age), quit when id=0. \n");
     while (1) {
