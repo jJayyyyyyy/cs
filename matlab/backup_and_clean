@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cp *.* ~/Documents/backup/matlab
+rm -f *.*~
