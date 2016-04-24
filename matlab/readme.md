@@ -13,3 +13,14 @@
 	If the variable already exists, then MATLAB replaces the original content with new content and allocates new storage space, where necessary.
 
 5. Colon_Notation (:)
+
+6. Numbers
+
+7. Plot
+
+8. Graphics
+
+9. Differential
+
+10. Integration
+
