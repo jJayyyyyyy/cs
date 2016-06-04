@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from urllib import request
+from bs4 import BeautifulSoup
+
+req = request.Request('http://m.weathercn.com/common/7d.do?cid=01012601')
+req.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36')
+
+with request.urlopen(req) as f:
+    print('Status:', f.status, f.reason + '\n')
+    if(200 == f.status):
+        data = f.read().decode('utf-8')
+        soup = BeautifulSoup(data, 'html.parser')
+        today = soup.find('span', class_='b').get_text().replace(' ', '').strip('\n')
+        tomorrow = soup.find("p", class_="b").get_text().strip('\n')
+        print(today, tomorrow)
+    else:
+        print('Status Error!\n')
