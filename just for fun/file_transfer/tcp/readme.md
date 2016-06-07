@@ -1,3 +1,5 @@
+## Usage
+
 1. `argv[1]` is the file to be sent (better in the current folder).
 
 2. The file received is renamed as 't_original-name'.
@@ -8,8 +10,7 @@
 
 	(local)ubuntu-14.04+python3.4, 127.0.0.1
 
-	(LAN)ubuntu-14.04+python3.4, 192.168.1.103  
-	(LAN)OSX+python3.4, 192.168.1.104
+	(LAN)ubuntu-14.04+python3.4, 192.168.1.103 + (LAN)OSX+python3.4, 192.168.1.104
 
 ## Reference
 
