@@ -83,5 +83,10 @@ $ exit
 
 `$ unset var`
 
+* 修改PS1，使bash用户、路径高亮。Linux下编辑`~/.bashrc`，或Mac下编辑`~/.bash_profile`，在文档最后加入这么一行：
 
+```bash
+PS1='\[\033[01;32m\]\u@\[\033[01;34m\]\h:\[\033[00m\]\W \$ '
+```
 
+保存退出后使用`$ source ~/.bashrc`或Mac下的对应文件即可生效。
