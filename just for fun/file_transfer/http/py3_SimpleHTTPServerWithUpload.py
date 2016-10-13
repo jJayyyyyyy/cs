@@ -7,9 +7,8 @@ Python2-Version by [bones7456] and [BUPTGuo]:
 Python3-Version by [FrozenMap]:
     Based on the new features in python3, this module is built on [http.server] by rewriting some implementations of do_GET, do_HEAD and do_POST and other functions in Python2-Version.
 
-This is test version 3. <Upload> will be implemented.
+More details can be found on GitHub Pages: https://jjayyyyyyy.github.io/2016/10/07/python3%E9%87%8D%E5%86%99SimpleHTTPServerWithUpload.html
 
-More details can be found on GitHub Pages: https://jjayyyyyyy.github.io
 """
 
 __version__ = "0.3"
