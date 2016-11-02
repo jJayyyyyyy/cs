@@ -4,9 +4,9 @@ from urllib import request
 import re
 
 url_sh = 'http://www.weather.com.cn/weather/101020100.shtml'
-re_seven_days = re.compile(r'\<h1\>([1-7].*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n\<span\>([0-9]*).*\>([0-9].*)\</i\>\n')
+re_seven_days = re.compile(r'<h1>([1-7].*)</h1>\n.*\n.*\n.*class="wea">(.*)</p>\n.*\n<span>([0-9]*).*>([0-9].*)</i>\n')
 
-# re_tonight = re.compile(r'\<h1\>(1.*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n.*\>([0-9].*)\</i\>\n')
+# re_tonight = re.compile(r'<h1>([1|2].*)</h1>\n.*\n.*\n.*class="wea">(.*)</p>\n.*\n.*<i>([0-9].*)</i>\n')
 
 def get_weekly_weather(url=url_sh):
 	req = request.Request(url)
