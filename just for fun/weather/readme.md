@@ -4,15 +4,15 @@
 
 2.	BeautifulSoup is used as the html parser for `get_weather_with_bs4.py`. So the module bs4 need to be installed when running this script:
 
-```python
-$ python3 get_weather_with_bs4.py
-```
+	```bash
+	$ python3 get_weather_with_bs4.py
+	```
 
 3.	There is another way to get the weather using builtin module `re`. Just run the following command:
 
-```python
-$ python3 get_weather_with_re.py
-```
+	```bash
+	$ python3 get_weather_with_re.py
+	```
 
 Note that if it's too late in the night, today's weather(or more exactly, tonight's weather) will not be displayed in the `get_weather_with_re.py`, unless you uncomment the commented code.
 
