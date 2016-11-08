@@ -8,7 +8,7 @@
 from urllib import request
 import re
 
-re_seven_days = re.compile(r'\<h1\>([1-7].*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n\<span\>([0-9]*).*\>([0-9].*)\</i\>\n')
+re_seven_days = re.compile(r'\<h1\>([1-9].*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n\<span\>([0-9]*).*\>([0-9].*)\</i\>\n')
 
 def get_weekly_weather():
 	url = 'http://www.weather.com.cn/weather/101020100.shtml'
@@ -63,7 +63,7 @@ get_weather(get_weekly_weather())
 # req = request.Request(url)
 # weekly_weather = request.urlopen(req).read().decode('utf-8')
 
-# seven_days = re.findall(r'\<h1\>([1-7].*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n\<span\>([0-9]*).*\>([0-9].*)\</i\>\n', weekly_weather)
+# seven_days = re.findall(r'\<h1\>([1-9].*)\</h1>\n.*\n.*\n.*\>(.*)\</p>\n.*\n\<span\>([0-9]*).*\>([0-9].*)\</i\>\n', weekly_weather)
 # # print(seven_days[0])
 # print()
 # for day in seven_days:
