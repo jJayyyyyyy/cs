@@ -6,8 +6,6 @@
 
 ##	参考链接
 
-*	[douban: 清理无用的【豆瓣活动提醒】](https://www.douban.com/note/595800779/)
-
 *	[GitHub Pages: 清理无用的【豆瓣活动提醒】](https://jjayyyyyyy.github.io/2016/12/08/clean_up_douban_notification.html)
 
 
