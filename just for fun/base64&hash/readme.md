@@ -1,1 +1,9 @@
 两个程序文件，三个栗子，简单说明如何使用`base64`和`hashlib`
+
+参考：
+
+*	[base64](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431954588961d6b6f51000ca4279a3415ce14ed9d709000#0)
+
+*	[hashlib](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014319556588648dd1fb0047a34d0c945ee33e8f4c90cc000)
+
+
