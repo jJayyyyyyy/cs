@@ -1,8 +1,14 @@
+[原题](https://www.patest.cn/contests/pat-b-practise/1011)大意:
+
+给定[-2<sup>31</sup>, 2<sup>31</sup>]内的A B C，判断A+B>C是否成立。
+
+
+
 ##	考察点
 
 *	审题
 
-	`[-2^31, +2^31]`，其中的`+2^31`超出int范围，因此变量应该用`long int`。
+	`[-2<sup>31</sup>, 2<sup>31</sup>]`，其中的`2<sup>31</sup>`超出int范围，因此变量应该用`long int`。
 
 	同时应当考虑到把测试输入限制在区间内，否则算`false`。
 
