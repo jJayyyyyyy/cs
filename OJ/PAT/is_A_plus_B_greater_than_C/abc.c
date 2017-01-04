@@ -18,21 +18,3 @@ int main(int argc, char * argv[]){
 
 	return 0;
 }
-
-
-	// for(i=0; i<n; i++){
-	// 	printf("Case #%d: false\n", i+1);
-	// }
-
-/*
-	printf("hello\n");
-	if(argc>1){
-		printf("%s\n", argv[1]);
-	}
-	int a, b;
-	a=2147483647;
-	b=-2147483648;
-	printf("%zd\n", sizeof(int));
-
-*/
-
