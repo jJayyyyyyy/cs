@@ -16,7 +16,7 @@
 
 ##	20170107更新Update
 
-*	因为未知原因api无法使用了，参考[这里](https://github.com/ianva/vim-youdao-translater/blob/master/plugin/ydt.vim)给出的url，新增re提取xml大法，详细文章更新在[这里]()。
+*	因为未知原因api无法使用了，参考[这里](https://github.com/ianva/vim-youdao-translater/blob/master/plugin/ydt.vim)给出的url，新增re提取xml大法，详细文章更新在[这里](https://jjayyyyyyy.github.io/2017/01/06/url_encoding.html)。
 
 	新增的`translate_web_xml.py`不需要keyfrom和key，使用方法不变。不过也可以根据喜好，把命令行参数作为待查词。
 
