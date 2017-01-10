@@ -70,7 +70,7 @@ Case #4: false
 	#include <stdio.h>
 
 	scanf("%ld%ld%ld", &a, &b, &c);
-	print("%ld %ld %ld", a, b, c)
+	printf("%ld %ld %ld", a, b, c);
 	```
 
 5.	`python2.7`
