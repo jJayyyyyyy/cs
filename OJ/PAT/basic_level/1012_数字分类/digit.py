@@ -1,54 +1,47 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# import sys
-# sys.stderr.write('a')
-# sys.stderr.write('b')
+from __future__ import print_function
 
-us_input = []
-us_input = raw_input().split()
-us_N = int(us_input[0])
-us_input_len = len(us_input)
+us_input_arr = raw_input().split()
+us_input_size = int(us_input_arr[0])
+us_input_arr = us_input_arr[1:]
 
-a1, a2, a3, a4, a5 = 0, 0, 0, 0, 0
-multi = 1
-cnt1, cnt2, cnt3, cnt4, cnt5 = 0, 0, 0, 0, 0
+a = [0]*6
+cnt = [1, 0, 0, 0, 0, 0]
+i = 0
 
-for i in range(1, us_input_len):
-	a = int(us_input[i])
-	if 0 == a%10:
-		a1 += a
-		cnt1 += 1
-	if 1 == a%5:
-		a2 += multi*a
-		multi = -multi
-		cnt2 += 1
-	if 2 == a%5:
-		a3 += 1
-		cnt3 += 1
-	if 3 == a%5:
-		a4 += a
-		cnt4 += 1
-	if 4 == a%5:
-		if a>a5:
-			a5 = a
-		cnt5 += 1
+while i<us_input_size:
+	a[0] = int(us_input_arr[i])
+	if 0 == a[0]%10:
+		a[1] += a[0]
+		cnt[1] += 1
+	if 1 == a[0]%5:
+		a[2] += cnt[0]*a[0]
+		cnt[0] = -cnt[0]
+		cnt[2] += 1
+	if 2 == a[0]%5:
+		a[3] += 1
+		cnt[3] += 1
+	if 3 == a[0]%5:
+		a[4] += a[0]
+		cnt[4] += 1
+	if 4 == a[0]%5:
+		if a[0]>a[5]:
+			a[5] = a[0]
+		cnt[5] += 1
+	i+=1
 
-if 0 == cnt1:
-	a1 = 'N'
-if 0 == cnt2:
-	a2 = 'N'
-if 0 == cnt3:
-	a3 = 'N'
-if 0 == cnt4:
-	a4 = 'N'
+if 0 == cnt[1]:
+	a[1] = 'N'
+if 0 == cnt[2]:
+	a[2] = 'N'
+if 0 == cnt[3]:
+	a[3] = 'N'
+if 0 == cnt[4]:
+	a[4] = 'N'
 else:
-	# print a4
-	a4 = round(a4*1.0/cnt4, 1)
-	# print a4
-	# a4 = '%.1f'%a4
-if 0 == cnt5:
-	a5 = 'N'
+	a[4] = round(a[4]*1.0/cnt[4], 1)
+if 0 == cnt[5]:
+	a[5] = 'N'
 
-print a1, a2, a3, a4, a5
-
-
+print(a[1], a[2], a[3], a[4], a[5])
