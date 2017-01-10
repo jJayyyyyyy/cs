@@ -165,6 +165,8 @@ N 11 2 N 9
 
 *	`python`
 
+	```python
 	from __future__ import print_function
+	```
 
-	使py2与py3的输出代码一致
+	使py2与py3的`print()`代码一致
