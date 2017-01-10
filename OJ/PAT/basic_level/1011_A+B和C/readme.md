@@ -55,9 +55,16 @@ Case #4: false
 
 	make abc
 
-	vs2012, F7编译, ^+F5运行
+	vs2012, `F7`编译, `^+F5`运行
 
-3.	`C`, 输入输出
+3.	确定int位数
+
+	```c
+	#include <stdlib.h>
+	printf("%ld", sizeof(int));
+	```
+
+4.	`C`, 输入输出
 
 	```c
 	#include <stdio.h>
@@ -66,18 +73,18 @@ Case #4: false
 	print("%ld %ld %ld", a, b, c)
 	```
 
-4.	`python2.7`
+5.	`python2.7`
 
-	考虑到考场环境，如无特殊说明，均以`python2.7`为例。
+	考虑到考场环境，如无特殊说明，以后均以`python2.7`为例。
 
-	输入。若一行内有多个输入，则用`split()`方法
+	`输入` 若一行内有多个输入，则用`split()`方法
 
 	```python
 	a, b, c = raw_input().split()
 	a, b, c = int(a), int(b), int(c)
 	```
 
-	输出。`print()`原型如下
+	`输出` `print()`原型如下
 
 	```python
 	from __future__ import print_function	
@@ -85,7 +92,7 @@ Case #4: false
 	print(*objects, sep=' ', end='\n', file=sys.stdout)
 	```
 
-5.	返回值
+6.	返回值
 
 	主函数返回值应为`0`
 
@@ -113,6 +120,11 @@ Case #4: false
 
 #	其他
 
-*	本页内包含的**.c**，**.py**为通过测试的代码。另外由于测试用的[牛客网]()和[pat官网]()服务器不一样，用时和内存标准也不同，因此`尽量选C`以防超时。
+*	本页内包含的**.c**，**.py**为通过测试的代码。另外由于测试用的[牛客网](https://www.nowcoder.com/pat)和[pat官网](https://www.patest.cn/contests/pat-b-practise)服务器不一样，用时和内存标准也不同，因此`尽量选C`以防超时。
 
 *	65536*65536/2=2147483648
+
+#	参考
+
+*	[python-docs](https://docs.python.org/2.7/library/functions.html#print)
+
