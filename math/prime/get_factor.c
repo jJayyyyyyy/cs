@@ -1,27 +1,36 @@
 #include <stdio.h>
 
-int get_factor(int num)
-{
-    int i = 2;
-    while(1 != num){
-        if(0 == num%i){
-            num = num/i;
-            printf("%d\t", i);
-        }else{
-            i++;
-        }
-    }
+int get_factor(int num){
+	int factor = 2;
+	while(1 != num){
+		if(0 == num%factor){
+			printf("%d\t", factor);
+			num = num/factor;
+		}else{
+			break;
+		}
+	}
 
-    return 1;
+	factor = 3;
+	while(1 != num){
+		if(0 == num%factor){
+			printf("%d\t", factor);
+			num = num/factor;
+		}else{
+			factor += 2;
+		}
+	}
+
+	return 0;
 }
 
 int main()
 {
-    int num;
-    printf("Please input a number: ");
-    scanf("%d", &num);
-    printf("Factors: ");
-    get_factor(num);
-    printf("\n");
-    return 1;
+	int num;
+	printf("Please input a number: ");
+	scanf("%d", &num);
+	get_factor(num);
+	printf("\n");
+
+	return 0;
 }
