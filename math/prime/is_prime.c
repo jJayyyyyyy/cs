@@ -22,5 +22,5 @@ int main(){
 	scanf("%d", &num);
 	(is_prime(num)==1)?printf("yes\n"):printf("no\n");
 
-return 1;
+	return 0;
 }
