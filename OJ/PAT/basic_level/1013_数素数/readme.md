@@ -174,6 +174,8 @@ PS：超时的原因 a).取余运算耗时；b).进行了大量取余运算。
 
 *	[算术基本定理](https://zh.wikipedia.org/wiki/%E7%AE%97%E6%9C%AF%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86)
 
+*	[分解质因数](https://github.com/jJayyyyyyy/cs/blob/master/math/prime/get_factor.c)
+
 *	[题目分析]---[第1节]---[基本优化]中两个前提条件的证明。
 
 	第一点很好证明。主要证第二点：【如果N没有[2, sqrt(N)]之间的素因子，那么N是素数】
