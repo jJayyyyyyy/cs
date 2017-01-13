@@ -118,9 +118,43 @@ yi san wu
 	printf("%s", num_pinyin[us_num[i]-'0']);
 	```
 
+#	部分测试用例:
+
+*	test1
+
+	```
+	测试用例
+	1234567890987654321123456789
+
+	输出
+	yi san wu
+	```
+
+*	test2
+
+	```
+	测试用例:
+	1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+	输出:
+	si wu ling
+	```
+
+*	test3
+
+	```
+	测试用例：
+	999999999999
+
+	输出：
+	yi ling ba
+	```
+
 #	参考
 
 *	[Yaicky提交的代码](https://www.nowcoder.com/profile/243727/codeBookDetail?submissionId=3313687)
+
+*	[The C Library Reference Guide](https://www-s.acm.illinois.edu/webmonkeys/book/c_guide/?)
 
 *	字符串数组的声明与初始化
 
