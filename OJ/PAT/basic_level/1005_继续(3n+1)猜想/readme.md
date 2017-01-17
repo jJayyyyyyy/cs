@@ -120,4 +120,4 @@
 		*findLF = '\0';
 	```
 
-*	<C Primer Plus>
+*	[C Primer Plus](http://faculty.euc.ac.cy/scharalambous/csc131/books/C%20book%201.pdf)
