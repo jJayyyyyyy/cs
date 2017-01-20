@@ -118,6 +118,50 @@ yi san wu
 	printf("%s", num_pinyin[us_num[i]-'0']);
 	```
 
+5.	更新1---增加cpp的实现
+
+	*	时间效率略逊于C，但是属于同一数量级，应该说是几乎相同。
+
+	*	用`string类`代替`char数组`，以保存字符串。会根据需要自动分配内存空间，不需要手动申请最大空间。自带多种操作方法，如`.size()`等。注意`string类`不是以`'\0'`结尾，用长度`.size()`判断结尾。
+
+	*	`stringstream`代替`sprintf()`，将数字转变成字符串
+
+		```cpp
+		#include <sstream>
+
+		string num2string(int num){
+			stringstream ss;
+			ss << num;
+
+			return ss.str();
+		}
+		```
+
+	*	附加两个将字符串变成数字的方法。第一个需要在编译的时候加上 `-std=c++11`
+		
+		```cpp
+		int num=0;
+		string us_str="123";
+
+		num = stoi(us_str);
+		```
+
+		第二个则仍是利用`sstream`库
+
+		```cpp
+		#include <sstream>
+
+		int string2num(string us_str){
+			int num=0;
+			stringstream ss;
+			ss << us_str;
+			// stringstream ss(us_str);
+
+			ss >> num;
+			return num;
+		}
+		```
+
 #	部分测试用例:
 
 *	test1
@@ -193,4 +237,12 @@ yi san wu
 	```
 
 	则`us_num`的内容就变成了"12345"。
+
+---更新cpp参考---
+
+*	[cplusplus.com, std::stoi](http://www.cplusplus.com/reference/string/stoi/)
+
+*	[Stack Overflow, num2string using sstream](http://stackoverflow.com/questions/11751486/qt-c-aggregate-stdstringstream-ss-has-incomplete-type-and-cannot-be-define)
+
+*	[cplusplus.com, Converting numbers to strings and strings to numbers](http://www.cplusplus.com/forum/articles/9645/)
 
