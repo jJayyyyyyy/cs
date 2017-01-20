@@ -83,6 +83,49 @@
 	#define FALSE	0
 	```
 
+4.	更新1---增加cpp的实现
+
+	*	根据C++ Primer 4th Edition 中文版
+
+		关键字【class】和【struct】定义【类】的唯一差别在于默认访问级别。默认情况下，struct的成员为【public】，而class的成员为【private】.
+
+	*	两种方式进行递减快排：利用兼容C的`<cstdlib>`之`qsort()`；利用`<algorithm>`之`sort()`。
+
+		*	qsort()
+
+			```c
+			#include <cstdlib>
+			//...
+
+			int cmp_dec_c_qsort(const void *p1, const void *p2){
+				const Number *a1 = (const Number *)p1;
+				const Number *a2 = (const Number *)p2;
+
+				return a1->value < a2->value;
+			}
+			//...
+
+			qsort(num, us_N, sizeof(Number), cmp_dec_c_qsort);
+			```
+
+		*	sort()
+
+			```cpp
+			#include <algorithm>
+			//...
+
+			int cmp_dec_cpp_sort(const Number &p1, const Number &p2){
+				return p1.value > p2.value;
+			}
+			//...
+
+			sort(num, num+us_N, cmp_dec_cpp_sort);
+			```
+	
+		*	注意到，两个cmp()不仅返回值相反，对输入参数的要求也不同。  
+			此外，两个sort()的接口也不一样。cpp的sort()似乎简洁一点。  
+			以上作为[1015_德才论](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1015_%E5%BE%B7%E6%89%8D%E8%AE%BA#题目分析)的补充。
+
 #	部分测试用例
 
 *	test1
@@ -121,3 +164,10 @@
 	```
 
 *	[C Primer Plus](http://faculty.euc.ac.cy/scharalambous/csc131/books/C%20book%201.pdf)
+
+---更新cpp参考---
+
+*	[Beginners guide to the std::sort() function](http://www.cplusplus.com/articles/NhA0RXSz/)
+
+*	[1015_德才论](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1015_%E5%BE%B7%E6%89%8D%E8%AE%BA)
+
