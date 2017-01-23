@@ -1,13 +1,15 @@
-#include <stdio.h>
+#include <iostream>
+#include <cstdio>
+using namespace std;
 
 int main(int argc, char * argv[]){
 	int us_N=0, us_input=0;
 	int a[5]={0}, cnt[5]={0};
 	int i=0,  multi=1;
 
-	scanf("%d", &us_N);
+	cin>>us_N;
 	while( i++<us_N ){
-		scanf("%d", &us_input);
+		cin>>us_input;
 		if( 0==us_input%10 ){
 			a[0] += us_input;
 			cnt[0]++;
@@ -32,31 +34,30 @@ int main(int argc, char * argv[]){
 		}
 	}
 
-	if(0 == cnt[0]){
-		printf("N ");
-	}else{
-		printf("%d ", a[0]);
-	}
-	if(0 == cnt[1]){
-		printf("N ");
-	}else{
-		printf("%d ", a[1]);
-	}
-	if(0 == cnt[2]){
-		printf("N ");
-	}else{
-		printf("%d ", a[2]);
-	}
-	if(0 == cnt[3]){
-		printf("N ");
-	}else{
+	if(0 == cnt[0])
+		cout<<"N ";
+	else
+		cout<<a[0]<<' ';
+
+	if(0 == cnt[1])
+		cout<<"N ";
+	else
+		cout<<a[1]<<' ';
+
+	if(0 == cnt[2])
+		cout<<"N ";
+	else
+		cout<<a[2]<<' ';
+
+	if(0 == cnt[3])
+		cout<<"N ";
+	else
 		printf("%.1f ", a[3]*1.0/cnt[3]);
-	}
-	if(0 == cnt[4]){
-		printf("N");
-	}else{
-		printf("%d", a[4]);
-	}
+
+	if(0 == cnt[4])
+		cout<<"N";
+	else
+		cout<<a[4];
 
 	return 0;
 }
