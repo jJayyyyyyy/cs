@@ -87,6 +87,25 @@
 
 	注意：因为我们使用的是`fgets()`，字符串的结尾可能是`'\n'``'\0'`，也可能是`'\0'`，需要设置对应的判断条件。
 
+5.	更新1---增加cpp的实现
+
+	*	思路是这样，将输入拆分成字串后，逐个压入stack栈，然后LIFO出栈直到栈为空。压入的操作是`.push()`。出栈时先读顶部元素`.top()`，然后`.pop()`弹出栈顶，以此循环直到栈为空`.empty()`。
+
+	*	`cin`和`scanf()`一样，如果作为退出循环的条件，本地测试时需要`^+d`作为输入流的`EOF`。但是OJ上会自动添加结束标志（猜测）。
+
+		我们也可先用`getline()`读取整行，再转化为`stringstream ss`对象，再次调用等效于split的`getline(ss, sub_str, ' ')`，从而取出sub_str。代码段如下
+
+		```cpp
+		string us_str, sub_str;
+		getline(cin, us_str);
+		stringstream ss(us_str);
+
+		while( !ss.eof() ){
+			getline(ss, sub_str, ' ');
+			str_stack.push(sub_str);
+		}
+		```
+
 #	部分测试用例:
 
 *	test1
@@ -119,4 +138,9 @@
 
 	`strrchr()`的原型在`string.h`中声明。该函数会返回字符串s中最后一次出现字符c的地址。若没找到则返回空指针。
 
+---更新cpp参考---
+
+*	[how to split a string in cpp](http://www.cplusplus.com/faq/sequences/strings/split/)
+
+	注意，使用`istringstream`和`streamstring`类型都要`#include <sstream>`
 

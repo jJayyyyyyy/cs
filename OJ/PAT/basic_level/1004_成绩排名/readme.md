@@ -54,9 +54,9 @@
 
 2.	更新1---增加cpp的实现
 
-	根据C++ Primer 4th Edition 中文版
+	根据C++ Primer 4th Edition 中文版:
 
-		[class]和[struct]关键字定义[类]的唯一差别在于，默认访问级别。默认情况下，struct的成员为[public]，而class的成员为[private].
+	关键字【class】和【struct】定义【类】的唯一差别在于默认访问级别。默认情况下，struct的成员为【public】，而class的成员为【private】.
 
 #	部分测试用例:
 

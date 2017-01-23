@@ -2,7 +2,7 @@
 #define MAX 101
 
 int main(int argc, char *argv[]){
-	const char *num_pinyin[] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi"};
+	const char *num_pinyin[] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
 	char us_num[MAX];
 	int sigma=0, i=0;
 	scanf("%s", us_num);

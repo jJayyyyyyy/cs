@@ -48,7 +48,7 @@ yi san wu
 	建立一个字符串数组`num_pinyin`，每个元素是0~9的拼音
 
 	```c
-	const char *num_pinyin[] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi"};
+	const char *num_pinyin[] = {"ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu"};
 	```
 
 3.	普通解法
@@ -231,7 +231,7 @@ yi san wu
 
 	```c
 	char us_num[10];
-	int sigma = 12345；
+	int sigma = 12345;
 	sprintf(us_num, "%d", sigma);
 	printf("%s", us_num);
 	```
