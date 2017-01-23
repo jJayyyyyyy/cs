@@ -205,6 +205,28 @@
 
 	<h6>PS：C++中的`sort()`和C中的`qsort()`有所区别，两者对`cmp()`的返回值的要求是相反的。</h6>
 
+*	更新1---增加cpp的实现
+
+	1.	抽象成类。这里为了方便读写，成员全部设为`public`，实际项目不要这样。
+
+	2.	使用vector容器，`push_back()`动态扩充。结合`begin()`与`end()`还有迭代器`iterator`进行遍历。
+
+	3.	快排函数`sort()`及比较函数`cmp()`参数变化。
+
+	做完以上改变后提交PAT，然而让人吃惊的是，竟然有两个测试点超时。换回和C一样的代码（除了输入输出）后仍然超时，百思不得其解。参考别人的代码时，发现他们特地引入了<cstdio>，用printf进行打印输出。
+
+	不查不知道，一查吓一跳。对于OJ的题目（非实际项目），`cin`、`cout`在没做优化时效率极低，严重影响用时。当然c++这么做是考虑到兼容性等原因，这其中的原理甚至可以专门写几篇文章了，考虑到篇幅这里直接给出方案，若要深入理解，则请看最后的参考链接。注意只用`cin` `cout`，不混用其他输入输出。
+
+	*	`优化输入输出` <b>(非常重要)</b>
+
+		1.	用`'\n'`替换`endl`
+		2.	禁用同步	`ios::sync_with_stdio(false);`
+		3.	解绑cin	`cin.tie(0);`
+
+	其余代码不变，经过优化a，在本题的测试点`3` `4` 至少提升了60ms的性能。再经过优化b和c，则效率在优化a的基础上至少再提升80ms。速度甚至超过未经优化的`scanf()`和`printf()`了。（注：本题限时`200ms`）
+
+	Really Amazing!
+
 #	部分测试用例
 
 *	test1
@@ -273,3 +295,12 @@ for i in range(us_Num):
 			->stu['s_moral']->存储输入的地址
 			->stu['s_talent']->存储输入的地址
 -->
+
+---更新cpp参考---
+
+*	[1005_继续(3n+1)猜想](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1005_%E7%BB%A7%E7%BB%AD(3n%2B1)%E7%8C%9C%E6%83%B3)
+
+*	[C++的輸出入cin/cout和scanf/printf誰比較快？](http://chino.taipei/note-2016-0311C-%E7%9A%84%E8%BC%B8%E5%87%BA%E5%85%A5cin-cout%E5%92%8Cscanf-printf%E8%AA%B0%E6%AF%94%E8%BC%83%E5%BF%AB%EF%BC%9F/)
+
+*	[cin与scanf cout与printf效率问题](http://blog.csdn.net/l2580258/article/details/51319387)
+
