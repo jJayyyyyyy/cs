@@ -105,6 +105,9 @@
 			}
 			//...
 
+			int us_N=0;
+			Number *num=(Number *)malloc( us_N*sizeof(Number) );
+			//...
 			qsort(num, us_N, sizeof(Number), cmp_dec_c_qsort);
 			```
 
@@ -114,17 +117,20 @@
 			#include <algorithm>
 			//...
 
-			int cmp_dec_cpp_sort(const Number &p1, const Number &p2){
+			int cmp_dec_cpp_sort(const Number p1, const Number p2){
 				return p1.value > p2.value;
 			}
 			//...
 
-			sort(num, num+us_N, cmp_dec_cpp_sort);
+			
+			Number *num = new Number[us_N];
+			//...
+			sort(num, &num[us_N], cmp_dec_cpp_sort);
 			```
 	
-		*	注意到，两个cmp()不仅返回值相反，对输入参数的要求也不同。  
-			此外，两个sort()的接口也不一样。cpp的sort()似乎简洁一点。  
-			以上作为[1015_德才论](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1015_%E5%BE%B7%E6%89%8D%E8%AE%BA#题目分析)的补充。
+		注意到两个cmp()不仅返回值要求相反，对输入参数的要求也不同。但总体是类似的，猜测c++调用了c的函数，或者按照同样思路重写了。
+		
+		以上作为[1015_德才论](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1015_%E5%BE%B7%E6%89%8D%E8%AE%BA#题目分析)的补充。
 
 #	部分测试用例
 

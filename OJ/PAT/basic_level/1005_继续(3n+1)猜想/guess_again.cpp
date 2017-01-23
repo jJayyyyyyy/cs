@@ -13,7 +13,7 @@ typedef struct{
 int init_num(Number *num, const int us_N);
 
 // int cmp_dec_c_qsort(const void *p1, const void *p2);
-int cmp_dec_cpp_sort(const Number &p1, const Number &p2);
+int cmp_dec_cpp_sort(const Number p1, const Number p2);
 
 int filter_keys(Number *num, const int us_N);
 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
 
 	init_num(num, us_N);
 	// qsort(num, us_N, sizeof(Number), cmp_dec_c_qsort);
-	sort(num, num+us_N, cmp_dec_cpp_sort);
+	sort(num, &num[us_N], cmp_dec_cpp_sort);
 	filter_keys(num, us_N);
 	print_key_value(num, us_N);
 
@@ -53,7 +53,7 @@ int init_num(Number *num, const int us_N){
 // 	return a1->value < a2->value;
 // }
 
-int cmp_dec_cpp_sort(const Number &p1, const Number &p2){
+int cmp_dec_cpp_sort(const Number p1, const Number p2){
 	return p1.value > p2.value;
 }
 
