@@ -25,7 +25,7 @@
 	Mike CS991301 100
 	Mary EE990830 95
 
-###	输出样例：
+###	输出样例
 
 	Mike CS991301
 	Joe Math990112
@@ -37,6 +37,8 @@
 	代码长度限制： 8000 B
 	判题程序： Standard
 	作者： CHEN, Yue
+
+<br/><br/>
 
 #	题目分析
 
@@ -58,7 +60,7 @@
 
 	关键字【class】和【struct】定义【类】的唯一差别在于默认访问级别。默认情况下，struct的成员为【public】，而class的成员为【private】.
 
-#	部分测试用例:
+#	部分测试用例
 
 *	test1
 

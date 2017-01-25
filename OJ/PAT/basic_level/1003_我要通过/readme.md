@@ -4,11 +4,9 @@
 
 得到“答案正确”的条件是：
 
-```
-1.	字符串中必须仅有P, A, T这三种字符，不可以包含其它字符；
-2.	任意形如 xPATx 的字符串都可以获得“答案正确”，其中 x 或者是空字符串，或者是仅由字母 A 组成的字符串；
-3.	如果 aPbTc 是正确的，那么 aPbATca 也是正确的，其中 a, b, c 均或者是空字符串，或者是仅由字母 A 组成的字符串。
-```
+	1.	字符串中必须仅有P, A, T这三种字符，不可以包含其它字符；
+	2.	任意形如 xPATx 的字符串都可以获得“答案正确”，其中 x 或者是空字符串，或者是仅由字母 A 组成的字符串；
+	3.	如果 aPbTc 是正确的，那么 aPbATca 也是正确的，其中 a, b, c 均或者是空字符串，或者是仅由字母 A 组成的字符串。
 
 现在就请你为PAT写一个自动裁判程序，判定哪些字符串是可以获得“答案正确”的。
 
@@ -22,40 +20,36 @@
 
 ###	输入样例
 
-```
-8
-PAT
-PAAT
-AAPATAA
-AAPAATAAAA
-xPATx
-PT
-Whatever
-APAAATAA
-```
+	8
+	PAT
+	PAAT
+	AAPATAA
+	AAPAATAAAA
+	xPATx
+	PT
+	Whatever
+	APAAATAA
 
 ###	输出样例
 
-```
-YES
-YES
-YES
-YES
-NO
-NO
-NO
-NO
-```
+	YES
+	YES
+	YES
+	YES
+	NO
+	NO
+	NO
+	NO
 
 ###	注意
 
-```
-时间限制： 400 ms
-内存限制： 65536 kB
-代码长度限制： 8000 B
-判题程序： Standard
-作者： CHEN, Yue
-```
+	时间限制： 400 ms
+	内存限制： 65536 kB
+	代码长度限制： 8000 B
+	判题程序： Standard
+	作者： CHEN, Yue
+
+<br/><br/>
 
 #	题目分析
 

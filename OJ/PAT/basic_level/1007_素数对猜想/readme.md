@@ -28,6 +28,8 @@
 	判题程序： Standard
 	作者： CHEN, Yue
 
+<br/><br/>
+
 #	题目分析
 
 1.	孪生素数对
@@ -40,7 +42,7 @@
 
 	请参考[1013_数素数： 题目分析](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1013_%E6%95%B0%E7%B4%A0%E6%95%B0#题目分析)
 
-#	部分测试用例:
+#	部分测试用例
 
 *	test1
 
