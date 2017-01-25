@@ -17,7 +17,6 @@ StackType *Init_Stack()
     stack->top = 0;
     printf("\nInput data (id  name  age). Quit when id=0. \n");
     while(1){
-        fflush(stdin);
         scanf("%s", data.id);
         if(data.id[0]=='0' && data.id[1]=='\0')
             break;
