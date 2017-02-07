@@ -199,7 +199,7 @@
 	}
 	```	
 
-	<h6>PS：C++中的`sort()`和C中的`qsort()`有所区别，两者对`cmp()`的返回值的要求是相反的。</h6>
+	<h6>PS：C++中的`sort()`和C中的`qsort()`有所区别，两者对`cmp()`的返回值的要求是相反的。更多内容可以参考<a href="https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1005_%E7%BB%A7%E7%BB%AD(3n%2B1)%E7%8C%9C%E6%83%B3">1005 继续(3n+1)猜想</a></h6>
 
 #	部分测试用例
 
@@ -236,6 +236,8 @@
 >结构和数组在定义时赋值叫做初始化，能用一个{}整体赋值，而定义以后再想要赋值则只能一次给一个成员赋值，不能用{}。
 
 *	python可以考虑用面向对象的方法，比用list+dict方便，效率和内存待考证。
+
+*	[1005 继续(3n+1)猜想](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1005_%E7%BB%A7%E7%BB%AD(3n%2B1)%E7%8C%9C%E6%83%B3)
 
 <!-- 
 	考虑速度，用dict？ 空间换时间

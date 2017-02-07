@@ -110,16 +110,22 @@
 			#include <algorithm>
 			//...
 
-			int cmp_dec_cpp_sort(const Number &p1, const Number &p2){
+			int cmp_dec_cpp_sort(const Number p1, const Number p2){
 				return p1.value > p2.value;
 			}
 			//...
 
 			sort(num, num+us_N, cmp_dec_cpp_sort);
+			//sort(num.begin*(), num.end(), cmp);
+			//sort(&num[0], &num[us_N], cmp);
 			```
 	
-		*	注意到，两个cmp()不仅返回值相反，对输入参数的要求也不同。  
-			此外，两个sort()的接口也不一样。cpp的sort()似乎简洁一点。  
+			注意
+			1.	两个cmp()要求返回值相反。
+			2.	C++的cmp()要求传递变量的值，而C的cmp()传入的是指针(地址)。
+			3.	sort()和qsort()的接口不同。  
+			第2点，有的地方会写成引用形参【&】的形式，但由于cmp()的不改变实参的值，所以和只传值效果相同。
+  
 			以上作为[1015_德才论](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1015_%E5%BE%B7%E6%89%8D%E8%AE%BA#题目分析)的补充。
 
 #	部分测试用例
