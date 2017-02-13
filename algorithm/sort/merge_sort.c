@@ -15,7 +15,7 @@ void merge_array(int a[], int left, int mid, int right, int temp[]){
     while(i <= mid){
         temp[k++] = a[i++];
     }
-    while(j <= mid){
+    while(j <= right){
         temp[k++] = a[j++];
     }
 
