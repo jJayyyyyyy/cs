@@ -3,26 +3,26 @@
 #define MAX 100004
 using namespace std;
 
-int num[MAX]={0}, ans[MAX]={0}, sorted[MAX]={0};
+int originList[MAX]={0}, ans[MAX]={0}, sorted[MAX]={0};
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, i, cnt=0, isFirst=1, leftMax=0;
+	int n, i, cnt=0, isFirst=1, maxOfLeft=0;
 	cin>>n;
 
 	for(i=0; i<n; i++){
-		cin>>num[i];
-		sorted[i] = num[i];
+		cin>>originList[i];
+		sorted[i] = originList[i];
 	}
 
 	sort(sorted, sorted+n);
-	leftMax = 0;
+	maxOfLeft = 0;
 	for( i=0; i<n; i++ ){
-		if( num[i]==sorted[i] && num[i]>leftMax ){
-			ans[cnt++] = num[i];
+		if( originList[i]==sorted[i] && originList[i]>maxOfLeft ){
+			ans[cnt++] = originList[i];
 		}
-		leftMax = max(leftMax, num[i]);
+		maxOfLeft = max(maxOfLeft, originList[i]);
 	}
 
 	cout<<cnt<<'\n';
