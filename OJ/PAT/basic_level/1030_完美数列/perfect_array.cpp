@@ -1,28 +1,26 @@
 #include <iostream>
 #include <algorithm>
-#define	MAXSIZE	100008
+#define MAXSIZE 100004
 using namespace std;
 
-int cmp(long long a, long long b){
-	return a<b;
-}
+long long num[MAXSIZE]={0};
 
 int main(){
-	int i=0, j=0, ans;
-	long long n=0, p=0, mp, num[MAXSIZE]={0};
+	int n, i, maxCnt=1, iMin, iMax;;
+	long long p, mp;
 	cin>>n>>p;
 
-	for( i=0; i<n; i++ )
-		cin>>num[i];
-	sort(&num[0], &num[n], cmp);
-
-	ans = 1;
 	for( i=0; i<n; i++ ){
-		mp = num[i]*p;
-		j = upper_bound(&num[i+1], &num[n], mp) - &num[0];
-		ans = max(ans, j-i);
+		cin>>num[i];
 	}
-	cout<<ans<<'\n';
+	sort(num, num+n);
 
+	for( iMin=0; iMin<n; iMin++ ){
+		mp = num[iMin] * p;
+		iMax = upper_bound(num+iMin+1, num+n, mp) - num;
+		maxCnt = max( maxCnt, iMax - iMin );
+	}
+
+	cout<<maxCnt<<'\n';
 	return 0;
 }
