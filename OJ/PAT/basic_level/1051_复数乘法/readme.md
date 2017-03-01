@@ -32,6 +32,8 @@
 
 #	题目分析
 
+基于python
+
 1.	构造复数对象
 
 	直角坐标系
@@ -116,6 +118,39 @@
 
 	如果真的要进行四舍五入，可以+50再取整，参考[1026\_程序运行时间](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1026_%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4)
 
+基于c++
+
+1.  库
+
+    根据题意，需要引入`<complex>`和`<cmath>`
+
+2.  复数对象
+
+    构造对象
+    
+    ```cpp
+    double r1=2.3, p1=3.5;
+    double real1 = r1 * cos(p1);
+    double imag1 = r1 * sin(p1);
+    complex<double> a(real1, imag1);
+    ```
+
+    获取实部和虚部
+
+    ```cpp
+    double real = a.real();
+    double imag = a.imag();
+    ```
+
+3.  去掉`-0.0`
+
+    ```cpp
+    if( fabs(imag)<0.01 )
+        imag = 0;
+    if( fabs(real)<0.01 )
+        real = 0;
+    ```
+
 #	部分测试用例
 
 1.	test1
@@ -137,7 +172,7 @@
 3.	test3
 
 		输入
-		0.001 0 1 0
+		0.001 -0.001 1 0
 
 		输出
 		0.00+0.00i
@@ -149,6 +184,8 @@
 *	[Python Docs: round](https://docs.python.org/3/library/functions.html#round)
 
 *	[Android\_chunhui: PAT\_1051](http://blog.csdn.net/android_chunhui/article/details/53509348)
+
+*   [cplusplus](http://www.cplusplus.com/reference/complex/complex/)
 
 <!-- [](http://stackoverflow.com/questions/24497316/set-a-read-only-attribute-in-python) -->
 
