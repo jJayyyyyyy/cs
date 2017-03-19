@@ -94,5 +94,6 @@ For each test case, simply print the dominant color in a line.
 
     [PAT_A_1054](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/advanced_level/1054_The_Dorminat_Color)  
     [PAT_A_1071](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/advanced_level/1071_Speech_Patterns)
+    [PAT_A_1022](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/advanced_level/1022_Digital_Library)
 
 *	// TODO 更多同类题目互联
