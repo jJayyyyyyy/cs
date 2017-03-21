@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdio>
 #include <map>
 #include <cctype>
 #include <string>
@@ -14,7 +13,7 @@ int main(){
 	string s;
 
 	while(1){
-		ch = getchar();
+		cin.get(ch);
 		if( ch!='\n' ){
 			if( isalnum(ch) ){
 				s += tolower(ch);
