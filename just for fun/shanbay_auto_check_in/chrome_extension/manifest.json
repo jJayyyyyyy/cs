@@ -1,0 +1,31 @@
+{
+	"manifest_version": 2,
+
+	"name": "Shanbay Auto Check-in",
+	"description": "An extension to automatically finish everyday tasks of shanbay.",
+	"version": "0.1",
+
+	"icons":{
+		"16": "icon.png"
+	},
+
+	"content_scripts":[{
+		"matches": ["https://www.shanbay.com/"],
+		"js":["checkin.js"]
+	}],
+
+	// "browser_action": {
+	// 	"default_icon": "off.png"
+	// },
+
+	// "background": {
+	// 	"scripts": ["background.js"],
+	// 	"persistent":false
+	// },
+
+	"permissions":[
+		// "https://www.shanbay.com/",
+		// "tabs",
+		"alarms"
+	]
+}
