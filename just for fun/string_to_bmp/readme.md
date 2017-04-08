@@ -14,17 +14,17 @@ Make an Image out of a string
     
     into this BMP image:
     
-    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo1.bmp)
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/assets/expanded_demo1.bmp)
 
-*   `strImage.py` is an updated version, which converts the file named `argv[1]` to a BMP. For example, if we choose the `ym_face` in this folder as `src`, 
+*   `strImage.py` is an updated version, which converts the file named `argv[1]` to a BMP. For example, if we choose the `ym_face` file in the `assets` folder, 
 
     ```bash
-    $ python3 strImage.py ym_face
+    $ python3 strImage.py assets/ym_face
     ```
     
     then we'll get the image below:
 
-    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo2.bmp)
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/assets/expanded_demo2.bmp)
 
 *   Note that Chinese words is generally more colorful than pure alphanums.
 
