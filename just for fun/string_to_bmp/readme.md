@@ -10,7 +10,7 @@
     
     into this BMP image.
     
-    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/test.bmp)
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_test.bmp)
 
 *   To be updated...
 
