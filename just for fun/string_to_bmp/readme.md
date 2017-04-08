@@ -1,16 +1,30 @@
+### **Make an Image out of a string of string**
+
 ##  Intro
 
 *   Inspired by [KaitoHH: AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp).
 
-*   This is a simplified version of [AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp) based on Python3.4, which encode the following string
+*   `strImage_init_demo.py` is a simplified version of [AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp) based on Python3.4, which takes no command_line argument and simply encode the following string
 
     ```
     hello world.    
     ```
     
-    into this BMP image.
+    into this BMP image:
     
-    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_test.bmp)
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo1.bmp)
+
+*   `strImage.py` is an updated version, which converts the file named `argv[1]` to a BMP. For example, if we choose the `ym_face` in this folder as `src`, 
+
+    ```bash
+    $ python3 strImage.py ym_face
+    ```
+    
+    then we'll get the image below:
+
+    ![bmp]((https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo2.bmp))
+
+*   Note that Chinese words is generally more colorful than pure alphanums.
 
 *   To be updated...
 
