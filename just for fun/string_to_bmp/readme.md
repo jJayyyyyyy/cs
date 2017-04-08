@@ -1,4 +1,6 @@
-### **Make an Image out of a string of string**
+Make an Image out of a string
+
+![badge](https://img.shields.io/badge/Python-3.4%2B-brightgreen.svg)
 
 ##  Intro
 
@@ -28,7 +30,9 @@
 
 *   To be updated...
 
-##  ref
+##  Ref
+
+*   [KaitoHH: AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp)
 
 *   [Wikipedia: BMP](https://en.wikipedia.org/wiki/BMP_file_format)
 
