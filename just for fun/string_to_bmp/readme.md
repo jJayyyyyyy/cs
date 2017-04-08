@@ -22,7 +22,7 @@
     
     then we'll get the image below:
 
-    ![bmp]((https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo2.bmp))
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/expanded_demo2.bmp)
 
 *   Note that Chinese words is generally more colorful than pure alphanums.
 
