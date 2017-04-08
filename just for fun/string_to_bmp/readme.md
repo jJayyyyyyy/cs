@@ -1,3 +1,5 @@
+##  Intro
+
 *   Inspired by [KaitoHH: AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp).
 
 *   This is a simplified version of [AnyCodeToBmp](https://github.com/KaitoHH/AnyCodeToBmp) based on Python3.4, which encode the following string
@@ -6,13 +8,17 @@
     hello world.    
     ```
     
-    into [this BMP image](./test.bmp).
+    into this BMP image.
+    
+    ![bmp](https://github.com/jJayyyyyyy/cs/raw/master/just%20for%20fun/string_to_bmp/test.bmp)
 
 *   To be updated...
 
-## ref
+##  ref
 
 *   [Wikipedia: BMP](https://en.wikipedia.org/wiki/BMP_file_format)
+
+*   [ASCII](http://www.96yx.com/tool/ASC2.htm)
 
 *   bytes
 
