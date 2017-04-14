@@ -1,98 +1,85 @@
 #include <iostream>
-#include <sstream>
 #include <queue>
-#include <string>
 #include <algorithm>
 #define MAX 128
+#define NONE -1
 using namespace std;
+typedef int Addr;
 
 int isFirst=1, ix=0;
-int num_list[MAX];
+int incValueNodeList[MAX] = {0};
 
-class Node{
+class NODE{
 public:
-	int left;
-	int right;
-	int parent;
+	Addr left;
+	Addr right;
 	int value;
-	int reset(){
-		left = -1;
-		right = -1;
-		parent = -1;
+	NODE(){
+		left = NONE;
+		right = NONE;
 		value = 0;
-		return 0;
 	}
-} node[MAX];
+};
+NODE node[MAX];
 
-int output(int id){
-	if(isFirst){
-		cout<<id;
+int output(int value){
+	if( isFirst ){
+		cout<<value;
 		isFirst = 0;
 	}else{
-		cout<<' '<<id;
+		cout<<' '<<value;
 	}
 	return 0;
 }
 
-int levelTraverse(int root){
-	queue<int> q;
+int levelTraverse(Addr root){
+	queue<Addr> q;
 	q.push(root);
 
 	while( q.size() ){
-		int parent = q.front();
+		Addr parent = q.front();
 		output(node[parent].value);
 		q.pop();
-		if( -1!=node[parent].left )
+		if( NONE != node[parent].left )
 			q.push( node[parent].left );
-		if( -1!=node[parent].right )
+		if( NONE != node[parent].right )
 			q.push( node[parent].right );
 	}
 
 	return 0;
 }
 
-int inorderSetValue(int root){
-	if(root==-1)
+int inOrderSetTree(Addr root){
+	if( root == NONE ){
 		return 0;
-	inorderSetValue(node[root].left);
-	node[root].value = num_list[ix++];
-	inorderSetValue(node[root].right);
+	}
 
+	inOrderSetTree( node[root].left );				//Addr
+	node[root].value = incValueNodeList[ix++];		//Value
+	inOrderSetTree( node[root].right );				//Addr
 	return 0;
 }
 
 int main(){
-	int i=0, n, root;
+	int i, n;
+	Addr root=0, left, right;
 
 	cin>>n;
 	for( i=0; i<n; i++ ){
-		node[i].reset();
-	}
-
-	int left, right;
-	for( i=0; i<n; i++ ){
 		cin>>left>>right;
-		if( -1!=left ){
-			node[i].left = left;
-			node[left].parent = i;
-		}
-		if( -1!=right ){
-			node[i].right = right;
-			node[right].parent = i;
-		}
+		node[i].left = left;
+		node[i].right = right;
 	}
 
 	for( i=0; i<n; i++ ){
-		cin>>num_list[i];
-		if( node[i].parent==-1 ){
-			root = i;
-		}
+		cin>>incValueNodeList[i];
 	}
 
-	sort(num_list, num_list+n);
-
-	inorderSetValue(root);
-	isFirst = 1;
+	// inOrder Traverse of a BST is an increasing order
+	// so fill in the tree with an increasing array in inOrder
+	// then a BST is formed
+	sort(incValueNodeList, incValueNodeList + n);
+	inOrderSetTree(root);
 	levelTraverse(root);
 
 	return 0;
