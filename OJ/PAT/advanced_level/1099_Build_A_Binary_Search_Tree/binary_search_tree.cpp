@@ -55,7 +55,7 @@ int inOrderSetTree(Addr root){
 	}
 
 	inOrderSetTree( node[root].left );				//Addr
-	node[root].value = incValueNodeList[ix++];		//Value
+	node[root].value = incValueNodeList[ix++];			//setValue
 	inOrderSetTree( node[root].right );				//Addr
 	return 0;
 }
