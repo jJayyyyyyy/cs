@@ -83,7 +83,7 @@ async function makeListening(){
 		fdListen.append("num_hints", "0");
 		fdListen.append("num_score", numScore);
 		var ansListen = new XMLHttpRequest();
-		ansListen.open("PUT", "https://www.sh	anbay.com/api/v1/listen/usersentence/" + articleID + '/' + sentenceID);
+		ansListen.open("PUT", "https://www.shanbay.com/api/v1/listen/usersentence/" + articleID + '/' + sentenceID);
 		ansListen.send(fdListen);
 		await sleep(30000);
 	}
