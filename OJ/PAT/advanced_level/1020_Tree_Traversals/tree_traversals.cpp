@@ -3,32 +3,32 @@
 #define MAX 32
 using namespace std;
 
-int postOrder[MAX], inOrder[MAX];
+int postList[MAX]={0};
+int inList[MAX]={0};
 int isFirst = 1;
 
-class Node{
-public:
-	Node *lchild;
-	Node *rchild;
-	int value;
-	Node(int _value){
-		value = _value;
-		lchild = NULL;
-		rchild = NULL;
+struct Node{
+	Node *lchild, *rchild;
+	int val, height;
+	Node(int _val){
+		val = _val;
+		height = 1;
+		lchild = rchild = NULL;
 	}
 };
 
-Node *insert(int postLeft, int postRight, int inLeft, int inRight){
+int insertTree(Node * &parent, int postLeft, int postRight, int inLeft, int inRight){
 	if( postLeft > postRight ){
-		return NULL;
+		return 0;
 	}
+
 	int parentIndex = postRight;
-	int parentValue = postOrder[parentIndex];
-	Node *parent = new Node(parentValue);
+	int parentValue = postList[parentIndex];
+	parent = new Node(parentValue);
 
 	int mid;
 	for( mid=inLeft; mid<=inRight; mid++ ){
-		if( inOrder[mid]==parentValue ){
+		if( inList[mid] == parentValue ){
 			break;
 		}
 	}
@@ -38,52 +38,52 @@ Node *insert(int postLeft, int postRight, int inLeft, int inRight){
 	int postLeftTreeEnd = postLeft + cntLeftTree - 1;
 	int postRightTreeStart = postLeft + cntLeftTree;
 	int postRightTreeEnd = postRight - 1;
-	
+
 	int inLeftTreeStart = inLeft;
 	int inLeftTreeEnd = mid - 1;
 	int inRightTreeStart = mid + 1;
 	int inRightTreeEnd = inRight;
 
-	parent->lchild = insert(postLeftTreeStart, postLeftTreeEnd, inLeftTreeStart, inLeftTreeEnd);
-	parent->rchild = insert(postRightTreeStart, postRightTreeEnd, inRightTreeStart, inRightTreeEnd);
-	return parent;
-}
-
-int output(int value){
-	if(isFirst){
-		cout<<value;
-		isFirst = 0;
-	}else{
-		cout<<' '<<value;
-	}
-
+	insertTree(parent->lchild, postLeftTreeStart, postLeftTreeEnd, inLeftTreeStart, inLeftTreeEnd);
+	insertTree(parent->rchild, postRightTreeStart, postRightTreeEnd, inRightTreeStart, inRightTreeEnd);
 	return 0;
 }
 
-int levelTraverse(Node *root){
-	queue<Node*> q;
-	q.push( root );
+int output(int val){
+	if( isFirst ){
+		isFirst = 0;
+		cout<<val;
+	}else{
+		cout<<' '<<val;
+	}
+	return 0;
+}
+
+int levelTraverse(Node * root){
+	queue<Node *> q;
+	q.push(root);
+
 	while( q.size() ){
-		Node *parent = q.front();
+		Node * parent = q.front();
+		output(parent->val);
 		q.pop();
-		output(parent->value);
 		if( NULL != parent->lchild ){
-			q.push( parent->lchild );
+			q.push(parent->lchild);
 		}
 		if( NULL != parent->rchild ){
-			q.push( parent->rchild );
+			q.push(parent->rchild);
 		}
 	}
 	return 0;
 }
 
-int freeTree(Node *root){
-	if( NULL == root ){
+int freeTree(Node *parent){
+	if( NULL == parent ){
 		return 0;
 	}
-	freeTree(root->lchild);
-	freeTree(root->rchild);
-	delete root;
+	freeTree(parent->lchild);
+	freeTree(parent->rchild);
+	delete parent;
 	return 0;
 }
 
@@ -92,12 +92,13 @@ int main(){
 	cin>>n;
 
 	for( i=0; i<n; i++ ){
-		cin>>postOrder[i];
+		cin>>postList[i];
 	}
 	for( i=0; i<n; i++ ){
-		cin>>inOrder[i];
+		cin>>inList[i];
 	}
-	Node *root = insert( 0, n-1, 0, n-1 );
+	Node *root = NULL;
+	insertTree(root, 0, n-1, 0, n-1);
 	levelTraverse(root);
 	freeTree(root);
 
