@@ -43,3 +43,4 @@
     *   `pymysql.connect(user='root', database='mydb')`  #连接到数据库
     *   建立cursor
     *   同sqlite，注意占位符是`%s`
+    *   `$ mysql-ctl stop`      #终止mysql
