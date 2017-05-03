@@ -8,7 +8,7 @@ if os.path.isfile(db_file):
 
 conn = sqlite3.connect(db_file)
 cursor = conn.cursor()
-cursor.execute( 'create table user (id varchar(20) primary key, name varchar(20), score int)' )
+cursor.execute( "create table user (id varchar(20) primary key, name varchar(20), score int)" )
 cursor.execute( "insert into user values ('A-001', 'Adam', 95)" )
 cursor.execute( "insert into user values ('A-002', 'Bart', 62)" )
 cursor.execute( "insert into user values ('A-003', 'Lisa', 78)" )
@@ -28,14 +28,12 @@ def get_score_in(low, high):
 		print(e)
 	finally:
 		cursor.close()
-		conn.commit()
 		conn.close()
-	name_list = []
-	for name_tuple in name_tuple_list:
-		# print(name_tuple[0])
-		name_list.append(name_tuple[0])
-	return name_list
-
+		name_list = []
+		for name_tuple in name_tuple_list:
+			# print(name_tuple[0])
+			name_list.append(name_tuple[0])
+		return name_list
 
 assert get_score_in(80, 95) == ['Adam'], get_score_in(80, 95)
 assert get_score_in(60, 80) == ['Bart', 'Lisa'], get_score_in(60, 80)
