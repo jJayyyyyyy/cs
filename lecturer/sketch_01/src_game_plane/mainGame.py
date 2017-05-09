@@ -4,7 +4,7 @@ Created on Wed Sep 11 11:05:00 2013
 
 @author: Leo
 
-Augumented by FrozenMap on Mon May 8 19:45:00 2017
+Augumented by FrozenMap on Tue May 9 15:24:00 2017
 '''
 
 import pygame
@@ -105,10 +105,11 @@ while running:
 	if not player.is_hit:
 		# 15改成1 则是每一帧都发射子弹, 相当于开启作弊模式
 		if shoot_frequency % 15 == 0:
+		# if shoot_frequency % 1 == 0: 
 			bullet_sound.play()
 			# 累计15帧的时间, 进行一次子弹发射, 即1/4秒发射一次
-			# player.shoot(bullet_img)
-			player.awesome_shoot(bullet_img)
+			player.shoot(bullet_img)
+			# player.awesome_shoot(bullet_img)
 		# 每一帧 shoot_frequency += 1
 		shoot_frequency += 1
 		if shoot_frequency >= 15:

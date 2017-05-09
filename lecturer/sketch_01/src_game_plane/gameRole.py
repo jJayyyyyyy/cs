@@ -4,7 +4,7 @@ Created on Wed Sep 11 16:36:03 2013
 
 @author: Leo
 
-Augumented by FrozenMap on Tue May 9 15:24:00 2017
+Commented and augmented by FrozenMap on Tue May 9 15:24:00 2017
 """
 
 import pygame
@@ -28,6 +28,8 @@ class Bullet(pygame.sprite.Sprite):
 
 	def move(self):
 		self.rect.top -= self.speed
+		# self.rect.left -= 1
+
 
 # 玩家类
 class Player(pygame.sprite.Sprite):
