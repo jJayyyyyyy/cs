@@ -32,11 +32,10 @@ int main(){
 		cin>>cur;
 		cin>>inputList[cur].val>>inputList[cur].next;
 	}
-
-	cur = start;
+	
 	int iUniq = 0, iDup = 0, absVal;
 
-	for( i=0; i<n; i++ ){
+	for( cur=start; cur!=-1; ){
 		val = inputList[cur].val;
 		absVal = abs(val);
 		next = inputList[cur].next;
