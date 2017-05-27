@@ -91,6 +91,17 @@ int cmp(const int a[], const int b[], const int len){
 	return 1;
 }
 
+int freeBST(Node * parent){
+	if( NULL == parent ){
+		return 0;
+	}
+	
+	freeBST(parent->lchild);
+	freeBST(parent->rchild);
+	delete parent;
+	return 0;
+}
+
 int main(){
 	Node *root = NULL;
 	int val, n, i;
