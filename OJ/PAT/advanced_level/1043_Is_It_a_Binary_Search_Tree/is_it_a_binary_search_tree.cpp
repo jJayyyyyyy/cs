@@ -123,6 +123,8 @@ int main(){
 	}else{
 		cout<<"NO\n";
 	}
+	
+	freeBST(root);
 
 	return 0;
 }
