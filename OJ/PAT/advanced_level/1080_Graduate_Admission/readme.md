@@ -7,7 +7,7 @@
 
 存储结构如下
 
-```
+```cpp
 struct Student{
 	int id, rank, gradeE, gradeI, gradeFinal;
 	int preference[MAXPRERENCE];
@@ -30,5 +30,6 @@ struct School{
 		quota = rankLimit = 0;
 	}
 };
-
 ```
+
+*   tip: 虽然题目说总分是按照`(GE + GI) / 2`计算，但我们可以把每个同学的`/2`都去掉，这样不会影响最后的结果，还能简化计算，减少时间。
