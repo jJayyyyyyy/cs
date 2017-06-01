@@ -3,40 +3,44 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <iomanip>
 #define MAXRECORDS 10004
-#define MAXQUERIES 80004
 using namespace std;
 
+int getSeconds(const string &_time){
+	int h = stoi(_time.substr(0, 2));
+	int m = stoi(_time.substr(3, 2));
+	int s = stoi(_time.substr(6, 2));
+	return 3600*h + 60*m + s;
+}
+
+int getFormattedTime(int second){
+	int h = second / 3600;
+	second -= h*3600;
+	int m = second / 60;
+	second -= m*60;
+	int s = second;
+
+	cout<<setfill('0')<<setw(2)<<h<<':';
+	cout<<setfill('0')<<setw(2)<<m<<':';
+	cout<<setfill('0')<<setw(2)<<s<<'\n';
+	return 0;
+}
+
 struct Record{
-	string id, time; 
-	int onCampus;
-	Record(){
-		id = time = "";
-		onCampus = 0;
-	}
-	int set(string &_id, string &_time, string &_onCampus){
+	string id;
+	int time, status;
+	Record(string _id, string _time, string _status){
 		id = _id;
-		time = _time;
-		if( _onCampus == "in" ){
-			onCampus = 1;
-		}else{
-			onCampus = -1;
-		}
-		return 0;
-	}
-	int getTime(){
-		int h = stoi(time.substr(0, 2));
-		int m = stoi(time.substr(3, 2));
-		int s = stoi(time.substr(6, 2));
-		return 3600*h + 60*m + s;
+		time = getSeconds(_time);
+		status = (_status=="in") ? 1 : -1;
 	}
 };
 
-vector<Record> records(MAXRECORDS);
-vector<Record> validRecords;
-map<string, int> cntTime;
+vector<Record> allRecords, validRecords;
+vector<int> cntCurCars(MAXRECORDS);
+map<string, int> parkTime;
 map<string, int>::iterator it;
-int currentCars[MAXRECORDS] = {0};
 
 int cmp1(const Record &r1, const Record &r2){
 	if( r1.id != r2.id ){
@@ -50,15 +54,13 @@ int cmp2(const Record &r1, const Record &r2){
 	return r1.time < r2.time;
 }
 
-int getStandardTime(int second){
-	int h = second/3600;
-	second %= 3600;
-	int m = second/60;
-	int s = second % 60;
-
-	cout<<setfill('0')<<setw(2)<<h<<':';
-	cout<<setfill('0')<<setw(2)<<m<<':';
-	cout<<setfill('0')<<setw(2)<<s;
+int show(vector<Record> &records){
+	cout<<'\n';
+	vector<Record>::iterator it;
+	for( it=records.begin(); it!=records.end(); it++ ){
+		cout<< it->id <<' '<< it->time <<' '<< it->status <<'\n';
+	}
+	cout<<'\n';
 	return 0;
 }
 
@@ -68,82 +70,59 @@ int main(){
 	
 	int n, k, i;
 	int maxTime = 0;
-	string id, time, onCampus;
+	string id, time, status;
 
 	cin>>n>>k;
 
 	for( i=0; i<n; i++ ){
-		cin>>id>>time>>onCampus;
-		records[i].set(id, time, onCampus);
+		cin>>id>>time>>status;
+		Record rcd(id, time, status);
+		allRecords.push_back(rcd);
 	}
 
-	// cout<<'\n';
-	// for( i=0; i<n; i++ ){
-	// 	cout<<records[i].id<<' '<<records[i].time<<' '<<records[i].onCampus<<'\n';
-	// }
-	// cout<<'\n';
+	sort(allRecords.begin(), allRecords.end(), cmp1);
 
-	sort(records.begin(), records.begin()+n, cmp1);
-
-	for( i=0; i<n-1; ){
-		if( records[i].id == records[i+1].id && records[i].onCampus == 1 && records[i+1].onCampus == -1 ){
-			// is valid record
-			validRecords.push_back(records[i]);
-			validRecords.push_back(records[i+1]);
-
-			// update cntTime
-			if( cntTime.find(records[i].id) != cntTime.end() ){
-				cntTime[ records[i].id ] += records[i+1].getTime() - records[i].getTime();
-			}else{
-				cntTime[ records[i].id ] = records[i+1].getTime() - records[i].getTime();
+	for( i=0; i<n-1; i++){
+		if( allRecords[i].id == allRecords[i+1].id && allRecords[i].status == 1 && allRecords[i+1].status == -1 ){
+			validRecords.push_back(allRecords[i]);
+			validRecords.push_back(allRecords[i+1]);
+			
+			parkTime[allRecords[i].id] += ( allRecords[i+1].time - allRecords[i].time );
+			if( maxTime < parkTime[ allRecords[i].id ] ){
+				maxTime = parkTime[ allRecords[i].id ];
 			}
-
-			// update maxTime
-			if( maxTime < cntTime[ records[i].id ] ){
-				maxTime = cntTime[ records[i].id ];
-			}
-
-			i+=2;
-		}else{
-			// is invalid record
-			++i;
 		}
 	}
 
 	sort(validRecords.begin(), validRecords.end(), cmp2);
 
-	currentCars[0] = 1;
+	cntCurCars[0] = validRecords[0].status;
 	for( i=1; i<validRecords.size(); i++ ){
 		// in means +1, out means -1
-		currentCars[i] = currentCars[i-1] + validRecords[i].onCampus;
+		cntCurCars[i] = cntCurCars[i-1] + validRecords[i].status;
 	}
 
-	// for( i=0; i<validRecords.size(); i++ ){
-	// 	cout<<validRecords[i].id<<' '<<validRecords[i].time<<' '<<validRecords[i].onCampus<<'\n';
-	// }
-
-	// cout<<maxTime<<'\n';
 	string query;
+	int queryTime, j, preRcd = 0;
 	for( i=0; i<k; i++ ){
 		cin>>query;
-		int j, prev;
-		for( j=prev; j<validRecords.size(); j++ ){
-			if( query < validRecords[j].time ){
-				cout<<currentCars[j-1]<<'\n';
+		queryTime = getSeconds(query);
+		for( j=preRcd; j<validRecords.size(); j++ ){
+			if( queryTime < validRecords[j].time ){
+				cout<<cntCurCars[j-1]<<'\n';
 				break;
-			}else if( j == validRecords.size()-1 ){
-				cout<<currentCars[j]<<'\n';
+			}else if( j == validRecords.size() - 1 ){
+				cout<<cntCurCars[j]<<'\n';
 			}
 		}
-		prev = j;
+		preRcd = j;
 	}
 
-	for( it=cntTime.begin(); it!=cntTime.end(); it++ ){
+	for( it=parkTime.begin(); it!=parkTime.end(); it++ ){
 		if( it->second == maxTime ){
-			cout<<it->first<<' ';
+			cout<< it->first <<' ';
 		}
 	}
-	getStandardTime(maxTime);
-	
+	getFormattedTime(maxTime);
 	return 0;
 }
