@@ -49,6 +49,7 @@ int adjustHeap(Heap &hp, int iParent, int len){
 // then you get an ascending array
 int heapSort(Heap &hp, int len){	
 	for( int i=len/2 - 1; i>=0; i-- ){
+		// heap-ize the array to make a max heap
 		adjustHeap(hp, i, len);
 	}
 
@@ -57,7 +58,7 @@ int heapSort(Heap &hp, int len){
 		int tmp = hp.data[0];
 		hp.data[0] = hp.data[i];
 		hp.data[i] = tmp;
-		// reOrder the array from 0 to i
+		// re-order the array from 0 to i, to get an ascending array
 		adjustHeap(hp, 0, i);
 	}
 	return 0;
