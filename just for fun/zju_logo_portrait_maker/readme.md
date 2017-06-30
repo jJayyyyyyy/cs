@@ -7,11 +7,11 @@ $ pip3 install pillow
 ##	Usage
 
 ```bash
-$ python3 portrait_maker.py portrait.jpg
+$ python3 portrait_maker.py octocat.png
 ```
 
-where [portrait.jpg] is any type of image as an input, whose size is better to be larger than 600*600.
-	
+where [octocat.png] is any type of image as an input, whose size is better to be larger than 600*600.
+
 ## Workflow
 
 1.  make the input file `portrait.jpg` a square image by adding white space.
