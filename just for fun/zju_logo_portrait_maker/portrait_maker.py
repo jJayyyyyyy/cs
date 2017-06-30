@@ -75,7 +75,7 @@ def main():
 	region = (600, 600)
 	portrait.paste(mask, region, mask=alpha)
 	portrait.show()
-	portrait.save('portrait.png', 'png')
+	portrait.save('portrait_with_logo.png', 'png')
 
 if __name__ == '__main__':
 	main()
