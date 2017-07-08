@@ -2,57 +2,59 @@
 #include <cstdio>
 #include <algorithm>
 #define INF 100000000
-#define MAXV 504
+#define MAXCITY 504
 #define NOTFOUND -1
 using namespace std;
 
-int cntV, cntE, srcID, destID;
-int G[MAXV][MAXV];	// G[i][j] is edgeWeight between i and j
-
-int cntEWeight[MAXV];	// we want min/shortest of cntEWeight
-
-int VWeight[MAXV];	// every city has its own rescue team
-int cntVWeight[MAXV];	// total team gathered from the shortest path
-
-int cntShortestPath[MAXV];
-bool visitedV[MAXV] = {false};
+int cntCity, cntRoad, srcID, destID;
+int G[MAXCITY][MAXCITY];		// G[i][j] is edgeWeight between i and j
+int shortestPath[MAXCITY];		// we want min/shortest of shortestPath
+int ownTeam[MAXCITY];			// every city has its own rescue team
+int totalTeam[MAXCITY];			// total team gathered from the shortest path
+int cntShortestPath[MAXCITY];	// there could be several paths that have the shortest distance from src to dest
+bool marked[MAXCITY];
 
 int Dijkstra(){
-	fill(cntEWeight, cntEWeight+MAXV, INF);
-	fill(cntVWeight, cntVWeight+MAXV, 0);
-	fill(cntShortestPath, cntShortestPath+MAXV, 0);
-	fill(visitedV, visitedV+MAXV, false);
+	fill(shortestPath, shortestPath+MAXCITY, INF);
+	fill(totalTeam, totalTeam+MAXCITY, 0);
+	fill(cntShortestPath, cntShortestPath+MAXCITY, 0);
+	fill(marked, marked+MAXCITY, false);
 
-	cntEWeight[srcID] = 0;
-	cntVWeight[srcID] = VWeight[srcID];
-
+	
+	shortestPath[srcID] = 0;
 	cntShortestPath[srcID] = 1;
+	totalTeam[srcID] = ownTeam[srcID];
 
-	for( int i=0; i<cntV; i++ ){
-		int minWeight = INF;
-		int minID = NOTFOUND;
-		for( int j=0; j<cntV; j++ ){
-			if( visitedV[j]==false && cntEWeight[j]<minWeight ){
-				minWeight = cntEWeight[j];
-				minID = j;
+	for( int i=0; i<cntCity; i++ ){
+		int dist = INF;
+		int midCity = NOTFOUND;
+		// find the closest unmarked city, then its ID is midCity
+		for( int j=0; j<cntCity; j++ ){
+			if( marked[j]==false && shortestPath[j]<dist ){
+				dist = shortestPath[j];
+				midCity = j;
 			}
 		}
 
-		if( minID == NOTFOUND ){
+		if( midCity == NOTFOUND ){
 			return NOTFOUND;
 		}else{
-			visitedV[minID] = true;
-			for( int j=0; j<cntV; j++ ){
-				if( visitedV[j]==false && G[minID][j]!=INF ){
-					if( cntEWeight[minID] + G[minID][j] < cntEWeight[j] ){
-						cntEWeight[j] = cntEWeight[minID] + G[minID][j];
-						cntVWeight[j] = cntVWeight[minID] + VWeight[j];
-						cntShortestPath[j] = cntShortestPath[minID];
-					}else if( cntEWeight[minID] + G[minID][j] == cntEWeight[j] ){
-						if( cntVWeight[minID] + VWeight[j] > cntVWeight[j] ){
-							cntVWeight[j] = cntVWeight[minID] + VWeight[j];
+			marked[midCity] = true;
+			for( int j=0; j<cntCity; j++ ){
+				if( marked[j]==false && G[midCity][j]!=INF ){
+					// we find a shorter path 
+					if( shortestPath[midCity] + G[midCity][j] < shortestPath[j] ){
+						shortestPath[j] = shortestPath[midCity] + G[midCity][j];
+						totalTeam[j] = totalTeam[midCity] + ownTeam[j];
+						cntShortestPath[j] = cntShortestPath[midCity];
+					}
+					// this path is equally short
+					else if( shortestPath[midCity] + G[midCity][j] == shortestPath[j] ){
+						// we need the largest num of teams
+						if( totalTeam[midCity] + ownTeam[j] > totalTeam[j] ){
+							totalTeam[j] = totalTeam[midCity] + ownTeam[j];
 						}
-						cntShortestPath[j] += cntShortestPath[minID];
+						cntShortestPath[j] += cntShortestPath[midCity];
 					}
 				}
 			}
@@ -62,15 +64,15 @@ int Dijkstra(){
 }
 
 int main(){
-	cin>>cntV>>cntE>>srcID>>destID;
-	fill(G[0], G[0] + MAXV*MAXV, INF);
+	cin>>cntCity>>cntRoad>>srcID>>destID;
+	fill(G[0], G[0] + MAXCITY*MAXCITY, INF);	// G is a 2-D array. so fill() should be used in this form
 
-	for(int i=0; i<cntV; i++){
-		cin>>VWeight[i];
+	for(int i=0; i<cntCity; i++){
+		cin>>ownTeam[i];
 	}
 
 	int a, b;
-	for(int i=0; i<cntE; i++){
+	for(int i=0; i<cntRoad; i++){
 		cin>>a>>b;
 		cin>>G[a][b];
 		G[b][a] = G[a][b];
@@ -78,6 +80,6 @@ int main(){
 
 	Dijkstra();
 
-	cout<<cntShortestPath[destID]<<' '<<cntVWeight[destID]<<'\n';
+	cout<<cntShortestPath[destID]<<' '<<totalTeam[destID]<<'\n';
 	return 0;
 }
