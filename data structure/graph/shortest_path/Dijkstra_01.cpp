@@ -1,11 +1,12 @@
 #include <iostream>
+#include <algorithm>
 #define INF 1000000
-#define MAXVERTEX 10
+#define MAXV 10
 using namespace std;
 
 struct MatrixGraph{
-	int cntVertex = 7;
-	int edgeWeight[7][7] = {
+	int cntV = 7;
+	int edge[7][7] = {
 		{INF, 4, 3, INF, 7, INF, INF},
 		{4, INF, 6, 5, INF, INF, INF},
 		{3, 6, INF, 11, 8, INF, INF},
@@ -18,68 +19,67 @@ struct MatrixGraph{
 
 MatrixGraph G;
 
-int Dijkstra(MatrixGraph G){
-	int weight[MAXVERTEX];
-	int preVertex[MAXVERTEX];
-	bool visitedVertex[MAXVERTEX];
-	int i, j, k, srcID, destID, minWeight;
-	int minID;
-	
-	// cin>>srcID;	// from 0 to MAXVERTEX-1
-	srcID = 0;
+int pathFromSrc[MAXV];
+int preV[MAXV];
+bool marked[MAXV];
+int i, j, k, srcID, destID, minDist;
 
-	for( i=0; i<G.cntVertex; i++ ){
-		weight[i] = G.edgeWeight[srcID][i];
-		if( weight[i]<INF && weight[i]>0 ){
-			preVertex[i] = srcID;
-		}
-		visitedVertex[i] = false;
-	}
-	
-	visitedVertex[srcID] = true;
-	weight[srcID] = 0;
-	for( i=0; i<G.cntVertex; i++ ){
-		minWeight = INF;
-		minID = srcID;
-		for( j=0; j<G.cntVertex; j++ ){
-			if( visitedVertex[j]==false && weight[j]<minWeight ){
-				minWeight = weight[j];
-				minID = j;
+int Dijkstra(MatrixGraph G){
+	fill(marked, marked + MAXV, false);
+	for( i=0; i<G.cntV; i++ ){
+		pathFromSrc[i] = G.edge[srcID][i];
+		if( pathFromSrc[i] < INF ){
+			if( pathFromSrc[i]>0 ){
+				// 距离在0~INF之间，说明i与起点src直接相连
+				preV[i] = srcID;
 			}
 		}
+	}
+	marked[srcID] = true;
+	pathFromSrc[srcID] = 0;
 
-		visitedVertex[minID] = true;
+	for( i=0; i<G.cntV; i++ ){
+		minDist = INF;
+		int midV = srcID;
+		// find the midVertex
+		for( j=0; j<G.cntV; j++ ){
+			if( marked[j] == false ){
+				if( pathFromSrc[j] < minDist ){
+					minDist = pathFromSrc[j];
+					midV = j;
+				}
+			}
+		}
+		marked[midV] = true;
 
-		for( j=0; j<G.cntVertex; j++ ){
-			if( visitedVertex[j]==false ){
-				int preVertexWeight = weight[minID];
-				int pathWeight = G.edgeWeight[minID][j];
-				int newWeight = preVertexWeight + pathWeight;
-				int curVertexWeight = weight[j];
-
-				if( newWeight < curVertexWeight ){
-					weight[j] = newWeight;
-					preVertex[j] = minID;	// minID is preVertex of j
+		for( j=0; j<G.cntV; j++ ){
+			if( marked[j] == false ){
+				// pathFromSrc[midV] 是起点src到中介点midV的最短距离
+				// G.edge[midV][j] 是中介点midV与点j之间的距离，若为INF则表示不相连
+				// pathFromSrc[j] 是起点到点j的最短距离
+				if( pathFromSrc[midV] + G.edge[midV][j] < pathFromSrc[j] ){
+					// 更新起点到j 的最短距离
+					pathFromSrc[j] = pathFromSrc[midV] + G.edge[midV][j];
+					// 更新j的前置节点，即中介点，经过中介点到i的距离比原来更短
+					preV[j] = midV;
 				}
 			}
 		}
 	}	
-	cout<<"destID < srcID \n";
-	// cin>>destID;
-	destID = 5;     // 5 means F in that video
-	cout<<srcID<<' '<<destID<<'\n';
-
-	for( i=0; i<G.cntVertex; i++ ){
-		int id = destID;
-		while( id != srcID ){
-			cout<<id<<" < ";
-			id = preVertex[id];
-		}
-		cout<<srcID<<'\n';
-	}
+	return 0;
 }
 
 int main(){
+	srcID = 0;		// 0 is vertex-A
+	destID = 5;     // 5 is vertex-F
 	Dijkstra(G);
+
+	// des < mid < mid < src
+	int id = destID;
+	while( id != srcID ){
+		cout<<id<<" <-- ";
+		id = preV[id];
+	}
+	cout<<srcID<<'\n';
 	return 0;
 }
