@@ -11,6 +11,7 @@ public:
 	int sum;
 	int print_info(){
 		cout<<id<<' '<<moral<<' '<<talent<<'\n';
+		return 0;
 	}
 	Student(int us_id, int us_moral, int us_talent, int us_sum){
 		id = us_id;
