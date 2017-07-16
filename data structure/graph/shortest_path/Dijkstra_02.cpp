@@ -15,21 +15,25 @@ int G[7][7] = {
 	{INF, INF, INF, 10, 5, 3, INF}
 };
 int preV[MAXV];
-int VWeight[MAXV];
+int dist[MAXV];
 bool marked[MAXV];
 
-int Dijkstra(){
+int init(){
 	fill(marked, marked + MAXV, false);
-	fill(VWeight, VWeight + MAXV, INF);
-	VWeight[srcID] = 0;
+	fill(dist, dist + MAXV, INF);
+	return 0;
+}
+
+int Dijkstra(){
+	dist[srcID] = 0;
 	int midID = srcID;
 
 	while( marked[destID] == false ){
 		int minVWeight = INF;
 		for( int i=0; i<cntV; i++ ){
 			if( marked[i] == false ){
-				if( VWeight[i] < minVWeight ){
-					minVWeight = VWeight[i];
+				if( dist[i] < minVWeight ){
+					minVWeight = dist[i];
 					midID = i;
 				}
 			}
@@ -39,15 +43,14 @@ int Dijkstra(){
 		for( int i=0; i<cntV; i++ ){
 			if( G[midID][i] != INF ){
 				if( marked[i] == false ){
-					if( VWeight[midID] + G[midID][i] < VWeight[i] ){
-						VWeight[i] = VWeight[midID] + G[midID][i];
+					if( dist[midID] + G[midID][i] < dist[i] ){
+						dist[i] = dist[midID] + G[midID][i];
 						preV[i] = midID;
 					}
 				}
 			}
 		}
 	}
-
 	return 0;
 }
 
@@ -59,15 +62,18 @@ int output(){
 		id = preV[id];
 	}
 	cout<<srcID<<'\n';
-	cout<<VWeight[destID]<<'\n';
-	// cout<<VWeight[5]<<'\n';
+	cout<<dist[destID]<<'\n';
+	// cout<<dist[5]<<'\n';
 }
 
 int main(){
+	init();
+
 	srcID = 0;		// 0 is vertex-A
 	destID = 5;     // 5 is vertex-F
 	// destID = 2;
 	
+
 	Dijkstra();
 	output();
 	
