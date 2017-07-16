@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#define INF 100000000
+#define INF 1000000000
 #define MAXV 504
 using namespace std;
 
@@ -10,7 +10,7 @@ int minCost = INF;
 int G[MAXV][MAXV], cost[MAXV][MAXV];
 int dist[MAXV];
 bool marked[MAXV];
-vector<int> preV[MAXV];
+vector<int> pre[MAXV];
 vector<int> tmpPath, path;
 
 int init(){
@@ -25,11 +25,11 @@ int Dijkstra(){
 	dist[srcID] = 0;
 	int midID = srcID;
 	while( marked[destID] == false ){
-		int minWeight = INF;
+		int minDist = INF;
 		for( int i=0; i<cntV; ++i ){
 			if( marked[i] == false ){
-				if( dist[i] < minWeight ){
-					minWeight = dist[i];
+				if( dist[i] < minDist ){
+					minDist = dist[i];
 					midID = i;
 				}
 			}
@@ -41,10 +41,10 @@ int Dijkstra(){
 				if( marked[i] == false ){
 					if( dist[midID] + G[midID][i] < dist[i] ){
 						dist[i] = dist[midID] + G[midID][i];
-						preV[i].clear();
-						preV[i].push_back(midID);
+						pre[i].clear();
+						pre[i].push_back(midID);
 					}else if( dist[midID] + G[midID][i] == dist[i] ){
-						preV[i].push_back(midID);
+						pre[i].push_back(midID);
 					}
 				}
 			}
@@ -53,14 +53,14 @@ int Dijkstra(){
 	return 0;
 }
 
-int DFS(int cur){
-	if( cur == srcID ){
-		tmpPath.push_back(cur);
+int DFS(int v){
+	if( v == srcID ){
+		tmpPath.push_back(v);
 		int tmpCost = 0;
 		for( int i = tmpPath.size() - 1; i > 0; --i ){
 			int id = tmpPath[i];
-			int nextID = tmpPath[i-1];
-			tmpCost += cost[id][nextID];
+			int preID = tmpPath[i-1];
+			tmpCost += cost[id][preID];
 		}
 		if( tmpCost < minCost ){
 			minCost = tmpCost;
@@ -70,9 +70,9 @@ int DFS(int cur){
 		return 0;
 	}
 
-	tmpPath.push_back(cur);
-	for( int i = 0; i < preV[cur].size(); ++i ){
-		DFS( preV[cur][i] );
+	tmpPath.push_back(v);
+	for( int i = 0; i < pre[v].size(); ++i ){
+		DFS( pre[v][i] );
 	}
 	tmpPath.pop_back();
 	return 0;
