@@ -22,3 +22,12 @@
     marked[] 存储的就是，已经确定了最短路径的点，因为这些点都是步骤2中的midV已经是从起点出发的路上最小的了，比其他已知的点都要小。而未知的点都要通过这些已知点才能到达，比大更大，当然不是最短路径了。注意，这里的路径权值不能有非正数，否则会出现比大更小的情况，这也是Dijkstra算法的约束条件。
     
 *   实例参考：[PAT_A_1007_Emergency](https://github.com/jJayyyyyyy/cs/blob/master/OJ/PAT/advanced_level/1003_Emergency/emergency.cpp)
+
+*   Dijkstra + DFS, 参考示例
+  
+    *   [1003]
+    *   [1018]
+    *   [1030]    
+    *   [1072]
+    *   [1087]
+
