@@ -3,7 +3,6 @@
 #include <algorithm>
 #define INF 100000000
 #define MAXCITY 504
-#define NOTFOUND -1
 using namespace std;
 
 int cntCity, cntRoad, srcID, destID;
@@ -20,14 +19,12 @@ int Dijkstra(){
 	fill(cntShortestPath, cntShortestPath+MAXCITY, 0);
 	fill(marked, marked+MAXCITY, false);
 
-	
 	shortestPath[srcID] = 0;
 	cntShortestPath[srcID] = 1;
 	totalTeam[srcID] = ownTeam[srcID];
 
 	for( int i=0; i<cntCity; i++ ){
-		int dist = INF;
-		int midCity = NOTFOUND;
+		int dist = INF, midCity = -1;
 		// find the closest unmarked city, then its ID is midCity
 		for( int j=0; j<cntCity; j++ ){
 			if( marked[j]==false && shortestPath[j]<dist ){
@@ -35,27 +32,25 @@ int Dijkstra(){
 				midCity = j;
 			}
 		}
-
-		if( midCity == NOTFOUND ){
-			return NOTFOUND;
-		}else{
-			marked[midCity] = true;
-			for( int j=0; j<cntCity; j++ ){
-				if( marked[j]==false && G[midCity][j]!=INF ){
-					// we find a shorter path 
-					if( shortestPath[midCity] + G[midCity][j] < shortestPath[j] ){
-						shortestPath[j] = shortestPath[midCity] + G[midCity][j];
+		if( midCity == -1 ){
+			return 1;
+		}
+		marked[midCity] = true;
+		for( int j=0; j<cntCity; j++ ){
+			if( marked[j]==false && G[midCity][j]!=INF ){
+				// we find a shorter path 
+				if( shortestPath[midCity] + G[midCity][j] < shortestPath[j] ){
+					shortestPath[j] = shortestPath[midCity] + G[midCity][j];
+					totalTeam[j] = totalTeam[midCity] + ownTeam[j];
+					cntShortestPath[j] = cntShortestPath[midCity];
+				}
+				// this path is equally short
+				else if( shortestPath[midCity] + G[midCity][j] == shortestPath[j] ){
+					// we need the largest num of teams
+					if( totalTeam[midCity] + ownTeam[j] > totalTeam[j] ){
 						totalTeam[j] = totalTeam[midCity] + ownTeam[j];
-						cntShortestPath[j] = cntShortestPath[midCity];
 					}
-					// this path is equally short
-					else if( shortestPath[midCity] + G[midCity][j] == shortestPath[j] ){
-						// we need the largest num of teams
-						if( totalTeam[midCity] + ownTeam[j] > totalTeam[j] ){
-							totalTeam[j] = totalTeam[midCity] + ownTeam[j];
-						}
-						cntShortestPath[j] += cntShortestPath[midCity];
-					}
+					cntShortestPath[j] += cntShortestPath[midCity];
 				}
 			}
 		}

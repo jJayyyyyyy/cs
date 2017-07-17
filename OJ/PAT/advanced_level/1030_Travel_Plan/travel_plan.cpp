@@ -23,29 +23,27 @@ int init(){
 
 int Dijkstra(){
 	dist[srcID] = 0;
-	int midID = srcID;
 	while( marked[destID] == false ){
-		int minDist = INF;
+		int minDist = INF, midID = -1;
 		for( int i=0; i<cntV; ++i ){
-			if( marked[i] == false ){
-				if( dist[i] < minDist ){
-					minDist = dist[i];
-					midID = i;
-				}
+			if( marked[i] == false && dist[i] < minDist ){
+				minDist = dist[i];
+				midID = i;
 			}
+		}
+		if( midID == -1 ){
+			return 1;
 		}
 		marked[midID] = true;
 
 		for( int i=0; i<cntV; ++i ){
-			if( G[midID][i] != INF ){
-				if( marked[i] == false ){
-					if( dist[midID] + G[midID][i] < dist[i] ){
-						dist[i] = dist[midID] + G[midID][i];
-						pre[i].clear();
-						pre[i].push_back(midID);
-					}else if( dist[midID] + G[midID][i] == dist[i] ){
-						pre[i].push_back(midID);
-					}
+			if( marked[i] == false && G[midID][i] != INF ){
+				if( dist[midID] + G[midID][i] < dist[i] ){
+					dist[i] = dist[midID] + G[midID][i];
+					pre[i].clear();
+					pre[i].push_back(midID);
+				}else if( dist[midID] + G[midID][i] == dist[i] ){
+					pre[i].push_back(midID);
 				}
 			}
 		}
@@ -95,7 +93,6 @@ int main(){
 	for( i = path.size() - 1; i >= 0; --i ){
 		cout<<path[i]<<' ';
 	}
-
 	cout<<dist[destID]<<' '<<minCost<<'\n';
 
 	return 0;

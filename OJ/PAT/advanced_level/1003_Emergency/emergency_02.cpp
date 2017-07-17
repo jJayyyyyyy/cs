@@ -21,33 +21,31 @@ int Dijkstra(){
 	VWeight[srcID] = 0;
 	cntVWeight[srcID] = 1;
 	totalTeam[srcID] = ownTeam[srcID];
-	int midID = srcID;
 
 	while( marked[destID] == false ){
-		int minVWeight = INF;
+		int minVWeight = INF, midID = -1;
 		for( int i=0; i<cntCity; i++ ){
-			if( marked[i] == false ){
-				if( VWeight[i] < minVWeight ){
-					minVWeight = VWeight[i];
-					midID = i;
-				}
+			if( marked[i] == false && VWeight[i] < minVWeight){
+				minVWeight = VWeight[i];
+				midID = i;
 			}
+		}
+		if( midID == -1 ){
+			return 1;
 		}
 		marked[midID] = true;
 
 		for( int i=0; i<cntCity; i++ ){
-			if( G[midID][i] != INF ){
-				if( marked[i] == false ){
-					if( VWeight[midID] + G[midID][i] < VWeight[i] ){
-						VWeight[i] = VWeight[midID] + G[midID][i];
+			if( marked[i] == false && G[midID][i] != INF ){
+				if( VWeight[midID] + G[midID][i] < VWeight[i] ){
+					VWeight[i] = VWeight[midID] + G[midID][i];
+					totalTeam[i] = totalTeam[midID] + ownTeam[i];
+					cntVWeight[i] = cntVWeight[midID];
+				}else if( VWeight[midID] + G[midID][i] == VWeight[i] ){
+					if( totalTeam[midID] + ownTeam[i] > totalTeam[i] ){
 						totalTeam[i] = totalTeam[midID] + ownTeam[i];
-						cntVWeight[i] = cntVWeight[midID];
-					}else if( VWeight[midID] + G[midID][i] == VWeight[i] ){
-						if( totalTeam[midID] + ownTeam[i] > totalTeam[i] ){
-							totalTeam[i] = totalTeam[midID] + ownTeam[i];
-						}
-						cntVWeight[i] += cntVWeight[midID];
 					}
+					cntVWeight[i] += cntVWeight[midID];
 				}
 			}
 		}
