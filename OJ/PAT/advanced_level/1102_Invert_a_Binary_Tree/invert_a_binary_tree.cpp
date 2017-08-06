@@ -4,72 +4,59 @@
 #define MAX 16
 #define NONE -1
 using namespace std;
-typedef int Addr;
 
-class Node{
-public:
-	Addr lchild, rchild, parent;
+struct Node{
+	int lchild, rchild, parent;
 	Node(){
-		lchild = NONE;
-		rchild = NONE;
-		parent = NONE;
+		lchild = rchild = parent = NONE;
 	}
 };
 
-Node nodeList[MAX];
+Node node[MAX];
 int isFirst = 1;
 
-int invertTree(Addr root){
-	if( NONE == root ){
-		return 0;
+void invertTree(int root){
+	if( NONE != root ){
+		invertTree(node[root].lchild);
+		invertTree(node[root].rchild);
+		int tmp = node[root].lchild;
+		node[root].lchild = node[root].rchild;
+		node[root].rchild = tmp;
 	}
-
-	invertTree(nodeList[root].lchild);
-	invertTree(nodeList[root].rchild);
-	Addr tmpLeft = nodeList[root].lchild;
-	nodeList[root].lchild = nodeList[root].rchild;
-	nodeList[root].rchild = tmpLeft;
-	return 0;
 }
 
-int output(Addr parent){
+void output(int parent){
 	if( isFirst ){
 		cout<<parent;
 		isFirst = 0;
 	}else{
 		cout<<' '<<parent;
 	}
-	return 0;
 }
 
-int levelTraverse(Addr root){
-	queue<Addr> q;
+void levelTraverse(int root){
+	queue<int> q;
 	q.push(root);
 
 	while( q.size() ){
-		Addr parent = q.front();
+		int parent = q.front();
 		output(parent);
 		q.pop();
-		if( NONE != nodeList[parent].lchild ){
-			q.push(nodeList[parent].lchild);
+		if( NONE != node[parent].lchild ){
+			q.push(node[parent].lchild);
 		}
-		if( NONE != nodeList[parent].rchild ){
-			q.push(nodeList[parent].rchild);
+		if( NONE != node[parent].rchild ){
+			q.push(node[parent].rchild);
 		}
 	}
-
-	return 0;
 }
 
-int inOrderTraverse(Addr root){
-	if( NONE == root ){
-		return 0;
+void inOrderTraverse(int root){
+	if( NONE != root ){
+		inOrderTraverse(node[root].lchild);
+		output(root);
+		inOrderTraverse(node[root].rchild);
 	}
-	
-	inOrderTraverse(nodeList[root].lchild);
-	output(root);
-	inOrderTraverse(nodeList[root].rchild);
-	return 0;
 }
 
 int main(){
@@ -80,22 +67,22 @@ int main(){
 	for( i=0; i<n; i++ ){
 		cin>>left>>right;
 		if( isdigit(left) ){
-			Addr lchild = left - '0';
-			Addr parent = i;
-			nodeList[parent].lchild = lchild;
-			nodeList[lchild].parent = parent;
+			int lchild = left - '0';
+			int parent = i;
+			node[parent].lchild = lchild;
+			node[lchild].parent = parent;
 		}
 		if( isdigit(right) ){
-			Addr rchild = right - '0';
-			Addr parent = i;
-			nodeList[parent].rchild = rchild;
-			nodeList[rchild].parent = parent;
+			int rchild = right - '0';
+			int parent = i;
+			node[parent].rchild = rchild;
+			node[rchild].parent = parent;
 		}
 	}
 
-	Addr root;
+	int root;
 	for( i=0; i<n; i++ ){
-		if( NONE == nodeList[i].parent ){
+		if( NONE == node[i].parent ){
 			root = i;
 			break;
 		}
@@ -107,7 +94,5 @@ int main(){
 	cout<<'\n';
 	isFirst = 1;
 	inOrderTraverse(root);
-
 	return 0;
 }
-

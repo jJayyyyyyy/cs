@@ -1,32 +1,29 @@
 1.  构造二叉树，
 
     ```cpp
-    class Node{
-    public:
-    	Addr lchild, rchild, parent;
-    	Node(){
-    		lchild = NONE;
-    		rchild = NONE;
-    		parent = NONE;
-    	}
-    };
-    
+    struct Node{
+		int lchild, rchild, parent;
+		Node(){
+			lchild = rchild = parent = NONE;
+		}
+	};
+	Node node[MAX];
     // ...
     
     // 父子对应
     for( i=0; i<n; i++ ){
 		cin>>left>>right;
 		if( isdigit(left) ){
-			Addr lchild = left - '0';
-			Addr parent = i;
-			nodeList[parent].lchild = lchild;
-			nodeList[lchild].parent = parent;
+			int lchild = left - '0';
+			int parent = i;
+			node[parent].lchild = lchild;
+			node[lchild].parent = parent;
 		}
 		if( isdigit(right) ){
-			Addr rchild = right - '0';
-			Addr parent = i;
-			nodeList[parent].rchild = rchild;
-			nodeList[rchild].parent = parent;
+			int rchild = right - '0';
+			int parent = i;
+			node[parent].rchild = rchild;
+			node[rchild].parent = parent;
 		}
 	}
     ```
@@ -34,18 +31,15 @@
 2.  左右反转（后序LRN遍历，从叶节点开始反转）
 
     ```cpp
-    int invertTree(Addr root){
-    	if( NONE == root ){
-    		return 0;
-    	}
-    
-    	invertTree(nodeList[root].lchild);
-    	invertTree(nodeList[root].rchild);
-    	Addr tmpLeft = nodeList[root].lchild;
-    	nodeList[root].lchild = nodeList[root].rchild;
-    	nodeList[root].rchild = tmpLeft;
-    	return 0;
-    }
+    void invertTree(int root){
+		if( NONE != root ){
+			invertTree(node[root].lchild);
+			invertTree(node[root].rchild);
+			int tmp = node[root].lchild;
+			node[root].lchild = node[root].rchild;
+			node[root].rchild = tmp;
+		}
+	}
     ```
 
 3.  层序，中序输出
