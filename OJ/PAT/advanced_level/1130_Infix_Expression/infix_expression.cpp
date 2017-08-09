@@ -20,10 +20,8 @@ int ROOT;
 void inOrder(int root){
 	if( root != -1 ){
 		bool hasParenthsis = false;
-		// 最外层的表达式不需要括号
-		if( root != ROOT ){
-			// 如果不是叶节点，就要加括号
-			if( node[root].lchild != -1 || node[root].rchild != -1 ){
+		if( root != ROOT ){			// 最外层的表达式不需要括号
+			if( node[root].lchild != -1 || node[root].rchild != -1 ){	// 如果不是叶节点，就要加括号
 				hasParenthsis = true;
 			}
 		}

@@ -3,10 +3,12 @@
 *   解法很多，下面的思路比较直观，参考链接[坚不萌的CSDN](http://blog.csdn.net/shepherd2010/article/details/72862254)
 
     >   题意不难。中序遍历就行了，不过难点在于括号的输出。
+    >
     >   递归的时候，加个判断条件。
+    >
     >   只要当前遍历的不是根结点且左右不全空，就输出括号。
     
-*   上面第三行的解释
+*   对上面第三行的解释：
     
     ```cpp
     // 此处解释说明使用了链表的形式，结合题目则要改成静态写法
@@ -24,10 +26,8 @@
     void inOrder(int root){
     	if( root != -1 ){
     		bool hasParenthsis = false;
-    		// 最外层的表达式不需要括号
-    		if( root != ROOT ){
-    			// 如果不是叶节点，就要加括号
-    			if( node[root].lchild != -1 || node[root].rchild != -1 ){
+    		if( root != ROOT ){       // 最外层的表达式不需要括号
+    			if( node[root].lchild != -1 || node[root].rchild != -1 ){   // 如果不是叶节点，就要加括号
     				hasParenthsis = true;
     			}
     		}
