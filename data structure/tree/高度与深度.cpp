@@ -1,3 +1,6 @@
+// 高度从叶到根，叶节点高度为1
+// 深度从根到叶，根节点深度为1，层数同深度
+
 #include <iostream>
 #include <queue>
 using namespace std;
@@ -17,10 +20,9 @@ int getHeight(Node * root){
 	return max(lHeight, rHeight) + 1;
 }
 
-
-// 非递归求高度可用层序法
-int getHeight(Node * root){
-	int height = 0;
+// 非递归求深度/层数可用层序法
+int getLevel(Node * root){
+	int level = 0;
 	if( root != NULL ){
 		queue<Node *> q;
 		q.push(root);
@@ -40,10 +42,10 @@ int getHeight(Node * root){
 				rear++;	// 队尾入队
 			}
 			if( front == lastNode ){
-				height++;
+				level++;
 				lastNode = rear;
 			}
 		}
 	}
-	return height;
+	return level;
 }
