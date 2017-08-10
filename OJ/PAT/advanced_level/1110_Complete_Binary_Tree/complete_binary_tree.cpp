@@ -14,27 +14,28 @@ struct Node{
 	}
 };
 
-Node node[MAX];
+Node nodeList[MAX];
 vector<int> levelOrderList;
 
 int isCBTLevelTrav(int root){
 	if( root != NONE ){
 		queue<int> q;
 		q.push(root);
-		while( q.size() ){
-			int parent = q.front();
-			levelOrderList.push_back(parent);
+		while( q.size() > 0 ){
+			int node = q.front();
+			levelOrderList.push_back(node);
+			// visit(node);
 			q.pop();
-			if( parent != NONE ){
-				q.push(node[parent].lchild);
-				q.push(node[parent].rchild);
+			if( node != NONE ){
+				q.push(nodeList[node].lchild);
+				q.push(nodeList[node].rchild);
 			}else{
-				while( q.size() ){
+				while( q.size() > 0 ){
 					int p = q.front();
-					q.pop();
 					if( p != NONE ){
 						return 0;
 					}
+					q.pop();
 				}
 			}
 		}
@@ -60,19 +61,19 @@ int main(){
 		if( "-" != left ){
 			lchild = str2num(left);
 			parent = i;
-			node[parent].lchild = lchild;
-			node[lchild].parent = parent;
+			nodeList[parent].lchild = lchild;
+			nodeList[lchild].parent = parent;
 		}
 		if( "-" != right ){
 			rchild = str2num(right);
 			parent = i;
-			node[parent].rchild = rchild;
-			node[rchild].parent = parent;
+			nodeList[parent].rchild = rchild;
+			nodeList[rchild].parent = parent;
 		}
 	}
 
 	for( i=0; i<n; i++ ){
-		if( NONE == node[i].parent ){
+		if( NONE == nodeList[i].parent ){
 			root = i;
 			break;
 		}

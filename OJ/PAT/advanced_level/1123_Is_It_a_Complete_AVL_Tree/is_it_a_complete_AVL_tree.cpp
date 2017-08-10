@@ -88,54 +88,40 @@ int insertAVL(Node * &parent, int val){
 	return 0;
 }
 
-int output(Node *parent){
-	if(isFirst){
-		cout<<parent->val;
-		isFirst = 0;
-	}else{
-		cout<<' '<<parent->val;
+void output(Node *parent){
+	if( parent != NULL ){
+		if(isFirst){
+			cout<<parent->val;
+			isFirst = 0;
+		}else{
+			cout<<' '<<parent->val;
+		}	
 	}
-	
-	return 0;
 }
 
-int levelTraverse(Node *root){
-	queue<Node *> q;
-	q.push(root);
-
-	while( q.size() ){
-		Node *parent = q.front();
-		output(parent);
-		q.pop();
-		if( NULL != parent->lchild ){
-			q.push(parent->lchild);
-			if( isPreEmpty ){
-				isCBT = 0;
+void isCBTlevelTrav(Node *root){
+	if( root != NULL ){
+		queue<Node *> q;
+		q.push(root);
+		while( q.size() > 0 ){
+			Node * node = q.front();
+			output(node);
+			q.pop();
+			if( node != NULL ){
+				q.push(node->lchild);
+				q.push(node->rchild);
+			}else{
+				while( q.size() > 0 ){
+					Node * p = q.front();
+					if( p != NULL ){
+						isCBT = 0;
+						break;
+					}
+					q.pop();
+				}
 			}
-		}else{
-			isPreEmpty = 1;
-		}
-
-		if( NULL != parent->rchild ){
-			q.push(parent->rchild);
-			if( isPreEmpty ){
-				isCBT = 0;
-			}
-		}else{
-			isPreEmpty = 1;
 		}
 	}
-	return 0;
-}
-
-int freeAVL(Node *parent){
-	if( NULL == parent ){
-		return 0;
-	}
-	freeAVL(parent->lchild);
-	freeAVL(parent->rchild);
-	delete parent;
-	return 0;
 }
 
 int main(){
@@ -148,12 +134,11 @@ int main(){
 		insertAVL(root, val);
 	}
 
-	levelTraverse(root);
+	isCBTlevelTrav(root);
 	if( isCBT ){
-		cout<<"\nYES";
+		cout<<"\nYES\n";
 	}else{
-		cout<<"\nNO";
+		cout<<"\nNO\n";
 	}
-	freeAVL(root);
 	return 0;
 }
