@@ -1,108 +1,75 @@
 #include <iostream>
-#include <string>
 #include <stack>
-#define MAX 32
+#define MAXSIZE 32
 using namespace std;
 
-// pre NLR
-// in LNR
-// post LRN
-
 struct Node{
-	Node *lchild, *rchild;
-	int val;
+	int val=0;
+	Node *lchild=NULL, *rchild=NULL;
 	Node(int _val){
 		val = _val;
-		lchild = rchild = NULL;
 	}
 };
 
-int preList[MAX]={0}, inList[MAX]={0};
+int pre[MAXSIZE], in[MAXSIZE];
 int isFirst = 1;
 
-int insertTree(Node * &parent, int preLeft, int preRight, int inLeft, int inRight){
-	if(preLeft > preRight){
-		return 0;
+// 1086, 先序+中序，造树
+Node * preInCreate(int preL, int preR, int inL, int inR){
+	if( preL > preR ){
+		return NULL;
 	}
-
-	parent = new Node(preList[preLeft]);
+	int val = pre[preL];
+	Node * root = new Node(val);
 
 	int mid;
-	for( mid=inLeft; mid<=inRight; mid++ ){
-		if( inList[mid] == preList[preLeft] ){
+	for( mid = inL; mid <= inR; ++mid ){
+		if( in[mid] == val ){
 			break;
 		}
 	}
-	int cntLeftTree = mid - inLeft;
-
-	int preLeftTreeStart = preLeft + 1;
-	int preLeftTreeEnd = preLeft + cntLeftTree;
-	int preRightTreeStart = preLeft + cntLeftTree + 1;
-	int preRightTreeEnd = preRight;
-
-	int inLeftTreeStart = inLeft;
-	int inLeftTreeEnd = mid - 1;
-	int inRightTreeStart = mid + 1;
-	int inRightTreeEnd = inRight;
-
-	insertTree(parent->lchild, preLeftTreeStart, preLeftTreeEnd, inLeftTreeStart, inLeftTreeEnd);
-	insertTree(parent->rchild, preRightTreeStart, preRightTreeEnd, inRightTreeStart, inRightTreeEnd);
-	return 0;
+	int numLeft = mid - inL;
+	root->lchild = preInCreate(preL+1, preL+numLeft, inL, mid-1);
+	root->rchild = preInCreate(preL+numLeft+1, preR, mid+1, inR);
+	return root;
 }
 
-int output(int val){
+void disp(Node * p){
 	if( isFirst ){
-		cout<<val;
 		isFirst = 0;
+		cout<<p->val;
 	}else{
-		cout<<' '<<val;
+		cout<<' '<<p->val;
 	}
-	return 0;
 }
 
-int postTraverse(Node * root){
-	if( NULL == root ){
-		return 0;
+void postTraverse(Node * root){
+	if( root != NULL ){
+		postTraverse(root->lchild);
+		postTraverse(root->rchild);
+		disp(root);
 	}
-	postTraverse(root->lchild);
-	postTraverse(root->rchild);
-	output(root->val);
-	return 0;
-}
-
-int freeTree(Node * root){
-	if( NULL == root ){
-		return 0;
-	}
-
-	freeTree(root->lchild);
-	freeTree(root->rchild);
-	delete root;
-	return 0;
 }
 
 int main(){
 	stack<int> st;
-	string usInput;
+	string s;
 	int n, i, j=0, k=0, len, val;
 	cin>>n;
-
 	len = n * 2;
 	for( i=0; i<len; i++ ){
-		cin>>usInput;
-		if( "Push" == usInput ){
+		cin>>s;
+		if( "Push" == s ){
 			cin>>val;
-			preList[j++] = val;
+			pre[j++] = val;
 			st.push(val);
 		}else{
-			inList[k++] = st.top();
+			in[k++] = st.top();
 			st.pop();
 		}
 	}
-
 	Node * root = NULL;
-	insertTree(root, 0, n-1, 0, n-1);
+	root = preInCreate(0, n-1, 0, n-1);
 	postTraverse(root);
-	freeTree(root);
 	return 0;
 }
