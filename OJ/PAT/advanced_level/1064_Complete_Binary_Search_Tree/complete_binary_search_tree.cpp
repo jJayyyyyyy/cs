@@ -1,40 +1,34 @@
 #include <iostream>
 #include <algorithm>
-#define MAX 1024
+#define MAX 1004
 #define START 1
 using namespace std;
-typedef int Addr;
 
-Addr n, ix=START;
-int incNodeList[MAX] = {0};		// 1~n
-int cbt[MAX] = {0};				// 1~n
+int n, ix=START;
+int nodeList[MAX] = {0};		// [1, n]
+int CBT[MAX] = {0};				// [1, n]
 
-int inOrderTraverse(Addr root){
-	if( root > n ){
-		return 0;
+void inOrder(int root){
+	if( root <= n ){
+		inOrder( root*2 );		// lchild
+		CBT[root] = nodeList[ix++];
+		inOrder( root*2 + 1 );	// rchild
 	}
-
-	inOrderTraverse( root*2 );
-	cbt[root] = incNodeList[ix++];
-	inOrderTraverse( root*2 + 1 );
-	return 0;
 }
 
 int main(){
-	Addr i;
+	int i, root=1;
 	cin>>n;
 
 	for( i=1; i<=n; i++ ){
-		cin>>incNodeList[i];
+		cin>>nodeList[i];
 	}
-	sort(incNodeList+1, incNodeList+1 + n );
-	Addr root = 1;
-	inOrderTraverse(root);
+	sort( nodeList + 1, nodeList + 1 + n );
+	inOrder(root);
 
-	cout<<cbt[1];
+	cout<<CBT[1];
 	for( i=2; i<=n; i++ ){
-		cout<<' '<<cbt[i];
+		cout<<' '<<CBT[i];
 	}
-
 	return 0;
 }

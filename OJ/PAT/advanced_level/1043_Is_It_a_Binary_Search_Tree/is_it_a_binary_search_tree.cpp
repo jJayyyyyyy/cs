@@ -1,130 +1,103 @@
 #include <iostream>
-#include <algorithm>
-#define MAX 1024
+#define MAX 1004
 using namespace std;
 
 int inputList[MAX] = {0};
 int preList[MAX] = {0};
 int mirrorPreList[MAX] = {0};
-int iInput=0, iPre=0, iMirror=0;
-int isFirst = 1;
+int iInput=0, iPre=0, iMirror=0, isFirst = 1;
 
 struct Node{
 	int val;
-	Node *lchild, *rchild;
+	Node *lchild=NULL, *rchild=NULL;
 	Node(int _val){
 		val = _val;
-		lchild = rchild = NULL;
 	}
 };
 
-int insertBST(Node * &parent, int val){
-	if( NULL == parent ){
-		parent = new Node(val);
-		return 0;
+void insertBST(Node * &root, int val){
+	if( NULL == root ){
+		root = new Node(val);
+		return;
 	}
 
-	if( val < parent->val ){
-		insertBST(parent->lchild, val);
+	if( val < root->val ){
+		insertBST(root->lchild, val);
 	}else{
-		insertBST(parent->rchild, val);
+		insertBST(root->rchild, val);
 	}
-	return 0;
 }
 
-int preTraverse(Node * parent){
-	if( NULL == parent ){
-		return 0;
+void preTrav(Node * root){
+	if( NULL != root ){
+		preList[iPre++] = root->val;
+		preTrav(root->lchild);
+		preTrav(root->rchild);
 	}
-	preList[iPre++] = parent->val;
-	preTraverse(parent->lchild);
-	preTraverse(parent->rchild);
-	return 0;
 }
 
-int mirrorPreTraverse(Node * parent){
-	if( NULL == parent ){
-		return 0;
+void mirrorPreTrav(Node * root){
+	if( NULL != root ){
+		mirrorPreList[iMirror++] = root->val;
+		mirrorPreTrav(root->rchild);
+		mirrorPreTrav(root->lchild);
 	}
-	mirrorPreList[iMirror++] = parent->val;
-	mirrorPreTraverse(parent->rchild);
-	mirrorPreTraverse(parent->lchild);
-	return 0;
 }
 
-int output(const int val){
+void output(const int val){
 	if( isFirst ){
 		cout<<val;
 		isFirst = 0;
 	}else{
 		cout<<' '<<val;
 	}
-	return 0;
 }
 
-int postTraverse(const Node * parent){
-	if( NULL == parent ){
-		return 0;
+void postTrav(const Node * root){
+	if( NULL != root ){
+		postTrav(root->lchild);
+		postTrav(root->rchild);
+		output(root->val);
 	}
-	postTraverse(parent->lchild);
-	postTraverse(parent->rchild);
-	output(parent->val);
-	return 0;
 }
 
-int mirrorPostTraverse(const Node * parent){
-	if( NULL == parent ){
-		return 0;
+void mirrorPostTrav(const Node * root){
+	if( NULL != root ){
+		mirrorPostTrav(root->rchild);
+		mirrorPostTrav(root->lchild);
+		output(root->val);
 	}
-	mirrorPostTraverse(parent->rchild);
-	mirrorPostTraverse(parent->lchild);
-	output(parent->val);
-	return 0;
 }
 
-int cmp(const int a[], const int b[], const int len){
+bool cmp(const int a[], const int b[], const int len){
 	for( int i=0; i<len; i++ ){
 		if( a[i] != b[i] ){
-			return 0;
+			return false;
 		}
 	}
-	return 1;
-}
-
-int freeBST(Node * parent){
-	if( NULL == parent ){
-		return 0;
-	}
-	
-	freeBST(parent->lchild);
-	freeBST(parent->rchild);
-	delete parent;
-	return 0;
+	return true;
 }
 
 int main(){
 	Node *root = NULL;
 	int val, n, i;
-	
 	cin>>n;
 	for( i=0; i<n; i++ ){
 		cin>>val;
 		inputList[iInput++] = val;
 		insertBST(root, val);
 	}
-	preTraverse(root);
-	mirrorPreTraverse(root);
-	if( 1 == cmp(inputList, preList, n) ){
+
+	preTrav(root);
+	mirrorPreTrav(root);
+	if( true == cmp(inputList, preList, n) ){
 		cout<<"YES\n";
-		postTraverse(root);
-	}else if( 1 == cmp(inputList, mirrorPreList, n) ){
+		postTrav(root);
+	}else if( true == cmp(inputList, mirrorPreList, n) ){
 		cout<<"YES\n";
-		mirrorPostTraverse(root);
+		mirrorPostTrav(root);
 	}else{
 		cout<<"NO\n";
 	}
-	
-	freeBST(root);
-
 	return 0;
 }

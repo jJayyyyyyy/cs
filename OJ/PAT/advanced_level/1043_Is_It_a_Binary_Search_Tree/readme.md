@@ -1,30 +1,19 @@
-用
+*   生成一棵BST
 
-```cpp
-int insertBST(Node * &parent, int val){
-    if( NULL == parent){
-        parent = new Node(val);
-        return 0;
-    }else{
-        if( val < parent-val ){
-            insertBST(parent->lchild);
-        }else{
-            insertBST(parent->rchild);
-        }
-    }
-    return 0;
-}
-```
+	```cpp
+	void insertBST(Node * & root, int val){
+		if( NULL == root){
+			root = new Node(val);
+			return;
+		}
+		if( val < root->val ){
+			insertBST(root->lchild);
+		}else{
+			insertBST(root->rchild);
+		}
+	}
+	```
 
-这种方法生成BST，给定一个输入序列，生成了BST，如果BST的preOrder
+	使用上述方法，则一个输入序列唯一确定一棵树。
 
-与输入序列相同，那么输入序列是先序preOrder
-与输入序列不同，那么输入序列不是preOrder
-
-（貌似是废话）
-
-但是我们假定输入是preOrder序列，由于第一个节点是root
-
-试错法，以根为基
-
-对于BST，一个输入序列确定了一个BST
+*	生成BST后，分别存储先序和镜面先序遍历序列，然后与题目的输入序列进行比较，即可得出答案
