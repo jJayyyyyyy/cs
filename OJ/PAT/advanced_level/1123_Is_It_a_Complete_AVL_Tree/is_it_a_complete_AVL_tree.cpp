@@ -3,109 +3,103 @@
 #include <queue>
 using namespace std;
 
-int isFirst=1, isPreEmpty=0, isCBT=1;
-
 struct Node{
-	Node *lchild, *rchild;
-	int val, height;
+	Node *lchild=NULL, *rchild=NULL;
+	int val, height=1;
 	Node(int _val){
 		val = _val;
-		height = 1;
-		lchild = rchild = NULL;
 	}
 };
 
-int getHeight(Node *parent){
-	if( NULL == parent ){
+int isCBT=1, isFirst=1;
+
+int getHeight(Node * root){
+	if( root == NULL ){
 		return 0;
 	}else{
-		return parent->height;
+		return root->height;
 	}
 }
 
-int updateHeight(Node *parent){
-	int lH = getHeight(parent->lchild);
-	int rH = getHeight(parent->rchild);
-	parent->height = 1 + max(lH, rH);
-	return 0;
+void updateHeight(Node * root){
+	int lH = getHeight(root->lchild);
+	int rH = getHeight(root->rchild);
+	root->height = max(lH, rH) + 1;
 }
 
-int getBalanceFactor(Node *parent){
-	int lH = getHeight(parent->lchild);
-	int rH = getHeight(parent->rchild);
+int getBalanceFactor(Node * root){
+	int lH = getHeight(root->lchild);
+	int rH = getHeight(root->rchild);
 	return lH - rH;
 }
 
-int leftRotate(Node * &parent){
-	Node *tmp = parent->rchild;
-	parent->rchild = tmp->lchild;
-	tmp->lchild = parent;
-	updateHeight(parent);
+void leftRotate(Node * & root){
+	Node * tmp = root->rchild;
+	root->rchild = tmp->lchild;
+	tmp->lchild = root;
+	updateHeight(root);
 	updateHeight(tmp);
-	parent = tmp;
-	return 0;
+	root = tmp;
 }
 
-int rightRotate(Node * &parent){
-	Node *tmp = parent->lchild;
-	parent->lchild = tmp->rchild;
-	tmp->rchild = parent;
-	updateHeight(parent);
+void rightRotate(Node * & root){
+	Node * tmp = root->lchild;
+	root->lchild = tmp->rchild;
+	tmp->rchild = root;
+	updateHeight(root);
 	updateHeight(tmp);
-	parent = tmp;
-	return 0;
+	root = tmp;
 }
 
-int insertAVL(Node * &parent, int val){
-	if( NULL == parent ){
-		parent = new Node(val);
-		return 0;
+void insertVAL(Node * & root, int val){
+	if( NULL == root ){
+		root = new Node(val);
+		return;
 	}
 
-	if(val < parent->val){
-		insertAVL(parent->lchild, val);
-		updateHeight(parent);
-		if( 2 == getBalanceFactor(parent) ){
-			if( 1 == getBalanceFactor(parent->lchild) ){
-				rightRotate(parent);
+	if( val < root->val ){
+		insertVAL(root->lchild, val);
+		updateHeight(root);
+		if( 2 == getBalanceFactor(root) ){
+			if( 1 == getBalanceFactor(root->lchild) ){
+				rightRotate(root);
 			}else{
-				leftRotate(parent->lchild);
-				rightRotate(parent);
+				leftRotate(root->lchild);
+				rightRotate(root);
 			}
 		}
 	}else{
-		insertAVL(parent->rchild, val);
-		updateHeight(parent);
-		if( -2 == getBalanceFactor(parent) ){
-			if( -1 == getBalanceFactor(parent->rchild) ){
-				leftRotate(parent);
+		insertVAL(root->rchild, val);
+		updateHeight(root);
+		if( -2 == getBalanceFactor(root) ){
+			if( -1 == getBalanceFactor(root->rchild) ){
+				leftRotate(root);
 			}else{
-				rightRotate(parent->rchild);
-				leftRotate(parent);
+				rightRotate(root->rchild);
+				leftRotate(root);
 			}
 		}
 	}
-	return 0;
 }
 
-void output(Node *parent){
-	if( parent != NULL ){
-		if(isFirst){
-			cout<<parent->val;
+void visit(Node * root){
+	if( root != NULL ){
+		if( isFirst ){
+			cout<<root->val;
 			isFirst = 0;
 		}else{
-			cout<<' '<<parent->val;
-		}	
+			cout<<' '<<root->val;
+		}
 	}
 }
 
-void isCBTlevelTrav(Node *root){
+void isCBTLevelTrav(Node * root){
 	if( root != NULL ){
 		queue<Node *> q;
 		q.push(root);
 		while( q.size() > 0 ){
 			Node * node = q.front();
-			output(node);
+			visit(node);
 			q.pop();
 			if( node != NULL ){
 				q.push(node->lchild);
@@ -118,23 +112,22 @@ void isCBTlevelTrav(Node *root){
 						break;
 					}
 					q.pop();
-				}
+				}		
 			}
-		}
+		}	
 	}
 }
 
 int main(){
-	Node *root = NULL;
-	int val, n, i;
+	Node * root = NULL;
+	int n, i, val;
 	cin>>n;
-
-	for( i=0; i<n; i++ ){
+	for( i = 0; i < n; ++i ){
 		cin>>val;
-		insertAVL(root, val);
+		insertVAL(root, val);
 	}
 
-	isCBTlevelTrav(root);
+	isCBTLevelTrav(root);
 	if( isCBT ){
 		cout<<"\nYES\n";
 	}else{

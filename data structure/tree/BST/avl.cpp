@@ -1,6 +1,5 @@
-#include <iostream>
+// AVL模板
 #include <algorithm>
-using namespace std;
 
 struct Node{
 	Node *lchild=NULL, *rchild=NULL;
@@ -11,7 +10,7 @@ struct Node{
 };
 
 int getHeight(Node * root){
-	if( NULL == root ){
+	if( root == NULL ){
 		return 0;
 	}else{
 		return root->height;
@@ -41,21 +40,21 @@ void leftRotate(Node * & root){
 
 void rightRotate(Node * & root){
 	Node * tmp = root->lchild;
-	root->rchild = tmp->rchild;
+	root->lchild = tmp->rchild;
 	tmp->rchild = root;
 	updateHeight(root);
 	updateHeight(tmp);
 	root = tmp;
 }
 
-void insertAVL(Node * & root, int val){
+void insertVAL(Node * & root, int val){
 	if( NULL == root ){
 		root = new Node(val);
 		return;
 	}
 
 	if( val < root->val ){
-		insertAVL(root->lchild, val);
+		insertVAL(root->lchild, val);
 		updateHeight(root);
 		if( 2 == getBalanceFactor(root) ){
 			if( 1 == getBalanceFactor(root->lchild) ){
@@ -66,10 +65,10 @@ void insertAVL(Node * & root, int val){
 			}
 		}
 	}else{
-		insertAVL(root->rchild, val);
+		insertVAL(root->rchild, val);
 		updateHeight(root);
 		if( -2 == getBalanceFactor(root) ){
-			if( -1 ==getBalanceFactor(root->rchild) ){
+			if( -1 == getBalanceFactor(root->rchild) ){
 				leftRotate(root);
 			}else{
 				rightRotate(root->rchild);
@@ -77,16 +76,4 @@ void insertAVL(Node * & root, int val){
 			}
 		}
 	}
-}
-
-int main(){
-	Node * root = NULL;
-	int n, i, val;
-	cin>>n;
-	for( i = 0; i < n; ++i ){
-		cin>>val;
-		insertAVL(root, val);
-	}
-	cout<<root->val<<'\n';
-	return 0;
 }
