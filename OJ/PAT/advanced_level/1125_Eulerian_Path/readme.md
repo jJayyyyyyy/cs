@@ -33,3 +33,9 @@
 		return true;
 	}
 	```
+	
+*	原解法基于BFS，本题与1013 Battle Over Cities类似
+
+*	20170818增加DFS解法。
+
+	推荐使用 `邻接链表` + `DFS` 的形式，代码简洁好记。

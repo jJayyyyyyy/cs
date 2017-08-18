@@ -1,27 +1,44 @@
 #include <iostream>
 #include <queue>
+#include <vector>
 #define MAXSIZE 504
 using namespace std;
 
-bool G[MAXSIZE][MAXSIZE] = {false};
-bool visit[MAXSIZE] = {false};
+vector<int> G[MAXSIZE];
+bool visited[MAXSIZE] = {false};
 
-bool checkConn(int v, int n){
+void BFS(int v){
 	queue<int> q;
 	q.push(v);
-	visit[v] = true;
+	visited[v] = true;
 	while( q.size() > 0 ){
-		int u = q.front();
+		int now = q.front();
 		q.pop();
-		for( int i = 1; i <= n; ++i ){
-			if( visit[i] == false && G[u][i] != 0 ){
-				q.push(i);
-				visit[i] = true;
+		for( int i = 0; i < G[now].size(); ++i ){
+			int nextV = G[now][i];
+			if( visited[nextV] == false ){
+				q.push(nextV);
+				visited[nextV] = true;
 			}
 		}
 	}
+}
+
+void DFS(int v){
+	visited[v] = true;
+	for( int i = 0; i < G[v].size(); ++i ){
+		int nextV = G[v][i];
+		if( visited[nextV] == false ){
+			DFS(nextV);
+		}
+	}
+}
+
+bool checkConn(int n){
+	// BFS(1);
+	DFS(1);
 	for( int i = 1; i <= n; ++i ){
-		if( visit[i] == false ){
+		if( visited[i] == false ){
 			return false;
 		}
 	}
@@ -35,18 +52,14 @@ int main(){
 	cin>>n>>m;
 	for( i = 0; i < m; ++i ){
 		cin>>v1>>v2;
-		G[v1][v2] = G[v2][v1] = true;
+		G[v1].push_back(v2);
+		G[v2].push_back(v1);
 	}
 
-	bool isConn = checkConn(1, n);	// 判断是否为连通图
+	bool isConn = checkConn(n);	// 判断是否为连通图
 	int cntOdd = 0, isFirst = 1;
 	for( i = 1; i <= n; ++i ){
-		int cnt = 0;
-		for( j = 1; j <= n; ++j ){
-			if( G[i][j] == true ){
-				cnt++;
-			}
-		}
+		int cnt = G[i].size();
 		if( isFirst ){
 			cout<<cnt;
 			isFirst = 0;
