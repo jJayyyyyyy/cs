@@ -1,10 +1,13 @@
+// Dijkstra + DFS 输出所有最短路径
 #include <iostream>
 #include <algorithm>
-#define INF 1000000
-#define MAXV 10
+#include <vector>
+#define INF 0x3fffffff
+#define MAXSIZE 16
 using namespace std;
 
-int cntV=7, srcID, destID;
+int n=7, srcID, destID;
+int dist[MAXSIZE];
 int G[7][7] = {
 	{INF, 4, 3, INF, 7, INF, INF},
 	{4, INF, 6, 5, INF, INF, INF},
@@ -14,65 +17,66 @@ int G[7][7] = {
 	{INF, INF, INF, 2, INF, INF, 3},
 	{INF, INF, INF, 10, 5, 3, INF}
 };
-int pre[MAXV];
-int dist[MAXV];
-bool marked[MAXV];
+vector<int> pre[MAXSIZE], tmpPath, path;
+bool vis[MAXSIZE] = {false};
 
-int init(){
-	fill(marked, marked + MAXV, false);
-	fill(dist, dist + MAXV, INF);
-	return 0;
+void init(){
+	fill(dist, dist + MAXSIZE, INF);
 }
 
-int Dijkstra(){
+void Dijkstra(){
 	dist[srcID] = 0;
-
-	while( marked[destID] == false ){
-		int minWeight = INF, midID = -1;
-		for( int i=0; i<cntV; i++ ){
-			if( marked[i] == false && dist[i] < minWeight ){
-				minWeight = dist[i];
+	while( vis[destID] == false ){
+		int minDist = INF, midID = -1;
+		for( int i = 0; i < n; ++i ){
+			if( vis[i] == false && dist[i] < minDist ){
+				minDist = dist[i];
 				midID = i;
 			}
 		}
-		if( midID == -1 ){
-			return 1;
-		}
-		marked[midID] = true;
+		if( midID == -1 )	return;
+		vis[midID] = true;
 
-		for( int i=0; i<cntV; i++ ){
-			if( marked[i] == false && G[midID][i] != INF ){
+		for( int i = 0; i < n; ++i ){
+			if( vis[i] == false && G[midID][i] != INF ){
 				if( dist[midID] + G[midID][i] < dist[i] ){
 					dist[i] = dist[midID] + G[midID][i];
-					pre[i] = midID;
+					pre[i].clear();
+					pre[i].push_back(midID);
+				}else if( dist[midID] + G[midID][i] == dist[i] ){
+					pre[i].push_back(midID);
 				}
 			}
 		}
 	}
-	return 0;
 }
 
-int output(){
-	// des < mid < mid < src
-	int id = destID;
-	while( id != srcID ){
-		cout<<id<<" <-- ";
-		id = pre[id];
+void fkout(){
+	for( int i = tmpPath.size() - 1; i >= 0; --i ){
+		cout<<" -> "<<(char)(tmpPath[i]+'A');
 	}
-	cout<<srcID<<'\n';
-	cout<<dist[destID]<<'\n';
-	// cout<<dist[5]<<'\n';
+	cout<<"\nDistance: "<<dist[destID]<<'\n';
+}
+
+void DFS(int v){
+	if( v == srcID ){
+		tmpPath.push_back(v);
+		fkout();
+		tmpPath.pop_back();
+		return;
+	}
+	tmpPath.push_back(v);
+	for( int i = 0; i < pre[v].size(); ++i ){
+		DFS(pre[v][i]);
+	}
+	tmpPath.pop_back();
 }
 
 int main(){
 	init();
-
-	srcID = 0;		// 0 is vertex-A
-	destID = 5;     // 5 is vertex-F
-	// destID = 2;
-
+	srcID = 0;
+	destID = 5;
 	Dijkstra();
-	output();
-	
+	DFS(destID);
 	return 0;
 }
