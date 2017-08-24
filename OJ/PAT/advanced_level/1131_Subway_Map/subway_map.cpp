@@ -56,18 +56,14 @@ void Dijkstra(){
 }
 
 void calCost(){
-	int tmpTrans = 0;
-	int size = tmpPath.size();
-	int id = tmpPath[size - 1];
-	int preID = tmpPath[size - 2];
-	int nowLine = line[id][preID];
-	for( int i = size - 2; i > 0; --i ){
-		int id = tmpPath[i];
-		int preID = tmpPath[i - 1];
-		if( line[id][preID] != nowLine ){
+	int tmpTrans = -1, lineID = 0;
+	for( int i = tmpPath.size(); i > 0; --i ){
+		int v = tmpPath[i];
+		int nextV = tmpPath[i - 1];
+		if( line[v][nextV] != lineID ){
 			++tmpTrans;
 		}
-		nowLine = line[id][preID];
+		lineID = line[v][nextV];
 	}
 	if( tmpTrans < minTrans ){
 		minTrans = tmpTrans;
@@ -116,6 +112,8 @@ void getRoute(){
 }
 
 int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	int n, m, v1, v2, i, j, k;
 	cin>>n;
 	for( i = 1; i <= n; ++i ){
