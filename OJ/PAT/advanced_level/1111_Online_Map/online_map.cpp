@@ -2,13 +2,15 @@
 #include <algorithm>
 #include <vector>
 #define MAXSIZE 504
-#define INF 10000000
+#define INF 0x3fffffff
 using namespace std;
 
 int n, srcID, destID, minTime=INF, minInter=INF;
-int GLen[MAXSIZE][MAXSIZE], GTime[MAXSIZE][MAXSIZE], distLen[MAXSIZE], distTime[MAXSIZE];
+int GLen[MAXSIZE][MAXSIZE], GTime[MAXSIZE][MAXSIZE];
+int distLen[MAXSIZE], distTime[MAXSIZE];
 bool visLen[MAXSIZE] = {false}, visTime[MAXSIZE] = {false};
-vector<int> pre0[MAXSIZE], pre1[MAXSIZE], tmpPath, path0, path1;
+vector<int> pre0[MAXSIZE], pre1[MAXSIZE];
+vector<int> tmpPath, path0, path1;
 
 int init(){
 	fill(GLen[0], GLen[0] + MAXSIZE*MAXSIZE, INF);
@@ -27,7 +29,7 @@ void Dijkstra(int (& G)[MAXSIZE][MAXSIZE], int (& dist)[MAXSIZE], bool (& vis)[M
 				midID = i;
 			}
 		}
-		if( midID == -1 )	return;
+		if( midID == -1 )   return;
 		vis[midID] = true;
 
 		for( int i = 0; i < n; ++i ){
@@ -48,8 +50,8 @@ void fuck0(){
 	int tmpTime = 0;
 	for( int i = tmpPath.size() - 1; i > 0; --i ){
 		int id = tmpPath[i];
-		int preID = tmpPath[i - 1];
-		tmpTime += GTime[id][preID];
+		int nextID = tmpPath[i - 1];
+		tmpTime += GTime[id][nextID];
 	}
 	if( tmpTime < minTime ){
 		minTime = tmpTime;
@@ -92,7 +94,7 @@ void fkout(vector<int> & path){
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	init();	// 初始化一定不能忘！！！
+	init(); // 初始化一定不能忘！！！
 	int m, u, v, oneWay, l, t;
 	cin>>n>>m;
 	for(int i = 0; i < m; ++i ){
