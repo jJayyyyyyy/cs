@@ -22,24 +22,24 @@ int init(){
 void Dijkstra(int (& G)[MAXSIZE][MAXSIZE], int (& dist)[MAXSIZE], bool (& vis)[MAXSIZE], vector<int> (& pre)[MAXSIZE]){
 	dist[srcID] = 0;
 	while( vis[destID] == false ){
-		int minDist=INF, midID=-1;
+		int minDist=INF, midV=-1;
 		for( int i = 0; i < n; ++i ){
 			if( vis[i] == false && dist[i] < minDist ){
 				minDist = dist[i];
-				midID = i;
+				midV = i;
 			}
 		}
-		if( midID == -1 )   return;
-		vis[midID] = true;
+		if( midV == -1 )   return;
+		vis[midV] = true;
 
 		for( int i = 0; i < n; ++i ){
-			if( vis[i] == false && G[midID][i] != INF ){
-				if( dist[midID] + G[midID][i] < dist[i] ){
-					dist[i] = dist[midID] + G[midID][i];
+			if( vis[i] == false && G[midV][i] != INF ){
+				if( dist[midV] + G[midV][i] < dist[i] ){
+					dist[i] = dist[midV] + G[midV][i];
 					pre[i].clear();
-					pre[i].push_back(midID);
-				}else if( dist[midID] + G[midID][i] == dist[i] ){
-					pre[i].push_back(midID);
+					pre[i].push_back(midV);
+				}else if( dist[midV] + G[midV][i] == dist[i] ){
+					pre[i].push_back(midV);
 				}
 			}
 		}
