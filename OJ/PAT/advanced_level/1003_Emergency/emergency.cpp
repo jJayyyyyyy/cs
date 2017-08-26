@@ -1,80 +1,92 @@
 #include <iostream>
-#include <cstdio>
+#include <vector>
 #include <algorithm>
-#define INF 100000000
-#define MAXCITY 504
+#define INF 0x3fffff00
+#define MAXSIZE 504
 using namespace std;
 
-int cntCity, cntRoad, srcID, destID;
-int G[MAXCITY][MAXCITY];		// G[i][j] is edgeWeight between i and j
-int shortestPath[MAXCITY];		// we want min/shortest of shortestPath
-int ownTeam[MAXCITY];			// every city has its own rescue team
-int totalTeam[MAXCITY];			// total team gathered from the shortest path
-int cntShortestPath[MAXCITY];	// there could be several paths that have the shortest distance from src to dest
-bool marked[MAXCITY];
+int n, srcID, destID, maxTeam = 0, cntRoad = 0;
+int G[MAXSIZE][MAXSIZE], Team[MAXSIZE], dist[MAXSIZE];
+bool vis[MAXSIZE];
+vector<int> pre[MAXSIZE], tmpPath, path;
 
-int Dijkstra(){
-	fill(shortestPath, shortestPath+MAXCITY, INF);
-	fill(totalTeam, totalTeam+MAXCITY, 0);
-	fill(cntShortestPath, cntShortestPath+MAXCITY, 0);
-	fill(marked, marked+MAXCITY, false);
+void init(){
+	fill(G[0], G[0] + MAXSIZE * MAXSIZE, INF);
+	fill(dist, dist + MAXSIZE, INF);
+	fill(Team, Team + MAXSIZE, 0);
+	fill(vis, vis + MAXSIZE, false);
+}
 
-	shortestPath[srcID] = 0;
-	cntShortestPath[srcID] = 1;
-	totalTeam[srcID] = ownTeam[srcID];
-
-	for( int i=0; i<cntCity; i++ ){
-		int dist = INF, midCity = -1;
-		// find the closest unmarked city, then its ID is midCity
-		for( int j=0; j<cntCity; j++ ){
-			if( marked[j]==false && shortestPath[j]<dist ){
-				dist = shortestPath[j];
-				midCity = j;
+void Dijkstra(){
+	dist[srcID] = 0;
+	while( vis[destID] == false ){
+		int minDist = INF, midV = -1;
+		for( int i = 0; i < n; ++i ){
+			if( vis[i] == false && dist[i] < minDist ){
+				minDist = dist[i];
+				midV = i;
 			}
 		}
-		if( midCity == -1 ){
-			return 1;
-		}
-		marked[midCity] = true;
-		for( int j=0; j<cntCity; j++ ){
-			if( marked[j]==false && G[midCity][j]!=INF ){
-				// we find a shorter path 
-				if( shortestPath[midCity] + G[midCity][j] < shortestPath[j] ){
-					shortestPath[j] = shortestPath[midCity] + G[midCity][j];
-					totalTeam[j] = totalTeam[midCity] + ownTeam[j];
-					cntShortestPath[j] = cntShortestPath[midCity];
-				}
-				// this path is equally short
-				else if( shortestPath[midCity] + G[midCity][j] == shortestPath[j] ){
-					// we need the largest num of teams
-					if( totalTeam[midCity] + ownTeam[j] > totalTeam[j] ){
-						totalTeam[j] = totalTeam[midCity] + ownTeam[j];
-					}
-					cntShortestPath[j] += cntShortestPath[midCity];
+		if( midV == -1 )	return;
+		vis[midV] = true;
+
+		for( int i = 0; i < n; ++i ){
+			if( vis[i] == false && G[midV][i] != INF ){
+				if( dist[midV] + G[midV][i] < dist[i] ){
+					dist[i] = dist[midV] + G[midV][i];
+					pre[i].clear();
+					pre[i].push_back(midV);
+				}else if( dist[midV] + G[midV][i] == dist[i] ){
+					pre[i].push_back(midV);
 				}
 			}
 		}
 	}
-	return 0;
+}
+
+void cntTeam(){
+	int tmpTeam = 0;
+	for( int i = tmpPath.size() - 1; i >= 0; --i ){
+		int v = tmpPath[i];
+		tmpTeam += Team[v];
+	}
+	if( tmpTeam > maxTeam ){
+		maxTeam = tmpTeam;
+		path = tmpPath;
+	}
+}
+
+void DFS(int v){
+	if( v == srcID ){
+		tmpPath.push_back(v);
+		++cntRoad;
+		cntTeam();
+		tmpPath.pop_back();
+		return;
+	}
+	tmpPath.push_back(v);
+	for( int i = 0; i < pre[v].size(); ++i ){
+		DFS(pre[v][i]);
+	}
+	tmpPath.pop_back();
 }
 
 int main(){
-	cin>>cntCity>>cntRoad>>srcID>>destID;
-	fill(G[0], G[0] + MAXCITY*MAXCITY, INF);	// G is a 2-D array. so fill() should be used in this form
-
-	for(int i=0; i<cntCity; i++){
-		cin>>ownTeam[i];
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	init();
+	int m, v1, v2, i, len;
+	cin>>n>>m>>srcID>>destID;
+	for( i = 0; i < n; ++i){
+		cin>>Team[i];
 	}
 
-	int a, b;
-	for(int i=0; i<cntRoad; i++){
-		cin>>a>>b;
-		cin>>G[a][b];
-		G[b][a] = G[a][b];
+	for( i = 0; i < m; ++i ){
+		cin>>v1>>v2>>len;
+		G[v1][v2] = G[v2][v1] = len;
 	}
-
 	Dijkstra();
-
-	cout<<cntShortestPath[destID]<<' '<<totalTeam[destID]<<'\n';
+	DFS(destID);
+	cout<<cntRoad<<' '<<maxTeam<<'\n';
 	return 0;
 }
