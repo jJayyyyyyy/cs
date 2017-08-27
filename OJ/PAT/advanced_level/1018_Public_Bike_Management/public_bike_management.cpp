@@ -1,18 +1,18 @@
 #include <iostream>
+#include <cstdlib>
 #include <vector>
 #include <algorithm>
 #define INF 0x3fffff00
 #define MAXSIZE 504
 using namespace std;
 
-int n, srcID, destID, minCost = INF;
-int dist[MAXSIZE], G[MAXSIZE][MAXSIZE], GCost[MAXSIZE][MAXSIZE];
+int Cmax, n, srcID, destID, minSend=INF, minTakeBack=INF;
+int Bike[MAXSIZE], dist[MAXSIZE], G[MAXSIZE][MAXSIZE];
 bool vis[MAXSIZE];
 vector<int> pre[MAXSIZE], tmpPath, path;
 
 void init(){
 	fill( G[0], G[0] + MAXSIZE * MAXSIZE, INF );
-	fill( GCost[0], GCost[0] + MAXSIZE * MAXSIZE, INF );
 	fill( dist, dist + MAXSIZE, INF );
 	fill( vis, vis + MAXSIZE, false);
 }
@@ -21,7 +21,7 @@ void Dijkstra(){
 	dist[srcID] = 0;
 	while( vis[destID] == false ){
 		int minDist = INF, midV = -1;
-		for( int i = 0; i < n; ++i ){
+		for( int i = 0; i <= n; ++i ){
 			if( vis[i] == false && dist[i] < minDist ){
 				minDist = dist[i];
 				midV = i;
@@ -30,7 +30,7 @@ void Dijkstra(){
 		if( midV == -1 )	return;
 		vis[midV] = true;
 
-		for( int i = 0; i < n; ++i ){
+		for( int i = 0; i <= n; ++i ){
 			if( vis[i] == false && G[midV][i] != INF ){
 				if( dist[midV] + G[midV][i] < dist[i] ){
 					dist[i] = dist[midV] + G[midV][i];
@@ -44,26 +44,42 @@ void Dijkstra(){
 	}
 }
 
-void calCost(){
-	int tmpCost = 0;
-	for( int i = tmpPath.size() - 1; i > 0; --i ){
+void calc(){
+	int tmpSend = 0, tmpTakeBack = 0;
+	for( int i = tmpPath.size() - 1; i >= 0; --i ){
 		int v = tmpPath[i];
-		int nextV = tmpPath[i - 1];
-		tmpCost += GCost[v][nextV];
+		if( Bike[v] > 0 ){
+			tmpTakeBack += Bike[v];
+		}else{
+			if( tmpTakeBack > abs(Bike[v]) ){
+				tmpTakeBack -= abs(Bike[v]);
+			}else{
+				tmpSend += abs(Bike[v]) - tmpTakeBack;
+				tmpTakeBack = 0;
+			}
+		}
 	}
-	if( tmpCost < minCost ){
-		minCost = tmpCost;
+
+	if( tmpSend < minSend ){
+		minSend = tmpSend;
+		minTakeBack = tmpTakeBack;
 		path = tmpPath;
+	}else if( tmpSend == minSend ){
+		if( tmpTakeBack < minTakeBack ){
+			minTakeBack = tmpTakeBack;
+			path = tmpPath;
+		}
 	}
 }
 
 void DFS(int v){
 	if( v == srcID ){
 		tmpPath.push_back(v);
-		calCost();
+		calc();
 		tmpPath.pop_back();
 		return;
 	}
+
 	tmpPath.push_back(v);
 	for( int i = 0; i < pre[v].size(); ++i ){
 		DFS( pre[v][i] );
@@ -72,19 +88,26 @@ void DFS(int v){
 }
 
 int main(){
-	int m, i, v1, v2, len, cost;
+	int m, i, v1, v2, len;
 	init();
-	cin>>n>>m>>srcID>>destID;	
+	srcID = 0;
+	cin>>Cmax>>n>>destID>>m;
+	for( i = 1; i <= n; ++i ){
+		cin>>Bike[i];
+		Bike[i] -= Cmax / 2;
+	}
+
 	for( i = 0; i < m; ++i ){
-		cin>>v1>>v2>>len>>cost;
+		cin>>v1>>v2>>len;
 		G[v1][v2] = G[v2][v1] = len;
-		GCost[v1][v2] = GCost[v2][v1] = cost;
 	}
 	Dijkstra();
 	DFS(destID);
-	for( i = path.size() - 1; i >= 0; --i ){
-		cout<<path[i]<<' ';
+
+	cout<<minSend<<" ";
+	for( i = path.size() - 1; i > 0; --i ){
+		cout<<path[i]<<"->";
 	}
-	cout<<dist[destID]<<' '<<minCost<<'\n';
+	cout<<path[i]<<" "<<minTakeBack<<"\n";
 	return 0;
 }
