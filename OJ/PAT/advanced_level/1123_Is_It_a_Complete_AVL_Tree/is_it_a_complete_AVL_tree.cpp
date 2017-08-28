@@ -4,10 +4,12 @@
 using namespace std;
 
 struct Node{
-	Node *lchild=NULL, *rchild=NULL;
-	int val, height=1;
+	int val, height;
+	Node *lchild, *rchild;
 	Node(int _val){
 		val = _val;
+		height = 1;
+		lchild = rchild = NULL;
 	}
 };
 

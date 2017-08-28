@@ -3,10 +3,12 @@
 using namespace std;
 
 struct Node{
-	Node *lchild=NULL, *rchild=NULL;
-	int val, height=1;
+	Node *lchild, *rchild;
+	int val, height;
 	Node(int _val){
 		val = _val;
+		height = 1;
+		lchild = rchild = NULL;
 	}
 };
 
