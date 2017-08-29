@@ -3,7 +3,7 @@
 #include <queue>
 #include <stack>
 #include <string>		// substr
-#include <algorithm>	// sort, upper_bound
+#include <algorithm>		// sort, upper_bound
 #include <iostream>
 using namespace std;
 
@@ -73,11 +73,11 @@ void usage_upper_bound(){
 	int myints[] = {10,20,30,30,20,10,10,20};
 	vector<int> v(myints,myints+8);							// 10 20 30 30 20 10 10 20
 
-	sort( v.begin(), v.end() );								// 10 10 10 20 20 20 30 30
+	sort( v.begin(), v.end() );							// 10 10 10 20 20 20 30 30
 
 	vector<int>::iterator low, up;
-	low = lower_bound( v.begin(), v.end(), 20 );			//		    ^
-	up = upper_bound( v.begin(), v.end(), 20 );				//					 ^
+	low = lower_bound( v.begin(), v.end(), 20 );					//	    ^
+	up = upper_bound( v.begin(), v.end(), 20 );					//		     ^
 
 	cout<<"lower_bound at position "<<( low- v.begin() )<<'\n';
 	cout<<"upper_bound at position "<<( up - v.begin() )<<'\n';
