@@ -62,10 +62,25 @@ void usage_stack(){
 
 void usage_string(){
 	string s1 = "hello";
-	string s2(5, '0');				// "00000"
-	s1.find('l');					// 2
-	s1.find_last_of('l');			// 3
-	string s3 = s1.substr(3, 2);	// lo
+	string s2(5, '0');
+	cout<<s1.find('l');
+	cout<<s1.find_last_of('l');
+	string s3 = s1.substr(3, 2);
+}
+
+// PAT_A_1085
+void usage_upper_bound(){
+	int myints[] = {10,20,30,30,20,10,10,20};
+	vector<int> v(myints,myints+8);							// 10 20 30 30 20 10 10 20
+
+	sort( v.begin(), v.end() );								// 10 10 10 20 20 20 30 30
+
+	vector<int>::iterator low, up;
+	low = lower_bound( v.begin(), v.end(), 20 );			//		    ^
+	up = upper_bound( v.begin(), v.end(), 20 );				//					 ^
+
+	cout<<"lower_bound at position "<<( low- v.begin() )<<'\n';
+	cout<<"upper_bound at position "<<( up - v.begin() )<<'\n';
 }
 
 int main(){
