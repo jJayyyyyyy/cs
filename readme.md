@@ -1,4 +1,4 @@
-# Computer science learning.
+# How to make
 
 * first write a `hello.c`, then
 
