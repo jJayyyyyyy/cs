@@ -20,5 +20,5 @@
 
 <br/>
 
-更多内容请看[这里](https://jjayyyyyyy.github.io/2016/10/07/python3%E9%87%8D%E5%86%99SimpleHTTPServerWithUpload.html)
+更多内容请看[这篇博客](https://jjayyyyyyy.github.io/2016/10/07/reWrite_SimpleHTTPServerWithUpload_with_python3.html)
 
