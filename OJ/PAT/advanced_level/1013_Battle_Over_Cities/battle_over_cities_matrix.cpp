@@ -1,21 +1,18 @@
 #include <iostream>
-#include <vector>
 #include <queue>
 #define MAXSIZE 1004
 using namespace std;
 
-vector<int> G[MAXSIZE];
+bool G[MAXSIZE][MAXSIZE] = {false};
 bool vis[MAXSIZE] = {false};
-int lostCity;
+int lostCity, n;
 
 void DFS(int v){
 	if( v != lostCity ){
 		vis[v] = true;
-		// for( int i = 0; i < G[v].size(); ++i ){
-		//	int nextV = G[v][i];
-		for( const auto & nextV : G[v] ){
-			if( vis[nextV] == false ){
-				DFS(nextV);
+		for( int i = 1; i <= n; ++i ){
+			if( G[v][i] == true && vis[i] == false ){
+				DFS(i);
 			}
 		}
 	}
@@ -29,12 +26,10 @@ void BFS(int v){
 		while( q.size() ){
 			v = q.front();
 			q.pop();
-			// for( int i = 0; i < G[v].size(); ++i ){
-			//	int nextV = G[v][i];
-			for( const auto & nextV : G[v] ){
-				if( nextV != lostCity && vis[nextV] == false ){
-					q.push(nextV);
-					vis[nextV] = true;
+			for( int i = 1; i <= n; ++i ){
+				if( G[v][i] == true && i != lostCity && vis[i] == false ){
+					q.push(i);
+					vis[i] = true;
 				}
 			}
 		}
@@ -44,12 +39,11 @@ void BFS(int v){
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, m, k, v1, v2;
+	int m, k, v1, v2;
 	cin>>n>>m>>k;
 	for( int i = 0; i < m; ++i ){
 		cin>>v1>>v2;
-		G[v1].push_back(v2);
-		G[v2].push_back(v1);
+		G[v1][v2] = G[v2][v1] = true;
 	}
 	for( int i = 0; i < k; ++i ){
 		cin>>lostCity;
@@ -57,8 +51,7 @@ int main(){
 		int block = 0;
 		for( int v = 1; v <= n; ++v ){
 			if( v != lostCity && vis[v] == false ){
-				DFS(v);
-				// BFS(v);
+				BFS(v);
 				++block;
 			}
 		}
