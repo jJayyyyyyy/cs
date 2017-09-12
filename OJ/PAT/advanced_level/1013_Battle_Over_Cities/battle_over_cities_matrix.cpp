@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <queue>
 #define MAXSIZE 1004
 using namespace std;
