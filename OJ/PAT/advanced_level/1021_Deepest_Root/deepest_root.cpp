@@ -1,119 +1,99 @@
 #include <iostream>
 #include <vector>
-#include <set>
+#include <algorithm>
 #define MAXSIZE 10004
 using namespace std;
 
-vector<int> G[MAXSIZE];
-int father[MAXSIZE] = {0};
-bool rootList[MAXSIZE] = {0};
+bool vis[MAXSIZE] = {false};
 int maxHeight = 0;
-set<int> tmpSet, ansSet;
-set<int>::iterator it;
+int father[MAXSIZE];
+vector<int> G[MAXSIZE], tmp, ans;
 
-int initFather(int n){
-	for(int i=1; i<=n; i++){
+void init(){
+	for( int i = 0; i < MAXSIZE; ++i ){
 		father[i] = i;
 	}
-	return 0;
 }
 
-int findFather(int node){
-	int node1 = node;
-	int node2 = node1;
-
-	while( node != father[node] ){
-		node = father[node];
+int findFather(int x){
+	while( x != father[x] ){
+		x = father[x];
 	}
-
-	int root = node;
-
-	while( node1 != father[node1] ){
-		node2 = node1;
-		node1 = father[node1];
-		father[node2] = root;
-	}
-
-	return root;
+	return x;
 }
 
-int Union(int node1, int node2){
-	int fa1 = findFather(node1);
-	int fa2 = findFather(node2);
-	if( fa1 != fa2 ){
-		father[fa1] = fa2;
+void Union(int a, int b){
+	int faA = findFather(a);
+	int faB = findFather(b);
+	if( faA < faB ){
+		father[faB] = faA;
+	}else{
+		father[faA] = faB;
 	}
-	return 0;
 }
 
-int getComponent(int n){
-	int component = 0;
-	for( int i=1; i<=n; i++ ){
-		rootList[ findFather(i) ] = true;
+int cntBlock(int n){
+	int block = 0;
+	for( int i = 1; i <= n; ++i ){
+		int root = findFather(i);
+		vis[root] = true;
 	}
-
-	for( int i=1; i<=n; i++ ){
-		if( rootList[i] == true ){
-			component += 1;
+	for( int i = 1; i <= n; ++i ){
+		if( vis[i] == true ){
+			++block;
 		}
 	}
-	return component;
+	return block;
 }
 
-int DFS(int node, int height, int preNode){
+void DFS(int v, int height, int pre){
 	if( height > maxHeight ){
-		tmpSet.clear();
-		tmpSet.insert(node);
+		tmp.clear();
+		tmp.push_back(v);
 		maxHeight = height;
-	}else if(height == maxHeight){
-		tmpSet.insert(node);
+	}else if( height == maxHeight ){
+		tmp.push_back(v);
 	}
 
-	for( int i=0; i<G[node].size(); i++ ){
-		if( G[node][i] == preNode ){
-			continue;
-		}else{
-			DFS(G[node][i], height+1, node);
+	for( const auto & nextV : G[v] ){
+		if( nextV != pre ){
+			DFS(nextV, height + 1, v);
 		}
 	}
-	return 0;
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-
-	int n, i, node1, node2;
+	init();
+	int n;
 	cin>>n;
-	
 	if( n == 1 ){
 		cout<<"1\n";
 	}else{
-		initFather(n);
-
-		for(i=1; i<n; i++){
-			cin>>node1>>node2;
-			G[node1].push_back(node2);
-			G[node2].push_back(node1);
-			Union(node1, node2);
+		for( int i = 1; i < n; ++i ){
+			int v1, v2;
+			cin>>v1>>v2;
+			G[v1].push_back(v2);
+			G[v2].push_back(v1);
+			Union(v1, v2);
 		}
-
-		int component = getComponent(n);
-		if( component > 1 ){
-			cout<<"Error: "<<component<<" components\n";
+		int block = cntBlock(n);
+		if( block != 1 ){
+			cout<<"Error: "<<block<<" components\n";
 		}else{
-			DFS(1, 1, -1);
-			ansSet = tmpSet;
-			it = ansSet.begin();
-			DFS(*it, 1, -1);
-
-			ansSet.insert( tmpSet.begin(), tmpSet.end() );
-			
-			for( it=ansSet.begin(); it!=ansSet.end(); it++ ){
-				cout<<*it<<'\n';
+			DFS(1, 1, 0);
+			ans = tmp;
+			DFS(ans[0], 1, 0);
+			ans.insert( ans.end(), tmp.begin(), tmp.end() );
+			sort(ans.begin(), ans.end());
+			cout<<ans[0]<<'\n';
+			for( int i = 1; i < ans.size(); ++i ){
+				if( ans[i] != ans[i - 1] ){
+					cout<<ans[i]<<'\n';
+				}
 			}
 		}
 	}
-	
 	return 0;
 }
