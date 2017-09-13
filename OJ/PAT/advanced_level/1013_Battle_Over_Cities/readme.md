@@ -2,7 +2,7 @@
 
 *	晴神宝典用的是邻接链表 + DFS
 
-*	补充了BFS遍历的解法（参考1125 Eulerian Path）
+*	补充了BFS遍历的解法（参考1126 Eulerian Path）
 
 *	新增了邻接矩阵的实现 (DFS + BFS)
 
