@@ -1,73 +1,88 @@
-##   并查集
+union find set, 并查集, disjoint set
 
-*   同类题目
+*   关键是在每次输入时进行Union，合并区块
 
-    1114, 1107, 1013, 1021
+*   剩下的就是记模板
+
+*   PAT_A参考题目
+    
+    1.  输入完成后，结构不变：1021, 1107, 1114, 1118
     
 ##  思路与代码解析
 
-1.  利用并查集，把输入各种的id, fID, mID, cID，归类到各自的家族
+1.  切记初始化
 
-2.  统计各个家族的人数，资产情况。把数据全都放到family[repID]
+2.  本题关键点，边输入，边构造并查集
 
+    把输入各种的id, fID, mID, cID，归类到各自的家族
+    
+    统计区块数目，以及maxFamilyID
+    
+    ```
+    for( i = 0; i < n; ++i ){
+		cin>>id>>fID>>mID>>k;
+		info[i].set(id, fID, mID, k);
+		
+		marked[id] = true;
+		if( fID != -1 ){
+			marked[fID] = true;
+			Union(fID, id);
+		}
+		if( mID != -1 ){
+			marked[mID] = true;
+			Union(mID, id);
+		}
 
-##  并查集的模板
+		for( j = 0; j < k; ++j ){
+			cin>>cID;
+			info[i].chID[j] = cID;
+			marked[cID] = true;
+			Union(cID, id);
+		}
+	}
+    ```
 
-```cpp
-struct Family{
-    int rootID = 0;     // 根节点编号
-    int people = 0;     // 每个区块/家族的成员数量
-};
+3.  统计各个家族的人数，资产情况。把数据全都放到family[repID]
 
-Family family[MAXSIZE];
-bool marked[MAXSIZE] = {false}; // 如果输入中包含了i, 那么对应的marked[i]就标为true
-int father[MAXSIZE];
+4.  并查集的模板（含结构体的模板）
 
-// 初始化
-void initFather(){
-    for( int i = 0; i < MAXSIZE; ++i ){
-        father[i] = i;
+    ```cpp
+    struct Family{
+    	int rootID;		// 代表家族的成员的编号
+    	int people;		// 家族人数
+    	Family(){
+    		rootID = -1;
+    		people = 0;
+    	}
+    };
+    
+    Family family[MAXSIZE];
+    int father[MAXSIZE];
+    bool vis[MAXSIZE] = {false};
+    
+    // 省略的代码，请参考cpp文件
+    /* ... */
+    
+    // 统计区块block，以及maxFamilyID
+    void cntBlockAndMaxID(int & block, int & maxFamilyID){
+    	for( int i = 0; i < MAXSIZE; ++i ){
+    		if( vis[i] == true ){
+    		    // maxID在这里统计，不过本题用不到
+    			int rootID = findFather(i);
+    			family[rootID].rootID = rootID;
+    			family[rootID].people++;
+    		}
+    	}
+    
+    	block = maxFamilyID = 0;
+    	for( int i = 0; i < MAXSIZE; ++i ){
+    		int people = family[i].people;
+    		if( people > 0 ){
+    			// 家族成员数肯定为正，否则家族为空
+    			// 这里的i可以理解为某个家族的rootID
+    			block++;
+    			maxFamilyID = i;
+    		}
+    	}
     }
-}
-
-// 省略路径压缩，好记
-int findFather(int x){
-    while( x != father[x] ){
-        x = father[x];
-    }
-    return x;
-}
-
-// 归并为同一集合
-void Union(int a, int b){
-    int faA = findFather(a);
-    int faB = findFather(b);
-
-    // 本题要求以家族中最小编号为代表，即可以最小编号为根
-    if( faA < faB ){
-        // 确保根节点的编号是最小的
-        father[faB] = faA;
-    }else{
-        // 确保根节点的编号是最小的
-        father[faA] = faB;
-    }
-}
-
-// 统计区块component
-int cntFamily(){
-    for( int i = 0; i < MAXSIZE; ++i ){
-        if( marked[i] == true ){
-            int rootID = findFather(i);
-            family[rootID].rootID = rootID;
-            family[rootID].people++;
-        }
-    }
-    int cnt = 0;
-    for( int i = 0; i < MAXSIZE; ++i ){
-        if( family[i].people > 0 ){
-            cnt++;
-        }
-    }
-    return cnt;
-}
-```
+    ```

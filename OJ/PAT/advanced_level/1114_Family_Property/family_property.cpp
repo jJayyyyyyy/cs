@@ -18,22 +18,28 @@ struct Info{
 };
 
 struct Family{
-	int rootID = -1;	// 代表家族的成员的编号
-	int people = 0;		// 家族人数
-	double totalSet = 0.0, totalArea = 0.0;
-	double avgSet = 0.0, avgArea = 0.0;
+	int rootID;		// 代表家族的成员的编号
+	int people;		// 家族人数
+	double totalSet, totalArea, avgSet, avgArea;
+	Family(){
+		rootID = -1;
+		people = 0;
+		totalSet = totalArea = avgSet = avgArea = 0.0;
+	}
 };
 
 Info info[MAXINFO];
 Family family[MAXSIZE];
 int father[MAXSIZE];
-// 在输入一条info时，对marked[] 进行更新
-// marked[i]为true，说明 i 在info的ID中出现过，可能是id, faID, moID, chID
-// 用于寻找每个家庭的 rootID，进一步统计人数及资产情况
-bool marked[MAXSIZE] = {false};
+
+/*	在输入一条info时，对 vis[] 进行更新
+ *	vis[i] 为true，说明 i 在info的ID中出现过，可能是id, faID, moID, chID
+ *	用于寻找每个家庭的 rootID，进一步统计人数及资产情况
+**/
+bool vis[MAXSIZE] = {false};
 
 // 初始化
-void initFather(){
+void init(){
 	for( int i = 0; i < MAXSIZE; ++i ){
 		father[i] = i;
 	}
@@ -47,14 +53,13 @@ int findFather(int x){
 }
 
 void Union(int a, int b){
-	int faA = findFather(a);
-	int faB = findFather(b);
-	if( faA > faB ){
+	int fa1 = findFather(a);
+	int fa2 = findFather(b);
+	if( fa1 < fa2 ){
 		// 确保根节点的编号是最小的
-		father[faA] = faB;
+		father[fa2] = fa1;
 	}else{
-		// 确保根节点的编号是最小的
-		father[faB] = faA;
+		father[fa1] = fa2;
 	}
 }
 
@@ -66,74 +71,81 @@ int cmp(Family a, Family b){
 	}
 }
 
+// 统计每个家族的资产
+void calcProperty(int n){
+	for( int i = 0; i < n; ++i ){
+		int id = info[i].id;
+		int rootID = findFather(id);
+		// 每个家族，以 rootID 为基准，在 ans[rootID] 中累计资产情况
+		family[rootID].totalSet += info[i].mset;    // 套数
+		family[rootID].totalArea += info[i].area;   // 面积
+	}
+}
+
+// 统计每个家族有多少人
+void cntBlockAndMaxID(int & block, int & maxFamilyID){
+	for( int i = 0; i < MAXSIZE; ++i ){
+		if( vis[i] == true ){
+			int rootID = findFather(i);
+			family[rootID].rootID = rootID;
+			family[rootID].people++;
+		}
+	}
+
+	block = maxFamilyID = 0;
+	for( int i = 0; i < MAXSIZE; ++i ){
+		int people = family[i].people;
+		if( people > 0 ){
+			// 家族成员数肯定为正，否则家族为空
+			// 这里的i可以理解为某个家族的rootID
+			block++;
+			maxFamilyID = i;
+			family[i].avgSet = family[i].totalSet / people;
+			family[i].avgArea = family[i].totalArea / people;
+		}
+	}
+}
+
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, i, j, id, fID, mID, k, cID, rootID;
+	int n, id, fID, mID, cID, k;
 	cin>>n;
-	initFather();
-
-	for( i = 0; i < n; ++i ){
+	init();
+	for( int i = 0; i < n; ++i ){
 		cin>>id>>fID>>mID>>k;
 		info[i].set(id, fID, mID, k);
-		
-		marked[id] = true;
+		vis[id] = true;
+
 		if( fID != -1 ){
-			marked[fID] = true;
+			vis[fID] = true;
 			Union(fID, id);
 		}
 		if( mID != -1 ){
-			marked[mID] = true;
+			vis[mID] = true;
 			Union(mID, id);
 		}
 
-		for( j = 0; j < k; ++j ){
+		for( int j = 0; j < k; ++j ){
 			cin>>cID;
 			info[i].chID[j] = cID;
-			marked[cID] = true;
+			vis[cID] = true;
 			Union(cID, id);
 		}
 		cin>>info[i].mset>>info[i].area;
 	}
 
-	// 先统计每个家族有多少人
-	for( i = 0; i < MAXSIZE; ++i ){
-		// marked[i]为true，说明在输入的信息中出现过
-		if( marked[i] == true ){
-			// 查找i的根节点，记为rootID
-			rootID = findFather(i);
-			// 家族人数++
-			family[rootID].rootID = rootID;
-			family[rootID].people++;
-		}
-	}
+	// 先统计每个家族的总资产
+	calcProperty(n);
+
+	// 统计每个家族有多少人
+	int cntFamily, maxFamilyID;
+	cntBlockAndMaxID(cntFamily, maxFamilyID);
 	
-	// 然后累计各个家族的资产
-	for( i = 0; i < n; ++i ){
-		id = info[i].id;
-		rootID = findFather(id);
-		
-		// 每个家族，以 rootID 为基准，在 ans[rootID] 中累计资产情况
-		family[rootID].totalSet += info[i].mset;	// 套数
-		family[rootID].totalArea += info[i].area;	// 面积
-	}
-
-	int cntFamily = 0, maxID = 0;
-	for( i = 0; i < MAXSIZE; ++i ){
-		int people = family[i].people;
-		if( people > 0 ){
-			// 家族成员数肯定为正，否则家族为空
-			// 这里的i可以理解为某个家族的rootID
-			cntFamily++;
-			family[i].avgSet = family[i].totalSet / people;
-			family[i].avgArea = family[i].totalArea / people;
-			maxID = i;
-		}
-	}
-
-	sort( family, family + maxID + 1, cmp);
+	sort( family, family + maxFamilyID + 1, cmp);
 	cout<<cntFamily<<'\n';
-	for( i = 0; i < cntFamily; ++i ){
+	
+	for( int i = 0; i < cntFamily; ++i ){
 		cout<<setfill('0')<<setw(4)<<family[i].rootID<<' '<<family[i].people<<' ';
 		cout.setf(ios::fixed);
 		cout<<setprecision(3)<<family[i].avgSet<<' ';
