@@ -14,7 +14,7 @@ int get_gcd(int a, int b){
 int get_lcm(int a, int b){
 	int gcd = get_gcd(a, b);
 	if( gcd != 0 ){
-		return a * b / get_gcd(a, b)
+		return a * b / gcd;
 	}else{
 		return 0;
 	}
