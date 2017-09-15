@@ -54,52 +54,52 @@
 	首先保存所有输入元素到`originList[]`数组，并备份为`sorted[]`数组。
 
 	```cpp
-	for(i=0; i<n; i++){
-		cin>>originList[i];
-		sorted[i] = originList[i];
+	for( int i = 0; i < n; ++i ){
+		cin>>origin[i];
+		ordered[i] = origin[i];
 	}
 	```
 
 	主元是不动点，所以完全排序后位置也不变，因此我们先对备份数组进行排序，方便后面的位置比较。
 
 	```cpp
-	sort(sorted, sorted+n);
+	sort( ordered, ordered + n);
 	```
 
 	根据1和2，判断过程即为
 
 	```cpp
-	IF: originList[i]==sorted[i] and originList[i] is maxOfLeft
+	if( origin[i] == ordered[i] && origin[i] == maxOfLeft ){...}
 	```
 
 4.	动态更新
 
-	比较过程中还有一个关键点，就是`maxOfLeft`如何确定。
+	比较过程中还有一个关键点，就是 `maxOfLeft` 如何确定。
 
-	一种方法是，对于每一个`originList[i]`，都与它之前所有的元素进行一一对比
+	一种方法是，对于每一个`origin[i]`，都与它之前所有的元素进行一一对比
 
 	```cpp
-	bool isMax=true;
-	for(int j=0; j<i; j++){
-		if( originList[j]>originList[i] ){
+	bool isMax = true;
+	for( int j = 0; j < i; ++j ){
+		if( originList[j] > originList[i] ){
 			isMax = false;
 		}
 	}
 	if( isMax ){
-		//originList[i] is maxOfLeft
+		//origin[i] is maxOfLeft
 	}
 	```
 
-	不过这种方式太慢了，把比较过程的耗时从O(n)提升到了O(n^2)，无法通过测试点1和3。
+	不过这种方式显然太慢了，把比较过程的耗时从O(n)提升到了O(n^2)，无法通过测试点1和3。
 
 	优化的方法是动态更新`maxOfLeft`
 
 	```cpp
-	for( i=0; i<n; i++ ){
-		if( originList[i]==sorted[i] && originList[i]>maxOfLeft ){
-			ans[cnt++] = originList[i];
+	for( int i = 0; i < n; ++i ){
+		if( origin[i] == ordered[i] && origin[i] > maxOfLeft ){
+			ans.push_back(origin[i]);
 		}
-		maxOfLeft = max(maxOfLeft, originList[i]);
+		maxOfLeft = max( origin[i], maxOfLeft );
 	}
 	```
 
