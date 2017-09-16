@@ -1,6 +1,10 @@
-# How to make
+#	Preface
 
-* first write a `hello.c`, then
+任何问题都可以发表在Issue里面:)
+
+#	How to make
+
+*	first write a `hello.c`, then
 
 	```bash
 	$ make hello
@@ -8,7 +12,7 @@
 	```
 	to debug and test
 
-* Makefile basic format
+*	Makefile basic format
 
 	```bash
 	edit : main.o abc.o
@@ -28,5 +32,5 @@
 
 	```
 	$ make
-	$ make clean	
+	$ make clean
 	```
