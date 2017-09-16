@@ -1,6 +1,6 @@
 #	Preface
 
-任何问题都可以发表在Issue里面:)
+任何问题都可以发在 [Issues](https://github.com/jJayyyyyyy/cs/issues) 里面 :)
 
 #	How to make
 
