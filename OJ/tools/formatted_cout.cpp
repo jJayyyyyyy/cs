@@ -9,8 +9,8 @@ int main(){
 
 	double b = 3.141;
 	// 保留n位小数
-	cout.setf(ios::fixed);
-	cout<<setprecision(4)<<b<<'\n';
-	cout<<setprecision(2)<<b<<'\n';
+	// cout.setf(ios::fixed);
+	cout<<fixed<<setprecision(4)<<b<<'\n';
+	cout<<fixed<<setprecision(2)<<b<<'\n';
 	return 0;
 }
