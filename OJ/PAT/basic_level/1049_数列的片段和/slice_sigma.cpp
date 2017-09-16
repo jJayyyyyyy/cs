@@ -1,19 +1,19 @@
-#include <cstdio>
-#define MAX 100004
+#include <iostream>
+#include <iomanip>
 using namespace std;
 
 int main(){
-	double sigma=0.0, num=0.0;
-	int n, i;
-	scanf("%d", &n);
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	double sigma = 0.0, num = 0.0;
+	int n;
+	cin>>n;
 
-	for( i=1; i<=n; i++ ){
-		scanf("%lf", &num);
-		sigma += num*i*(n-i+1);
+	for( int i = 1; i <= n; ++i ){
+		cin>>num;
+		sigma += num * ( i + (n-i) * i );
 	}
-
-	printf("%.2f\n", sigma);
+	cout.setf(ios::fixed);
+	cout<<setprecision(2)<<sigma<<'\n';
 	return 0;
 }
-
-// 0.2*1*4 + 0.3*2*3 + 0.4*3*2
