@@ -1,65 +1,64 @@
 #include <iostream>
-#include <cmath>
 #include <vector>
 #include <iomanip>
-#define MAX 100004
+#include <cmath>
+#define MAXSIZE 100004
 using namespace std;
 
 struct Node{
-	int parent;
 	int level;
 	vector<int> children;
 	Node(){
-		parent = level = 0;
+		level = 0;
 	}
 };
 
-Node node[MAX];
-int maxLevel=0, maxCnt=1;
+Node node[MAXSIZE];
+int maxLevel=-1, maxCnt=0;
 
-int updateLevel(int root){
-	vector<int> children = node[root].children;
-	for(int i=0; i<children.size(); i++){
-		int iChild = children[i];
-		int iParent = node[iChild].parent;
-		node[iChild].level = node[iParent].level + 1;
-	
-		if( maxLevel < node[iChild].level ){
-			maxLevel = node[iChild].level;
-			maxCnt = 1;
-		}else if( maxLevel == node[iChild].level ){
-			maxCnt++;
-		}
-
-		updateLevel(iChild);
+void updateLevel(int root){
+	for( auto childID : node[root].children  ){
+		node[childID].level = node[root].level + 1;
+		updateLevel(childID);
 	}
-	return 0;
+}
+
+void getMaxLevel(int root){
+	if( 0 == node[root].children.size() ){
+		int level = node[root].level;
+		if( level > maxLevel ){
+			maxLevel = level;
+			maxCnt = 1;
+		}else if( level == maxLevel ){
+			++maxCnt;
+		}
+	}else{
+		for( auto childID : node[root].children ){
+			getMaxLevel(childID);
+		}
+	}
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	
-	int n, i, iParent, iChild, iRoot;
-	double price, rate, hPrice, hRate;
+	int n, id, root;
+	double price, rate;
 	cin>>n>>price>>rate;
-
-	for( i=0; i<n; i++ ){
-		cin>>iParent;
-		if( iParent == -1 ){
-			iRoot = i;
+	for( int i = 0; i < n; ++i ){
+		cin>>id;
+		if( id == -1 ){
+			root = i;
 		}else{
-			iChild = i;
-			node[iParent].children.push_back(iChild);
-			node[iChild].parent = iParent;
+			node[id].children.push_back(i);
 		}
 	}
 
-	updateLevel(iRoot);
-	hRate = pow(1.0+rate/100.00, maxLevel);
-	hPrice = price * hRate;
-
+	updateLevel(root);
+	getMaxLevel(root);
+	double maxRate = pow(1.0 + rate/100.0, maxLevel);
+	double maxPrice = price * maxRate;
 	cout.setf(ios::fixed);
-	cout<<setprecision(2)<<hPrice<<' '<<maxCnt<<'\n';
+	cout<<setprecision(2)<<maxPrice<<' '<<maxCnt<<'\n';
 	return 0;
 }
