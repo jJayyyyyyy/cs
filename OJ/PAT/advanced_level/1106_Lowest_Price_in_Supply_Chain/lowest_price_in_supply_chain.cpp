@@ -1,81 +1,63 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <iomanip>
-#define uint unsigned int
+#include <cmath>
 #define MAXSIZE 100004
 using namespace std;
 
-struct Node
-{
+struct Node{
 	int level;
 	vector<int> children;
-	Node()
-	{
+	Node(){
 		level = 0;
 	}
 };
 
-Node nodeList[MAXSIZE];
-int minLevel = MAXSIZE;
-int minCnt = 1;
+Node node[MAXSIZE];
+int minLevel=MAXSIZE, minCnt=1;
 
-int updateLevel(int iParent){
-	vector<int> children = nodeList[iParent].children;
-	for( uint i=0; i<children.size(); i++ ){
-		int iChild = children[i];
-		nodeList[iChild].level = nodeList[iParent].level + 1;
-		updateLevel(iChild);
+void updateLevel(int root){
+	for( auto childID : node[root].children  ){
+		node[childID].level = node[root].level + 1;
+		updateLevel(childID);
 	}
-	return 0;
 }
 
-int updateMinLevel(int iParent){
-	vector<int> children = nodeList[iParent].children;
-
-	if( 0 == children.size() ){
-		int level = nodeList[iParent].level;
+void getMinLevel(int root){
+	if( 0 == node[root].children.size() ){
+		int level = node[root].level;
 		if( level < minLevel ){
 			minLevel = level;
 			minCnt = 1;
-		}
-		else if( level == minLevel ){
-			minCnt++;
+		}else if( level == minLevel ){
+			++minCnt;
 		}
 	}else{
-		for( uint i=0; i<children.size(); i++ ){
-			int iChild = children[i];
-			updateMinLevel(iChild);
+		for( auto childID : node[root].children ){
+			getMinLevel(childID);
 		}
 	}
-
-	return 0;
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, i, j, k, child;
-	double price, lowPrice, rate, lowRate;
-
+	int n, k, id;
+	double price, rate;
 	cin>>n>>price>>rate;
-	for( i=0; i<n; i++ ){
+	for( int i = 0; i < n; ++i ){
 		cin>>k;
-		for( j=0; j<k; j++ ){
-			cin>>child;
-			if( 0 != child ){
-				nodeList[i].children.push_back(child);
-			}
+		for( int j = 0; j < k; ++j ){
+			cin>>id;
+			node[i].children.push_back(id);
 		}
 	}
+	
 	updateLevel(0);
-	updateMinLevel(0);
-
-	lowRate = pow(1.0+rate/100.0, minLevel);
-	lowPrice = price * lowRate;
-
+	getMinLevel(0);
+	double lowRate = pow(1.0 + rate/100.0, minLevel);
+	double lowPrice = price * lowRate;
 	cout.setf(ios::fixed);
 	cout<<setprecision(4)<<lowPrice<<' '<<minCnt<<'\n';
-
 	return 0;
 }
