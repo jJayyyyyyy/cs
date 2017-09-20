@@ -1,1 +1,3 @@
 [ref: https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1054_%E6%B1%82%E5%B9%B3%E5%9D%87%E5%80%BC](https://github.com/jJayyyyyyy/cs/tree/master/OJ/PAT/basic_level/1054_%E6%B1%82%E5%B9%B3%E5%9D%87%E5%80%BC)
+
+`cout<<fixed<<setprecision(2)<<var;` 是一个很方便的工具
