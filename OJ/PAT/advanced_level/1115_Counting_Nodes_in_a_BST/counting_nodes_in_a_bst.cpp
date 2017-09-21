@@ -3,8 +3,8 @@
 using namespace std;
 
 struct Node{
-	Node *lchild, *rchild;
 	int val, level;
+	Node *lchild, *rchild;
 	Node(int _val){
 		val = _val;
 		level = 1;
@@ -12,28 +12,26 @@ struct Node{
 	}
 };
 
-int maxLevel1=1, maxLevel2=0;
-int maxCnt1=0, maxCnt2=0;
+int maxLevel1 = -1, maxLevel2 = -1;
+int maxCnt1 = 0, maxCnt2 = 0;
 
-int insertBST(Node * &parent, int val){
-	if( NULL == parent ){
-		parent = new Node(val);
-		return 0;
+void insertBST(Node * & root, int val){
+	if( NULL == root ){
+		root = new Node(val);
+		return;
 	}
 
-	if( val <= parent->val ){
-		insertBST( parent->lchild, val );
+	if( val <= root->val ){
+		insertBST( root->lchild, val );
 	}else{
-		insertBST( parent->rchild, val );
+		insertBST( root->rchild, val );
 	}
-	return 0;
 }
 
-int levelTraverse(Node * &root){
-	int level=1;
+void levelTraverse(Node * root){
 	queue<Node *> q;
 	q.push(root);
-
+	int level = 1;
 	while( q.size() ){
 		Node * parent = q.front();
 		q.pop();
@@ -41,7 +39,6 @@ int levelTraverse(Node * &root){
 		if( level > maxLevel1 ){
 			maxLevel1 = level;
 		}
-
 		if( NULL != parent->lchild ){			
 			parent->lchild->level = level + 1;
 			q.push( parent->lchild );
@@ -52,39 +49,23 @@ int levelTraverse(Node * &root){
 		}
 	}
 	maxLevel2 = maxLevel1 - 1;
-
-	return 0;
 }
 
-int preTraverse(Node * &root){
-	if( NULL == root ){
-		return 0;
+void preTraverse(Node * root){
+	if( NULL != root ){
+		if( root->level == maxLevel1 ){
+			maxCnt1++;
+		}else if( root->level == maxLevel2 ){
+			maxCnt2++;
+		}
+		preTraverse(root->lchild);
+		preTraverse(root->rchild);
 	}
-
-	if( root->level == maxLevel1 ){
-		maxCnt1++;
-	}else if( root->level == maxLevel2 ){
-		maxCnt2++;
-	}
-	// cout<<root->val<<": "<<root->level<<'\t';
-	preTraverse(root->lchild);
-	preTraverse(root->rchild);
-	return 0;
-}
-
-int freeBST(Node * &parent){
-	if( NULL == parent ){
-		return 0;
-	}
-
-	freeBST(parent->lchild);
-	freeBST(parent->rchild);
-	delete parent;
 }
 
 int main(){
-	Node *root=NULL;
-	int n, i, val;
+	Node * root = NULL;
+	int n, val;
 	cin>>n;
 
 	if( 1 == n ){
@@ -92,18 +73,12 @@ int main(){
 		return 0;
 	}
 
-	for( i=0; i<n; i++ ){
+	for( int i = 0; i < n; ++i ){
 		cin>>val;
 		insertBST(root, val);
 	}
-
 	levelTraverse(root);
-	preTraverse(root);
-	// cout<<'\n';
-	// cout<<maxLevel1<<'\n'<<maxCnt1<<' '<<maxCnt2<<'\n';
+	preTraverse(root);	// 随便什么遍历都可以，只要能遍历整棵树，然后统计最下两层的结点数即可
 	cout<<maxCnt1<<" + "<<maxCnt2<<" = "<<maxCnt1+maxCnt2<<'\n';
-
-	freeBST(root);
-
 	return 0;
 }
