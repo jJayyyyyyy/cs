@@ -1,73 +1,74 @@
 #include <iostream>
-#include <queue>
 #include <vector>
+#include <queue>
 #define MAXSIZE 504
 using namespace std;
 
+bool vis[MAXSIZE] = {false};
 vector<int> G[MAXSIZE];
-bool visited[MAXSIZE] = {false};
 
 void BFS(int v){
 	queue<int> q;
 	q.push(v);
-	visited[v] = true;
-	while( q.size() > 0 ){
-		int now = q.front();
+	vis[v] = true;
+	while( q.size() ){
+		int nowV = q.front();
 		q.pop();
-		for( int i = 0; i < G[now].size(); ++i ){
-			int nextV = G[now][i];
-			if( visited[nextV] == false ){
+		for( int i = 0; i < G[nowV].size(); ++i ){
+			int nextV = G[nowV][i];
+			if( vis[i] == false ){
 				q.push(nextV);
-				visited[nextV] = true;
+				vis[nextV] = true;
 			}
 		}
 	}
 }
 
 void DFS(int v){
-	visited[v] = true;
-	for( int i = 0; i < G[v].size(); ++i ){
+	vis[v] = true;
+	for(int i = 0; i < G[v].size(); ++i ){
 		int nextV = G[v][i];
-		if( visited[nextV] == false ){
+		if( vis[nextV] == false ){
 			DFS(nextV);
 		}
 	}
 }
 
 bool checkConn(int n){
-	// BFS(1);
-	DFS(1);
+	int block = 0;
 	for( int i = 1; i <= n; ++i ){
-		if( visited[i] == false ){
-			return false;
+		if( vis[i] == false ){
+			DFS(1);
+			++block;
 		}
 	}
-	return true;
+	return (1 == block);
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, m, i, j, v1, v2;
+	int n, m, v1, v2;
 	cin>>n>>m;
-	for( i = 0; i < m; ++i ){
+	for( int i = 0; i < m; ++i ){
 		cin>>v1>>v2;
 		G[v1].push_back(v2);
 		G[v2].push_back(v1);
 	}
 
-	bool isConn = checkConn(n);	// 判断是否为连通图
+	bool isConn = checkConn(n);
 	int cntOdd = 0, isFirst = 1;
-	for( i = 1; i <= n; ++i ){
-		int cnt = G[i].size();
+	for( int i = 1; i <= n; ++i ){
+		int degree = G[i].size();
+		if( degree % 2 == 1 ){
+			++cntOdd;
+		}
+
 		if( isFirst ){
-			cout<<cnt;
+			cout<<degree;
 			isFirst = 0;
 		}else{
-			cout<<' '<<cnt;
-		}
-		if( cnt % 2 == 1 ){
-			cntOdd++;
+			cout<<' '<<degree;
 		}
 	}
 	if( cntOdd == 0 && isConn == true ){
