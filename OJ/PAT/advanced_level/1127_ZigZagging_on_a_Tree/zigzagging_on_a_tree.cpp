@@ -2,12 +2,13 @@
 #include <queue>
 #include <string>
 #include <stack>
-#define MAX 32
+#include <vector>
+#define MAXSIZE 32
 using namespace std;
 
 struct Node{
-	Node *lchild, *rchild;
 	int val, level;
+	Node *lchild, *rchild;
 	Node(int _val){
 		val = _val;
 		level = 1;
@@ -15,108 +16,79 @@ struct Node{
 	}
 };
 
-int postList[MAX]={0}, inList[MAX]={0};
-int n, ix=0;
-Node * outList[MAX];
+int post[MAXSIZE]={0}, in[MAXSIZE]={0};
+int n;
+vector<Node *> ans;
 stack<int> st;
 
-int r_output(){
+void r_output(){
 	while( st.size() ){
 		cout<<' '<<st.top();
 		st.pop();
 	}
-	return 0;
 }
 
-int output(){
-	cout<<outList[0]->val;
-
-	for( int i=0; i<n; i++ ){
-		if( outList[i]->level % 2 == 0 ){
+void output(){
+	cout<<ans[0]->val;
+	for( int i = 1; i < n; ++i ){
+		if( ans[i]->level % 2 == 0 ){
 			r_output();
-			cout<<' '<<outList[i]->val;
+			cout<<' '<<ans[i]->val;
 		}else{
-			st.push(outList[i]->val);
+			st.push(ans[i]->val);
 		}
 	}
 	r_output();
-	return 0;
+	cout<<'\n';
 }
 
-int levelTraverse(Node * root){
+void levelTraverse(Node * root){
 	queue<Node *> q;
 	q.push(root);
-
 	while( q.size() ){
-		Node * parent = q.front();
-		outList[ix++] = parent;
+		Node * node = q.front();
+		ans.push_back(node);
 		q.pop();
-		if( NULL != parent->lchild ){
-			parent->lchild->level = parent->level + 1;
-			q.push(parent->lchild);
+		if( NULL != node->lchild ){
+			node->lchild->level = node->level + 1;
+			q.push(node->lchild);
 		}
-		if( NULL != parent->rchild ){
-			parent->rchild->level = parent->level + 1;
-			q.push(parent->rchild);
+		if( NULL != node->rchild ){
+			node->rchild->level = node->level + 1;
+			q.push(node->rchild);
 		}
 	}
 	output();
-	return 0;
 }
 
-int insertTree(Node * &parent, int postLeft, int postRight, int inLeft, int inRight){
-	if( postLeft > postRight ){
-		return 0;
+void insert(Node * & root, int postL, int postR, int inL, int inR){
+	if( postL > postR ){
+		return;
 	}
+	int val = post[postR];
+	root = new Node(val);
 
-	parent = new Node(postList[postRight]);
 	int mid;
-	for( mid=inLeft; mid<=inRight; mid++ ){
-		if( inList[mid] == postList[postRight] ){
+	for( mid = inL; mid <= inR; ++mid ){
+		if( in[mid] == val ){
 			break;
 		}
 	}
-	int cntLeftTree = mid - inLeft;
-
-	int postLeftTreeStart = postLeft;
-	int postLeftTreeEnd = postLeft + cntLeftTree - 1;
-	int postRightTreeStart = postLeft + cntLeftTree;
-	int postRightTreeEnd = postRight - 1;
-
-	int inLeftTreeStart = inLeft;
-	int inLeftTreeEnd = mid - 1;
-	int inRightTreeStart = mid + 1;
-	int inRightTreeEnd = inRight;
-
-	insertTree(parent->lchild, postLeftTreeStart, postLeftTreeEnd, inLeftTreeStart, inLeftTreeEnd);
-	insertTree(parent->rchild, postRightTreeStart, postRightTreeEnd, inRightTreeStart, inRightTreeEnd);
-	// updateHeight(parent);
-	return 0;
-}
-
-int freeTree(Node * root){
-	if( NULL == root ){
-		return 0;
-	}
-	freeTree(root->lchild);
-	freeTree(root->rchild);
-	delete root;
-	return 0;
+	int numLeft = mid - inL;
+	insert(root->lchild, postL, postL+numLeft-1, inL, mid-1);
+	insert(root->rchild, postL+numLeft, postR-1, mid+1, inR);
 }
 
 int main(){
-	int i;
-
 	cin>>n;
-	for( i=0; i<n; i++ ){
-		cin>>inList[i];
+	for( int i = 0; i < n; ++i ){
+		cin>>in[i];
 	}
-	for( i=0; i<n; i++ ){
-		cin>>postList[i];
+	for( int i = 0; i < n; ++i ){
+		cin>>post[i];
 	}
 	Node * root = NULL;
-	insertTree(root, 0, n-1, 0, n-1);
+	insert(root, 0, n-1, 0, n-1);
 	levelTraverse(root);
-	freeTree(root);
 	return 0;
 }
