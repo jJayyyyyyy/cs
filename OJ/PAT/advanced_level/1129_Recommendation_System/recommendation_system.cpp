@@ -1,10 +1,7 @@
 #include <iostream>
 #include <set>
-#define MAXSIZE 50008
+#define MAXSIZE 50004
 using namespace std;
-
-// cntList[i] 表示id为i的商品，被用户点过的次数
-int cntList[MAXSIZE] = {0};
 
 struct Item{
 	int id, cnt;
@@ -24,16 +21,18 @@ struct Item{
 };
 
 set<Item> s;
+// cntList[i] 表示id为i的商品，被用户点过的次数
+int cntList[MAXSIZE] = {0};
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, k, i, id;
+	int n, k, id;
 	cin>>n>>k;
-	for( i = 0; i < n; ++i ){
+	for( int i = 0; i < n; ++i ){
 		cin>>id;
 		if( i != 0 ){
-			cout<<id<<':';
+			cout<<id<<":";
 			int j = 0;
 			for( auto it = s.begin(); it != s.end() && j < k; ++it, ++j ){
 				cout<<' '<<it->id;
