@@ -1,5 +1,6 @@
 // AVL模板
 #include <algorithm>
+using namespace std;
 
 struct Node{
 	Node *lchild, *rchild;
@@ -78,4 +79,8 @@ void insertVAL(Node * & root, int val){
 			}
 		}
 	}
+}
+
+int main(){
+	return 0;
 }
