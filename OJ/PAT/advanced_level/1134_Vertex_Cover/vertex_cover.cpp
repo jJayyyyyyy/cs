@@ -29,6 +29,7 @@ int main(){
 		for( int i = 0; i < nv; ++i ){
 			cin>>vid;
 			for( auto eid : edgeOfV[vid] ){
+				// 标记与顶点vid相连的每条边eid
 				visEdge[eid] = true;
 			}
 		}
