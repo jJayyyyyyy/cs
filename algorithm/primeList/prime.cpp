@@ -1,9 +1,13 @@
+#include <iostream>
 #include <cmath>
-#define MAXSIZE 10005
+#include <ctime>
+#define MAXSIZE 1000001
+using namespace std;
 
+// 筛表法，找出MAXSIZE以内的素数，注意MAXSIZE应为奇数
 int primeList[MAXSIZE] = {0, 0, 1};
 
-void init(){
+void getPrimeList(){
     int i, j;
 	for( i = 3; i < MAXSIZE; i += 2 ){
 		primeList[i] = 1;
@@ -18,4 +22,15 @@ void init(){
 			}
 		}
 	}
+}
+
+int main(){
+	clock_t begin, end;
+	
+	begin = clock();
+	getPrimeList();
+	end = clock();
+	
+	cout<<(end - begin)/CLOCKS_PER_SEC;
+	return 0;
 }
