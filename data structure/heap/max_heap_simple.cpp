@@ -1,48 +1,58 @@
 #include <iostream>
+#include <algorithm>
 #define MAXSIZE 16
 using namespace std;
 
-// 每棵子树从上往下调整，使CBT成为最大堆
-void adjustHeap(int hp[], int parent, int len){
-	// 数组范围是 [1, n]
-	int child = parent * 2;
-	while( child <= len ){
-		int left = child, right = child + 1;
-		if( right <= len ){
-			// 改变这里和下面的[<], 换成[>], 就构成了最小堆
-			if( hp[left] < hp[right] ){
-				child = right;
+// 注意，CBT数组范围是 [1, n]
+
+// 调整子树，使其成为大根堆
+void DownAdjust(int hp[], int parent, int len){
+	// 子树，从根到叶进行调整
+	for(int child = parent*2; child <=len; parent = child, child = parent*2 ){
+		int lchild = child, rchild = child + 1;
+		if( rchild <= len ){
+			if( hp[lchild] < hp[rchild] ){
+				// 选出左右孩子中，更大的那个
+				child = rchild;
 			}
 		}
-		// 改变这里和上面的[<], 换成[>], 就构成了最小堆
+		
 		if( hp[parent] < hp[child] ){
+			// 小元素下沉，大元素上调
+			// 如果孩子比父亲大，就交换元素	
 			swap( hp[parent], hp[child] );
-			parent = child;
-			child = parent * 2;
 		}else{
+			// 否则，子树已经成为最大堆，退出
 			break;
 		}
 	}
 }
 
-// 这是最大堆，树根元素hp[1]最大
-// 不断把树根放到数组最后，然后对[1, i-1]进行堆化adjustHeap
-// 也就是大的放到后面，这样，最后就能得到一个递增序列
-void heapSort(int hp[], int len){
-	for( int i = len / 2; i >= 1; --i ){
-		// 从最后一个结点开始, 向上找parent
-		// 以parent为根，向下进行堆化
-		adjustHeap(hp, i, len);
+void SortHeap(int hp[], int len){
+	/*
+	 * 按照 [len/2, 1] 的逆序，以每个节点为根
+	 * 对子树进行从根到叶的调整，使每个子树都成为最大堆
+	 * 先完成一轮堆化，使整棵树为最大堆
+	*/
+	for( int root = len / 2; root >= 1; root-- ){
+		DownAdjust(hp, root, len);
 	}
-	for( int i = len; i > 1; --i ){
+	
+	/*
+	 * 大根堆的hp[1]是整棵树最大的元素，把它与数组最后的元素交换，
+	 * 然后对[1, len-1] 重新进行堆化，构造大根堆
+	 * 重复上述过程，最后就能得到一个递增数组
+	*/
+	for( int end = len; end > 1; end-- ){
 		// 把大的放到后面
-		swap( hp[1], hp[i] );
-		// 重新堆化 [1, i-1] 
-		adjustHeap(hp, 1, i - 1);
+		int root = 1;
+		swap( hp[root], hp[end] );
+		// 重新堆化 [1, i-1]
+		DownAdjust(hp, root, end - 1);
 	}
 }
 
-void getHeap(int hp[], int len){
+void PrintHeap(int hp[], int len){
 	for( int i = 1; i <= len; ++i ){
 		cout<<hp[i]<<' ';
 	}
@@ -54,8 +64,8 @@ int main(){
 	int hp[MAXSIZE] = { -1, 5, 4, 1, 2, 3, 6, 9, 10, 8, 7 };
 	int len = 10;
 	// 数组范围是 [1, n], 不从0开始
-	getHeap(hp, len);
-	heapSort(hp, len);
-	getHeap(hp, len);
+	PrintHeap(hp, len);
+	SortHeap(hp, len);
+	PrintHeap(hp, len);
 	return 0;
 }
