@@ -7,6 +7,9 @@
 #include <iostream>
 using namespace std;
 
+// 注意，一旦建好了map或者set，要想调整必须先erase原来的元素再重新插入，否则没法改变树的结构
+// 或者，以string为key进行输入，主要用于去重。输入完成后，全部导出到vector，进行第二关键字的排序
+// 参照
 void usage_map(){
 	map<string, int> m;
 	m["hello"] = 1;
@@ -16,7 +19,7 @@ void usage_map(){
 	}
 }
 
-
+// 注意，一旦建好了map或者set，要想调整必须先erase原来的元素再重新插入，否则没法改变树的结构
 void usage_set(){
 	set<int> s;
 	s.insert(123);
@@ -66,6 +69,8 @@ void usage_string(){
 	cout<<s1.find('l');
 	cout<<s1.find_last_of('l');
 	string s3 = s1.substr(3, 2);
+	string s4 = s1;
+	reverse(s4.begin(), s4.end());
 }
 
 // PAT_A_1085
