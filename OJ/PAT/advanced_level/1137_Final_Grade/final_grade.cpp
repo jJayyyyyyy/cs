@@ -1,45 +1,47 @@
 #include <iostream>
-#include <string>
-#include <map>
-#include <vector>
 #include <algorithm>
+#include <string>
+#include <vector>
+#include <map>
 using namespace std;
 
 struct Student{
 	string id;
-	int g0, g1, g2, final, pass;
+	int gOP, gMid, gFinal, gTotal, pass;
 	Student(){
-		g0 = g1 = g2 = final = pass = -1;
+		gOP = gMid = gFinal = gTotal = pass = -1;
 	}
 };
 
+// map<id, Student>
+map<string, Student> mStu;
+
+// vStu, list
 vector<Student> stuList;
-map<string, Student> m;
+
+int getRound(int x){
+	if( x % 10 >= 5 ){
+		return x/10 + 1;
+	}else{
+		return x/10;
+	}
+}
+
+void getFinal(Student & stu){
+	if( stu.gMid > stu.gFinal ){
+		stu.gTotal = getRound(stu.gMid * 4 + stu.gFinal * 6);
+	}else{
+		stu.gTotal = stu.gFinal;
+	}
+}
 
 int cmp(Student a, Student b){
 	if( a.pass != b.pass ){
 		return a.pass > b.pass;
-	}else if( a.final != b.final ){
-		return a.final > b.final;
+	}else if( a.gTotal != b.gTotal ){
+		return a.gTotal > b.gTotal;
 	}else{
 		return a.id < b.id;
-	}
-}
-
-int GetRound(int x){
-	if( x % 10 >= 5 ){
-		x = x/10 + 1;
-	}else{
-		x = x/10;
-	}
-	return x;
-}
-
-void GetFinal(Student & stu){
-	if( stu.g1 > stu.g2 ){
-		stu.final = GetRound( stu.g1 * 4 + stu.g2 * 6 );
-	}else{
-		stu.final = stu.g2;
 	}
 }
 
@@ -47,42 +49,56 @@ int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 
-	int n1, n2, n3, g0, g1, g2;
+	int p, m, n;
+	int gOP, gMid, gFinal;
 	string id;
 
-	cin>>n1>>n2>>n3;
-	for( int i = 0; i < n1; i++ ){
-		cin>>id>>g0;
-		m[id].id = id;
-		m[id].g0 = g0;
+	cin>>p>>m>>n;
+	// OP
+	for( int i = 0; i < p; i++ ){
+		cin>>id>>gOP;
+		// 直接可以构造
+		mStu[id].id = id;
+		mStu[id].gOP = gOP;
 	}
-	for( int i = 0; i < n2; i++ ){
-		cin>>id>>g1;
-		m[id].id = id;
-		m[id].g1 = g1;
+
+	// mid
+	for( int i = 0; i < m; i++ ){
+		cin>>id>>gMid;
+		mStu[id].id = id;
+		mStu[id].gMid = gMid;
 	}
-	for( int i = 0; i < n3; i++ ){
-		cin>>id>>g2;
-		m[id].id = id;
-		m[id].g2 = g2;
+
+	// final
+	for( int i = 0; i < n; i++ ){
+		cin>>id>>gFinal;
+		// 直接可以构造
+		mStu[id].id = id;
+		mStu[id].gFinal = gFinal;
 	}
-	for( auto & item : m ){
-		stuList.push_back(item.second);
+
+	// 先存放到线性的vector
+	for( auto & stu : mStu ){
+		stuList.push_back(stu.second);
 	}
-	for( auto & item : stuList ){
-		if( item.g0 >= 200 ){
-			GetFinal(item);
-			if( item.final >= 60 ){
-				item.pass = 1;
+
+	// 计算gTotal，并判断是否pass
+	for( auto & stu : stuList ){
+		if( stu.gOP >= 200 ){
+			getFinal(stu);
+			if( stu.gTotal >= 60 ){
+				stu.pass = 1;
 			}
 		}
 	}
 
 	sort(stuList.begin(), stuList.end(), cmp);
-	for( auto & item : stuList ){
-		if( item.pass == 1 ){
-			cout<<item.id<<' '<<item.g0<<' '<<item.g1<<' '<<item.g2<<' '<<item.final<<'\n';
+	cout<<"\n\n";
+	for( auto & stu : stuList ){
+		if( stu.pass == 1 ){
+			cout<<stu.id<<' '<<stu.gOP<<' '<<stu.gMid<<' '<<stu.gFinal<<' '<<stu.gTotal<<'\n';
 		}
 	}
+
 	return 0;
 }
