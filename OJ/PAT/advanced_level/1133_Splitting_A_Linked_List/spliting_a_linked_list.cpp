@@ -5,57 +5,83 @@
 using namespace std;
 
 struct Node{
-	int val, addr, next;
-	void set(int _val, int _addr, int _next){
-		val = _val;
-		addr = _addr;
-		next = _next;
+	int addr, val, next;
+	Node(){}
+	Node(int a, int v, int n){
+		addr = a;
+		val = v;
+		next = n;
 	}
 };
 
-vector<Node> negative, mid, post, ans;
-Node node[MAXSIZE];
+Node raw_list[MAXSIZE];
+vector<Node> linked_list, before, mid, after, ans;
+
+void disp_addr(int addr){
+	cout<<setw(5)<<setfill('0')<<addr;
+}
+
+void disp_val(int val){
+	cout<<' '<<val<<' ';
+}
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, k, start, addr, val, next;
+
+	int start, n, k, i;
+	int addr, val, next;
+
 	cin>>start>>n>>k;
-	for( int i = 0; i < n; ++i ){
+	// step1
+	for( i = 0; i < n; i++ ){
 		cin>>addr>>val>>next;
-		node[addr].set(val, addr, next);
+		raw_list[addr] = Node(addr, val, next);
 	}
 
-	while( start != -1 ){
-		Node tmp = node[start];
-		start = tmp.next;
-		if( tmp.val < 0 ){
-			negative.push_back(tmp);
-		}else if( tmp.val <= k ){
-			mid.push_back(tmp);
+	// step2
+	addr = start;
+	while(addr != -1){
+		Node node = raw_list[addr];
+		linked_list.push_back(node);
+		addr = node.next;
+	}
+
+	// step3
+	for( auto & node : linked_list ){
+		val = node.val;
+		if( node.val < 0 ){
+			before.push_back(node);
+		}else if( node.val <= k ){
+			mid.push_back(node);
 		}else{
-			post.push_back(tmp);
+			after.push_back(node);
 		}
 	}
 
-	for( const auto & item : negative ){
-		ans.push_back(item);
+	// step4
+	for( auto & node : before ){
+		ans.push_back(node);
 	}
-	for( const auto & item : mid ){
-		ans.push_back(item);
+	for( auto & node : mid ){
+		ans.push_back(node);
 	}
-	for( const auto & item : post ){
-		ans.push_back(item);
+	for( auto & node : after ){
+		ans.push_back(node);
 	}
 
-	int i = 0;
-	for( i = 0; i < ans.size() - 1; ++i ){
-		cout<<setw(5)<<setfill('0')<<ans[i].addr;
-		cout<<' '<<ans[i].val<<' ';
-		cout<<setw(5)<<setfill('0')<<ans[i + 1].addr<<'\n';
+	// step5
+	int len = ans.size();
+	for( i = 0; i < len - 1; i++ ){
+		disp_addr(ans[i].addr);
+		disp_val(ans[i].val);
+		disp_addr(ans[i+1].addr);
+		cout<<'\n';
 	}
-	cout<<setw(5)<<setfill('0')<<ans[i].addr;
-	cout<<' '<<ans[i].val<<" -1\n";
 
+	disp_addr(ans[i].addr);
+	disp_val(ans[i].val);
+	cout<<"-1\n";
 	return 0;
 }
+
