@@ -1,55 +1,52 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 struct Node{
 	int x, y;
-	Node(int _x, int _y){
-		x = _x;
-		y = _y;
+	Node(int a, int b){
+		x = a;
+		y = b;
 	}
 };
 
-int getD(int x1, int x2){
-	if( x1 > x2 ){
-		return x1 - x2;
-	}else{
-		return x2 - x1;
-	}
+int get_len(int x1, int x2){
+	return abs(x1 - x2);
 }
 
-bool isDiag(Node a, Node b){
-	int X = getD(a.x, b.x);
-	int Y = getD(a.y, b.y);
-	return X == Y;
+bool same_diag(Node a, Node b){
+	int x = get_len(a.x, b.x);
+	int y = get_len(a.y, b.y);
+	return x == y;
 }
 
-bool isLine(Node a, Node b){
+bool same_row(Node a, Node b){
 	return a.y == b.y;
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int k, n, i, j, x, y, a, b;
-	cin>>k;
 
-	for( i = 0; i < k; ++i ){
-		vector<Node> v;
+	int k, n, query, x, y;
+	cin>>k;
+	for( query = 0; query < k; query++ ){
+		vector<Node> node_list;
 		cin>>n;
-		for( x = 1; x <= n; ++x ){
+		for( x = 1; x <= n; x++ ){
 			cin>>y;
-			Node node(x, y);
-			v.push_back(node);
+			node_list.push_back(Node(x, y));
 		}
+
 		bool solution = true;
-		for( a = 0; a < n; ++a ){
-			for( b = a + 1; b < n; ++b ){
-				if( isDiag(v[a], v[b]) ){
+		for( int i = 0; i < n; i++ ){
+			for( int j = i+1; j < n; j++ ){
+				if( same_diag(node_list[i], node_list[j]) ){
 					solution = false;
 					break;
 				}
-				if( isLine(v[a], v[b]) ){
+				if( same_row(node_list[i], node_list[j]) ){
 					solution = false;
 					break;
 				}
@@ -58,7 +55,7 @@ int main(){
 				break;
 			}
 		}
-		if( solution == false ){
+		if( solution == false){
 			cout<<"NO\n";
 		}else{
 			cout<<"YES\n";
