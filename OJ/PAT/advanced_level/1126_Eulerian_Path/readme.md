@@ -8,34 +8,36 @@
 	
 *   以上方法，仍有一个case无法通过，猜测是给定的所有顶点形成了多个（互不连通的）图，所以需要先检查图的连通性。
 
+*	原解法基于BFS，本题与1013 Battle Over Cities类似
+
+*	20170818增加DFS解法。
+
+	推荐使用 `邻接链表` + `DFS` 的形式，代码简洁好记。
+
 	```cpp
-	bool visit[MAXSIZE] = {false};
-	
-	bool checkConn(int v, int n){
-		queue<int> q;
-		q.push(v);
-		visit[v] = true;
-		while( q.size() > 0 ){
-			int u = q.front();
-			q.pop();
-			for( int i = 1; i <= n; ++i ){
-				if( visit[i] == false && G[u][i] != 0 ){
-					q.push(i);
-					visit[i] = true;
-				}
+	/* DFS
+	** param @v --- 节点ID, 也可写成vid
+	*/
+	void DFS(int v){
+		vis[v] = true;
+		for( int i = 0; i < G[v].size(); i++ ){
+			int nextV = G[v][i];
+			if( vis[nextV] == false ){
+				DFS(nextV);
 			}
 		}
-		for( int i = 1; i <= n; ++i ){
-			if( visit[i] == false ){
+	}
+	
+	/* 只看是否连同
+	** param @n --- 总的节点数, [1, n]
+	*/
+	bool isConn(int n){
+		DFS(1);
+		for( int i = 1; i <= n; i++ ){
+			if( vis[i] == false ){
 				return false;
 			}
 		}
 		return true;
 	}
 	```
-	
-*	原解法基于BFS，本题与1013 Battle Over Cities类似
-
-*	20170818增加DFS解法。
-
-	推荐使用 `邻接链表` + `DFS` 的形式，代码简洁好记。

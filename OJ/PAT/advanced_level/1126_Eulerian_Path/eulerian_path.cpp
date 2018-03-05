@@ -34,15 +34,15 @@ void DFS(int v){
 	}
 }
 
+// 是否形成了连通图
 bool checkConn(int n){
-	int block = 0;
-	for( int i = 1; i <= n; ++i ){
+  	DFS(1);
+	for( int i = 1; i <= n; i++ ){
 		if( vis[i] == false ){
-			DFS(1);
-			++block;
+			return false;
 		}
 	}
-	return (1 == block);
+	return true;
 }
 
 int main(){
@@ -50,27 +50,39 @@ int main(){
 	cin.tie(0);
 	int n, m, v1, v2;
 	cin>>n>>m;
+	
+	// 先输入所有节点和边
 	for( int i = 0; i < m; ++i ){
 		cin>>v1>>v2;
 		G[v1].push_back(v2);
 		G[v2].push_back(v1);
 	}
 
+	// 检查是否形成了连通图
 	bool isConn = checkConn(n);
-	int cntOdd = 0, isFirst = 1;
+	
+	vector<int> ans;
+	int cntOdd = 0;
 	for( int i = 1; i <= n; ++i ){
 		int degree = G[i].size();
 		if( degree % 2 == 1 ){
 			++cntOdd;
 		}
-
+		// 先存入 ans，逻辑管逻辑，输出管输出	
+		ans.push_back(degree);
+	}
+	
+	int isFirst = 1;
+	// 输出每个节点的度
+	for( int i = 0; i < ans.size(); i++ ){
 		if( isFirst ){
-			cout<<degree;
+			cout<<ans[i];
 			isFirst = 0;
 		}else{
-			cout<<' '<<degree;
+			cout<<' '<<ans[i];
 		}
 	}
+	
 	if( cntOdd == 0 && isConn == true ){
 		cout<<"\nEulerian\n";
 	}else if( cntOdd == 2 && isConn == true ){
