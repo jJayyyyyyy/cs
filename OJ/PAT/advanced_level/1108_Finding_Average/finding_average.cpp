@@ -1,51 +1,99 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cctype>
+#include <cmath>
 #include <iomanip>
 using namespace std;
 
-int string2double2string(const string &str1, double &num, string &str2){
-	stringstream ss1, ss2;
-	ss1<<str1;
-	ss1>>num;
-	ss2<<fixed<<setprecision(2)<<num;
-	ss2>>str2;
-	return 0;
+bool checkPointer(string num){
+	int cntPointer = 0;
+	for( auto ch : num ){
+		if( ch == '.' ){
+			cntPointer++;
+		}
+	}
+	return cntPointer <= 1;
+}
+
+bool checkDigit(string num){
+	int len = num.size();
+	for( int i = 0; i < len; i++ ){
+		char ch = num[i];
+		if( i == 0 && ch == '-' ){
+			continue;
+		}
+		if( ch != '.' ){
+			if( !isdigit(ch) ){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool checkAccu(string num){
+	int len = num.size();
+	int i;
+	for( i = 0; i < len; i++ ){
+		char ch = num[i];
+		if( ch == '.' ){
+			break;
+		}
+	}
+	return ( i >= len - 3 );
+}
+
+double str2num(string num){
+	stringstream ss(num);
+	double tmp;
+	ss>>tmp;
+	return tmp;
+}
+
+bool checkRange(string num){
+	double up=1000.0, low=-1000.0;
+	double tmp = str2num(num);
+	return ( tmp >= low && tmp <= up );
 }
 
 int main(){
-	int n, i=0, j=0, cnt=0;
-	double sigma=0.0;
+	int total;
+	cin>>total;
 
-	cin>>n;
-	for( i=0; i<n; i++ ){
-		string numOut, numIn;
-		double num=0.0;
-		int isEqual = 1;
-
-		cin>>numIn;
-
-		string2double2string(numIn, num, numOut);
-		for( j=0; j<numIn.size(); j++ ){
-			if( numIn[j] != numOut[j] ){
-				isEqual = 0;
+	string num;
+	double sum = 0.0;
+	int cnt = 0;
+	for( int i = 0; i < total; i++ ){
+		bool valid = false;
+		cin>>num;
+		if( checkPointer(num) ){
+			if( checkDigit(num) ){
+				if( checkAccu(num) ){
+					if( checkRange(num) ){
+						valid = true;
+						cnt++;
+						sum += str2num(num);
+					}
+				}
 			}
 		}
-		
-		if( isEqual==0 || num<-1000 || num>1000 ){
-			cout<<"ERROR: "<<numIn<<" is not a legal number\n";
-		}else{
-			sigma += num;
-			cnt++;
+
+		if( valid == false ){
+			cout<<"ERROR: "<<num<<" is not a legal number\n";
 		}
 	}
 
-	if( cnt > 1 ){
-		cout<<"The average of "<<cnt<<" numbers is "<<fixed<<setprecision(2)<<sigma/cnt<<'\n';
-	}else if( cnt == 1 ){
-		cout<<"The average of 1 number is "<<fixed<<setprecision(2)<<sigma<<'\n';
-	}else{
+	if( cnt == 0 ){
 		cout<<"The average of 0 numbers is Undefined\n";
+	}else if( cnt == 1 ){
+		cout<<"The average of 1 number is ";
+		cout<<fixed<<setprecision(2)<<sum<<'\n';
+		// 12.00 should be 12.00, not 12
+	}else{
+		cout<<"The average of "<<cnt<<" numbers is ";
+		double avg = sum / cnt;
+		cout<<fixed<<setprecision(2)<<avg<<'\n';
 	}
 
 	return 0;
