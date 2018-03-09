@@ -1,68 +1,72 @@
 #include <iostream>
-#include <stack>
-#define MAXSIZE 50001
+#define MAXSIZE 50004
 using namespace std;
 
 struct Node{
-	int val=0;
-	Node *lchild=NULL, *rchild=NULL;
+	int val;
+	Node *lchild, *rchild;
 	Node(int _val){
 		val = _val;
+		lchild = rchild = NULL;
 	}
 };
 
 int pre[MAXSIZE], in[MAXSIZE], isFirst=1;
 
-// 1086, 先序+中序，造树
-Node * preInCreate(int preL, int preR, int inL, int inR){
+// 参数都是 pre 或 in 的下标
+// 范围 [L, R]，闭区间
+Node * inPre(int inL, int inR, int preL, int preR){
 	if( preL > preR ){
 		return NULL;
 	}
-	int val = pre[preL];
+	int val = pre[preL]; // root的值
 	Node * root = new Node(val);
 
-	int mid;
-	for( mid = inL; mid <= inR; ++mid ){
+	int mid;	// 寻找 in 中序的root
+	for( mid = inL; mid <= inR; mid++ ){
 		if( in[mid] == val ){
 			break;
 		}
 	}
+
 	int numLeft = mid - inL;
-	root->lchild = preInCreate(preL+1, preL+numLeft, inL, mid-1);
-	root->rchild = preInCreate(preL+numLeft+1, preR, mid+1, inR);
+	// 前序，每个子序列的第一个节点，就是子树的根
+	root->lchild = inPre(inL, mid-1, preL+1, preL+numLeft);
+	root->rchild = inPre(mid+1, inR, preL+numLeft+1, preR);
 	return root;
 }
 
-void disp(Node * p){
+void visit(int val){
 	if( isFirst ){
+		cout<<val<<'\n';
 		isFirst = 0;
-		cout<<p->val<<'\n';
 	}
 }
 
-void postTraverse(Node * root){
-	if( root != NULL && isFirst == 1 ){
-		postTraverse(root->lchild);
-		postTraverse(root->rchild);
-		disp(root);
+void postTrav(Node * root){
+	if( root != NULL && isFirst ){
+		postTrav(root->lchild);
+		postTrav(root->rchild);
+		visit(root->val);
 	}
 }
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, i;
-	
+	int n;
+
 	cin>>n;
-	for( i = 0; i < n; i++ ){
+	for( int i = 0; i < n; i++ ){
 		cin>>pre[i];
 	}
-	for( i = 0; i < n; i++ ){
+
+	for( int i = 0 ; i < n; i++ ){
 		cin>>in[i];
 	}
-	
+
 	Node * root = NULL;
-	root = preInCreate(0, n-1, 0, n-1);
-	postTraverse(root);
+	root = inPre(0, n-1, 0, n-1);
+	postTrav(root);
 	return 0;
 }
