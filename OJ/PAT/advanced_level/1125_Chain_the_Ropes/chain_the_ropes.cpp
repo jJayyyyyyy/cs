@@ -3,22 +3,25 @@
 #define MAXSIZE 10004
 using namespace std;
 
-int rope[MAXSIZE] = {0};
+int ropeList[MAXSIZE];
 
 int main(){
-	int n, i;
-	cin>>n;
-	for( i = 0; i < n; ++i ){
-		cin>>rope[i];
-	}
-	sort( rope, rope + n);
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 
-	int len = rope[0];
-	for( i = 1; i < n; ++i ){
-		len = (len  + rope[i]) / 2;
+	int total;
+	cin>>total;
+	for( int i = 0; i < total; i++ ){
+		cin>>ropeList[i];
 	}
 
-	cout<<len<<'\n';
+	sort(ropeList, ropeList+total);
+
+	double sum = ropeList[0];
+	for( int i = 1; i < total; i++ ){
+		sum = sum/2.0 + ropeList[i]/2.0;
+	}
+	cout<<int(sum)<<'\n';
 
 	return 0;
 }
