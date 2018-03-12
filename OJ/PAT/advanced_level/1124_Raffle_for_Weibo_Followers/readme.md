@@ -1,21 +1,26 @@
-*	结合STL的set，就很简单了。
+1.  先录入全部数据, 得到 raw_list
 
-	```cpp
-	s.insert(var);			// 插入元素
-	s.find(var) != s.end()	// 判断元素是否存在于set
-	```
+2.  如果起点下标大于总人数
 
-```cpp
-for( i = 1; i <= m; ++i ){
-	cin>>nickname;
-	if( i == st ){
-		if( win.find(nickname) == win.end() ){	// 如果没有中过奖
-			cout<<nickname<<'\n';
-			win.insert(nickname);
-			st += step;
-		}else{		// 该用户已经中过奖了，那么就判断下一位
-			st++;
-		}
-	}
-}
-```
+    ```cpp
+    if( start > total ){
+        cout<<"Keep going...\n";
+        return 0;
+    }
+    ```
+
+3.  否则，按照规则，把得奖者加入 winner_list, 和 winner_set，后者用于去重
+
+4.  输出 winner_list
+
+5.  PS: set的用法
+
+    ```cpp
+    set<string> winner_set;
+
+    winner_set.insert(name); // 插入
+
+    if( winner_set.find(name) == winner_set.end() ){
+        // 如果这个名字还不是得奖者
+    }
+    ```
