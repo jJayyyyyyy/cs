@@ -5,43 +5,51 @@
 using namespace std;
 
 vector<int> edgeOfV[MAXSIZE];
-bool visEdge[MAXSIZE];
+bool visE[MAXSIZE];
+
+void init(){
+	fill(visE, visE + MAXSIZE, false);
+}
 
 int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	int n, m, k, v1, v2;
+	
+	int n, m;
 	cin>>n>>m;
-	for( int i = 0; i < m; ++i ){
+	
+	int v1, v2;
+	for( int eID = 0; eID < m; ++eID ){
 		cin>>v1>>v2;
-		edgeOfV[v1].push_back(i);	// 保存与节点v1相连的边
-		edgeOfV[v2].push_back(i);
+		
+		// 给每条边编号, [0, m-1]
+		edgeOfV[v1].push_back(eID);	// 保存与节点v1相连的边
+		edgeOfV[v2].push_back(eID);
 	}
 	
-	cin>>k;
-	for( int query = 0; query < k; ++query ){
+	int cntQuery, k, v3;
+	cin>>cntQuery;
+	for( int q = 0; q < cntQuery; q++ ){
 		// 初始化，使每条边的状态为未访问
-		fill(visEdge, visEdge + m, false);
-		bool isCover = true;
-		int nv, vid, eid;
-
-		cin>>nv;
-		for( int i = 0; i < nv; ++i ){
-			cin>>vid;
-			for( auto eid : edgeOfV[vid] ){
+		init();
+		
+		cin>>k;
+		for( int i = 0; i < k; i++ ){
+			cin>>v3;
+			for( auto eID : edgeOfV[v3] ){
 				// 标记与顶点vid相连的每条边eid
-				visEdge[eid] = true;
+				visE[eID] = true;
 			}
 		}
-
-		for( int i = 0; i < m; ++i ){
+		
+		bool isCover = true;
+		for( int eID = 0; eID < m; eID++ ){
 			// 如果还存在没有没有被访问过的边，说明不能cover
-			if( visEdge[i] == false ){
+			if( visE[eID] == false ){
 				isCover = false;
 				break;
 			}
 		}
-
 		if( isCover == true ){
 			cout<<"Yes\n";
 		}else{
