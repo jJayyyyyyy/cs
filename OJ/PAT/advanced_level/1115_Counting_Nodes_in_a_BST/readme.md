@@ -1,6 +1,6 @@
 ##  思路
 
-1.  建树
+1.  先建立BST，建完之后再用层序法，自上而下更新 level
 
 2.  `levelTraverse()`，更新每个结点的level，并得到`maxLevel1`，`maxLevel2 = maxLevel1 -1`，即`the lowest 2 levels`
 
