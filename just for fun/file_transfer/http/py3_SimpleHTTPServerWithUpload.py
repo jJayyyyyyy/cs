@@ -31,9 +31,6 @@ import shutil
 import mimetypes
 import re
 
-class oneFinish(Exception):
-	pass
-
 class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
 	"""Simple HTTP request handler with GET/HEAD/POST commands.
@@ -121,7 +118,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 		line = self.rfile.readline()
 
 		while loop_info == outer:
-			print(line)
+			# print(line)
 			line = line
 			if line != boundary_begin:
 				return_status = False
@@ -131,9 +128,9 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 			# get filename
 			# b'Content-Disposition: form-data; name="file"; filename="file1.txt"'
 			line = self.rfile.readline().decode('utf-8').rstrip('\r\n')
-			print(line)
+			# print(line)
 			filename = re.findall(r'filename="(.*)"', line)[0]
-			print(filename)
+			# print(filename)
 			if not filename:
 				return_status = False
 				return_info += "Can't find out file name...\n"
@@ -148,11 +145,11 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 			# second line
 			# b'Content-Type: text/plain'
 			line = self.rfile.readline()
-			print(line)
+			# print(line)
 
 			# blank line
 			line = self.rfile.readline()
-			print(line)
+			# print(line)
 
 			loop_info = inner
 			# POST data
@@ -160,20 +157,19 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 				with open(filename, 'wb') as f:
 					while loop_info == inner:
 						line = self.rfile.readline()
-						print(line)
+						# print(line)
 						if line == boundary_begin:
 							loop_info = outer
-							print('out')
+							# print('out')
 							break
 						elif line == boundary_end:
-							print('leave')
+							# print('leave')
 							loop_info = leave
 							break
 						else:
 							# line 还是二进制形式, realine() 不会删掉二进制的'\n'
 							f.write(line)
 			except Exception as e:
-				print(e)
 				loop_info = leave
 				return_status = False
 				return_info += 'Exception!\n'

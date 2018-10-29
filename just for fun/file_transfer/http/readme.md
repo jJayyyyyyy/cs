@@ -108,6 +108,8 @@ $ python3 py3_SimpleHTTPServerWithUpload.py
 
 	*	修改 `html` 的部分标签顺序
 
+*	根据 @`a.7` 同学的建议, 在上一版本的基础上进行了改进, 使我们可以一次性上传多个文件
+
 *	更多内容请看[这篇博客](https://jjayyyyyyy.github.io/2016/10/07/reWrite_SimpleHTTPServerWithUpload_with_python3.html)
 
 *	TODO
@@ -124,9 +126,15 @@ $ python3 py3_SimpleHTTPServerWithUpload.py
 
 	*	根据 @`a.7` 同学的建议, 在上一版本的基础上进行了改进, 使我们可以一次性上传多个文件
 
-		多个文件直接也是用 `boundary` 进行分隔的, 我们正是利用了这点对多个文件进行 `POST`
+		多个文件直接也是用 `boundary` 进行分隔的, 我们正是利用了这点对多个文件进行 `POST`, 我们也可以利用这点区分不同的文件
 
-	*	更新代码 (主要是 `deal_post_data()` ), 注释
+	*	更新 `deal_post_data()`, 根据 `boundary` 重写逻辑, 以此取代 `remainbytes`
+
+	*	更新 `list_directory()`, 
+
+		根据 [w3schools](https://www.w3schools.com/tags/att_input_multiple.asp), 在 `<input/>` 标签中增加 `multiple="multiple"` 属性, 可以 `accepts multiple values`
+
+	*	增加注释
 
 	*	更新 `readme.md`
 
