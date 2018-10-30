@@ -1,3 +1,7 @@
+注：为了方便查找和使用本模块, 后续更新和维护将会在新的 `repo` 进行, 地址是
+
+[https://github.com/jJayyyyyyy/py3SimpleHTTPServerWithUpload](https://github.com/jJayyyyyyy/py3SimpleHTTPServerWithUpload)
+
 ##	Usage:
 
 ```bash
@@ -115,7 +119,6 @@ $ python3 py3_SimpleHTTPServerWithUpload.py
 *	TODO
 
 	*	步骤：如何安装自己写的模块
-	*	单独建立一个 `repo`, 方便查找和使用本模块
 	*	更新博客
 
 	<br>
